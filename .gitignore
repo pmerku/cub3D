@@ -22,6 +22,7 @@ cmake-build-debug/Makefile
 cmake-build-debug/cmake_install.cmake
 cmake-build-debug/github_cub3d.cbp
 
+.DS_Store
 .vscode
 *.o
 *.out
