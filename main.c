@@ -1,56 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                                                        ::::::::            */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
+/*                                                     +:+                    */
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/04 11:15:43 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/07 10:25:36 by prmerku          ###   ########.fr       */
+/*                                                   +#+                      */
+/*   Created: 2020/01/04 11:15:43 by prmerku        #+#    #+#                */
+/*   Updated: 2020/01/08 14:29:42 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
-#include <stdlib.h>
 #include <cub3d.h>
 
-int     close(int keycode, t_env *env)
+static void	init_win(t_win *win)
 {
-    if (keycode == 53)
-    {
-        mlx_destroy_window(env->mlx, env->mlx_win);
-        exit(0);
-    }
-    printf("%d\n", keycode);
-    return (0);
+	win->mlx = mlx_init();
+	win->mlx_win = mlx_new_window(win->mlx, win->win_x, win->win_y, "cub3D");
+	win->img.img = mlx_new_image(win->mlx, win->win_x, win->win_y);
+	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bpp,
+			&win->img.llen, &win->img.endian);
 }
 
-void    my_mlx_pixel_put(t_data *img, int x, int y, int color)
+int			main(int argc, char **argv)
 {
-	char    *dst;
+	t_win	win;
 
-	dst = img->addr + (y * img->llen + x * (img->bpp / 8));
-	*(unsigned int*)dst = color;
-}
-
-int		render_next_frame(t_env *env)
-{
-	for (int i = 0; i < 500; i++)
-		my_mlx_pixel_put(&env->data, i, 5, 0x00FF0000);
-	mlx_put_image_to_window(env->mlx, env->mlx_win, env->data.img, 0, 0);
+	if (argc != 2){
+		if (argc == 3){
+			write(1, "Saved\n", 6);
+			return (0);
+		}
+		perror("Error");
+		exit (1);
+	}
+	parse_file(argv[1], &win);
+	init_win(&win);
+	mlx_loop_hook(win.mlx, render_next_frame, &win);
+	mlx_key_hook(win.mlx_win, close_key, &win);
+	//mlx_hook(win.mlx_win, 17, 0L, close, &win);
+	mlx_loop(win.mlx);
 	return (0);
-}
-
-int		main(void)
-{
-
-	t_env  env;
-
-	env.mlx = mlx_init();
-	env.mlx_win = mlx_new_window(env.mlx, 600, 500, "Hello world!");
-	env.data.img = mlx_new_image(env.mlx, 600, 500);
-	env.data.addr = mlx_get_data_addr(env.data.img, &env.data.bpp, &env.data.llen, &env.data.endian);
-	mlx_loop_hook(env.mlx, render_next_frame, &env);
-    mlx_hook(env.mlx_win, 2, 1L<<0, close, &env);
-	mlx_loop(env.mlx);
 }

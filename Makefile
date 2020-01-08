@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/01/07 09:41:42 by prmerku          ###   ########.fr        #
+#    Updated: 2020/01/08 14:30:07 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ NAME = cub3D
 # 							Objects and Includes
 # ----------------------------------------------------------------------------
 
-OBJ = main.o
+OBJ = main.o src/parser.o src/render.o src/shutdown.o src/parse_info.o
 
 LIBFT = libft/libft.a
 
@@ -47,14 +47,14 @@ MLX = libmlx.dylib
 
 all: $(NAME)
 
-f: $(OBJ) $(MLX)
+f: $(OBJ) $(LIBFT) $(MLX)
 	@printf "Compiling - ${YELLOW}[Fast build]${NC}\n"
 	@$(CC) $(CFLAGS) $(MLXFLAGS) -o $(NAME) $^
 	@printf "${MAGENTA}  Finished${NC}\n"
 
 $(NAME): $(MLX) $(LIBFT) $(OBJ)
 	@printf "Compiling - ${YELLOW}[Main build]${NC}\n"
-	@$(CC) $(CFLAGS) -o $@ $^ $(MLXFLAGS)
+	@$(CC) $(CFLAGS) $(MLXFLAGS) -o $@ $^
 	@printf "${MAGENTA}  Finished${NC}\n"
 
 $(LIBFT):
