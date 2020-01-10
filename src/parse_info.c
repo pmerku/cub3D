@@ -6,29 +6,59 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/10 09:00:09 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/10 12:28:08 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <cub3d.h>
 
-void	parse_resolution(char **data, t_win *win)
+void		parse_resolution(char **data, t_win *win, int *i)
 {
 	char	**s;
-	int 	i;
 
-	if (data[0][0] == 'R')
+	s = ft_split(data[*i], ' ');
+	if (!(*s))
+		close_error(2);
+	win->win_x = ft_atoi(s[1]);
+	win->win_y = ft_atoi(s[2]);
+	delete_data(s);
+}
+
+void		parse_sprite(void)
+{
+}
+
+static void	parse_trgb(char **data, t_win *win, int *i)
+{
+	int		j;
+	char	**s;
+
+	j = 0;
+	while (data[*i][j])
 	{
-		s = ft_split(data[0], ' ');
-		win->win_x = ft_atoi(s[1]);
-		win->win_y = ft_atoi(s[2]);
-		i = 0;
-		while (s[i])
-		{
-			free(s[i]);
-			i++;
-		}
-		free(s);
+		if (data[*i][j] == ',')
+			data[*i][j] = ' ';
+		j++;
 	}
+	s = ft_split(data[*i], ' ');
+	if (!(*s))
+		close_error(2);
+	win->tex.r = ft_atoi(s[1]);
+	win->tex.g = ft_atoi(s[2]);
+	win->tex.b = ft_atoi(s[3]);
+	win->tex.t = 0;
+	if (data[*i][0] == 'F')
+		win->tex.f_color = win->tex.b << 24 | win->tex.g << 16 |
+				win->tex.r << 8 | win->tex.t;
+	if (data[*i][0] == 'C')
+		win->tex.c_color = win->tex.b << 24 | win->tex.g << 16 |
+				win->tex.r << 8 | win->tex.t;
+	delete_data(s);
+}
+
+void		parse_texture(char **data, t_win *win, int *i)
+{
+	if (data[*i][0] == 'F' || data[*i][0] == 'C')
+		parse_trgb(data, win, i);
 }

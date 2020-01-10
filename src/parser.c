@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/10 10:10:13 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/10 12:29:12 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <cub3d.h>
 
-static void	delete_data(char **data)
+void		delete_data(char **data)
 {
 	int		i;
 
@@ -27,21 +27,25 @@ static void	delete_data(char **data)
 	free(data);
 }
 
-static void	parse_info(char **data, t_win *win)
+static void	parse_info(char **data, t_win *win, int *i)
 {
-	parse_resolution(data, win);
-	//parse_color
-	//parse_texture
-	//parse_sprite
+	if (data[*i][0] == 'R')
+		parse_resolution(data, win, i);
+	else if (data[*i][0] == 'S')
+		parse_sprite();
+	else
+		parse_texture(data, win, i);
 }
 
 static void	parse_map(char **data, t_map *map, int *i)
 {
-	int 	len;
+	int		len;
 
 	len = 0;
 	while (data[len])
 		len++;
+	map->map_y = len;
+	map->map_x = ft_strlen(data[*i]);
 	map->map = (char**)malloc(sizeof(char*) * (len + 1));
 	if (!map->map)
 		close_error(2);
@@ -57,13 +61,13 @@ static void	parse_map(char **data, t_map *map, int *i)
 	}
 }
 
-char	**save_data(int fd)
+char		**save_data(int fd)
 {
 	char	buf[BUFFER_SIZE + 1];
-	char 	**data;
+	char	**data;
 	char	*map;
-	char 	*tmp;
-	int 	res;
+	char	*tmp;
+	int		res;
 
 	map = NULL;
 	res = 1;
@@ -85,11 +89,11 @@ char	**save_data(int fd)
 	return (data);
 }
 
-void	parse_file(char *s, t_win *win)
+void		parse_file(char *s, t_win *win)
 {
 	char	**data;
 	int		fd;
-	int 	i;
+	int		i;
 
 	if (ft_strnstr(s, ".cub", ft_strlen(s)) == NULL)
 		close_error(0);
@@ -98,8 +102,8 @@ void	parse_file(char *s, t_win *win)
 	i = 0;
 	while (data[i])
 	{
-		if (data[i][0] != '1')
-			parse_info(data, win);
+		if (data[i][0] != '1' && data[i])
+			parse_info(data, win, &i);
 		else
 			parse_map(data, &win->map, &i);
 		if (!data[i])

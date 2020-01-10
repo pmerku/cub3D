@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/01/08 14:30:07 by prmerku          ###   ########.fr        #
+#    Updated: 2020/01/10 11:47:54 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ MLX = libmlx.dylib
 
 all: $(NAME)
 
-f: $(OBJ) $(LIBFT) $(MLX)
+f: $(MLX) $(LIBFT) $(OBJ)
 	@printf "Compiling - ${YELLOW}[Fast build]${NC}\n"
 	@$(CC) $(CFLAGS) $(MLXFLAGS) -o $(NAME) $^
 	@printf "${MAGENTA}  Finished${NC}\n"
