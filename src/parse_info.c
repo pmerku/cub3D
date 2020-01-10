@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/10 12:28:08 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/10 13:47:19 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,15 @@ static void	parse_trgb(char **data, t_win *win, int *i)
 	win->tex.g = ft_atoi(s[2]);
 	win->tex.b = ft_atoi(s[3]);
 	win->tex.t = 0;
+	if ((win->tex.r > 255 || win->tex.g > 255 || win->tex.b > 255) &&
+			(win->tex.r < 0 || win->tex.g < 0 || win->tex.b < 0))
+		close_error(2);
 	if (data[*i][0] == 'F')
-		win->tex.f_color = win->tex.b << 24 | win->tex.g << 16 |
-				win->tex.r << 8 | win->tex.t;
+		win->tex.f_color = win->tex.t << 24 | win->tex.r << 16 |
+				win->tex.g << 8 | win->tex.b;
 	if (data[*i][0] == 'C')
-		win->tex.c_color = win->tex.b << 24 | win->tex.g << 16 |
-				win->tex.r << 8 | win->tex.t;
+		win->tex.c_color = win->tex.t << 24 | win->tex.r << 16 |
+				win->tex.g << 8 | win->tex.b;
 	delete_data(s);
 }
 

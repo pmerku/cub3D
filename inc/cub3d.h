@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/10 12:06:01 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/10 14:05:22 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ typedef struct	s_pos
 {
 	int 	pos_x;
 	int 	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double 	plane_x;
+	double	plane_y;
+	double	camera_x;
+	double	camera_y;
 }				t_pos;
 
 typedef struct  s_img
