@@ -29,7 +29,7 @@ int			main(int argc, char **argv)
 	if (argc != 2){
 		if (argc == 3){
 			write(1, "Saved\n", 6);
-			return (0);
+			exit (0);
 		}
 		perror("Error");
 		exit (1);
@@ -40,5 +40,5 @@ int			main(int argc, char **argv)
 	mlx_key_hook(win.mlx_win, close_key, &win);
 	//mlx_hook(win.mlx_win, 17, 0L, close, &win);
 	mlx_loop(win.mlx);
-	return (0);
+	exit (0);
 }

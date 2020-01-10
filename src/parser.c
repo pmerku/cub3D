@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/08 18:12:36 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/10 10:10:13 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,97 @@
 #include <stdlib.h>
 #include <cub3d.h>
 
-static void	parse_info(char *buf, t_win *win)
+static void	delete_data(char **data)
 {
-	parse_resolution(buf, win);
+	int		i;
+
+	i = 0;
+	while (data[i] != NULL)
+	{
+		free(data[i]);
+		i++;
+	}
+	free(data);
+}
+
+static void	parse_info(char **data, t_win *win)
+{
+	parse_resolution(data, win);
 	//parse_color
 	//parse_texture
 	//parse_sprite
 }
 
-static void	parse_map(char *map, t_win *win)
+static void	parse_map(char **data, t_map *map, int *i)
 {
-	win->map = ft_split(map, '\n');
-	printf("%c\n", win->map[0][70]);
+	int 	len;
+
+	len = 0;
+	while (data[len])
+		len++;
+	map->map = (char**)malloc(sizeof(char*) * (len + 1));
+	if (!map->map)
+		close_error(2);
+	map->map[len] = NULL;
+	len = 0;
+	while (data[*i] && data[*i][0] == '1')
+	{
+		map->map[len] = ft_strdup(data[*i]);
+		if (!map->map[len])
+			close_error(2);
+		(*i)++;
+		len++;
+	}
+}
+
+char	**save_data(int fd)
+{
+	char	buf[BUFFER_SIZE + 1];
+	char 	**data;
+	char	*map;
+	char 	*tmp;
+	int 	res;
+
+	map = NULL;
+	res = 1;
+	while (res > 0)
+	{
+		res = read(fd, buf, BUFFER_SIZE);
+		if (res < 0)
+			close_error(1);
+		buf[res] = '\0';
+		tmp = map;
+		map = (map == NULL) ? ft_strdup(buf) : ft_strjoin(map, buf);
+		if (tmp != NULL)
+			free(tmp);
+		if (!map)
+			close_error(2);
+	}
+	data = ft_split(map, '\n');
+	free(map);
+	return (data);
 }
 
 void	parse_file(char *s, t_win *win)
 {
-	char *buf;
-	char *map;
-	int res;
-	int fd;
+	char	**data;
+	int		fd;
+	int 	i;
 
 	if (ft_strnstr(s, ".cub", ft_strlen(s)) == NULL)
 		close_error(0);
 	fd = open(s, O_RDONLY);
-	if (fd < 0)
-		close_error(1);
-	res = 1;
-	map = NULL;
-	while (res > 0)
+	data = save_data(fd);
+	i = 0;
+	while (data[i])
 	{
-		res = get_next_line(fd, &buf);
-		if (buf[0] == '1')
-			map = (map == NULL) ? ft_strdup(buf) : ft_strjoin(map, buf);
+		if (data[i][0] != '1')
+			parse_info(data, win);
 		else
-			parse_info(buf, win);
-		free(buf);
+			parse_map(data, &win->map, &i);
+		if (!data[i])
+			break ;
+		i++;
 	}
-	parse_map(map, win);
-	free(map);
+	delete_data(data);
 }

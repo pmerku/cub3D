@@ -91,7 +91,7 @@ char			**ft_split(char const *s, char c)
 	str = (char**)malloc(sizeof(char*) * (ft_strnum(s, c) + 1));
 	if (!str)
 		return (NULL);
-	ft_str_arr(str, s, c);
+	str = ft_str_arr(str, s, c);
 	if (str == NULL)
 		return (NULL);
 	return (str);

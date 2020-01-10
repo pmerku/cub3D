@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/08 17:28:12 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/10 09:48:49 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,25 @@ typedef struct  s_img {
 	int 		img_y;
 }               t_img;
 
+typedef struct	s_map {
+
+	char		**map;
+}				t_map;
+
 typedef struct  s_win {
 	void    	*mlx;
 	void    	*mlx_win;
 	int 		win_x;
 	int 		win_y;
-	char 		**map;
 	t_img 		img;
 	t_pos		pos;
+	t_map 		map;
 }               t_win;
 
 int		render_next_frame(t_win *win);
 
 void	parse_file(char *s, t_win *win);
-void	parse_resolution(char *buf, t_win *win);
+void	parse_resolution(char **data, t_win *win);
 
 int		close_key(int keycode, t_win *win);
 int		close_error(int i);

@@ -6,14 +6,14 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 14:27:38 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/08 15:19:15 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/10 09:41:58 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 #include <mlx.h>
 
-int	close_key(int keycode, t_win *win)
+int		close_key(int keycode, t_win *win)
 {
 	if (keycode == 53)
 	{
@@ -23,7 +23,7 @@ int	close_key(int keycode, t_win *win)
 	return (0);
 }
 
-int close_error(int i)
+int		close_error(int i)
 {
 	write(1, "Error\n", 6);
 	if (i == 0)
