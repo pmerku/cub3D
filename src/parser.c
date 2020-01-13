@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/10 12:29:12 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/13 10:15:13 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static void	parse_map(char **data, t_map *map, int *i)
 	len = 0;
 	while (data[len])
 		len++;
-	map->map_y = len;
-	map->map_x = ft_strlen(data[*i]);
+	map->y = len;
+	map->x = ft_strlen(data[*i]);
 	map->map = (char**)malloc(sizeof(char*) * (len + 1));
 	if (!map->map)
 		close_error(2);
@@ -95,7 +95,7 @@ void		parse_file(char *s, t_win *win)
 	int		fd;
 	int		i;
 
-	if (ft_strnstr(s, ".cub", ft_strlen(s)) == NULL)
+	if (ft_strncmp(ft_strrchr(s, '.'), ".cub", 4) != 0)
 		close_error(0);
 	fd = open(s, O_RDONLY);
 	data = save_data(fd);

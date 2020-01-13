@@ -6,79 +6,102 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/10 14:05:22 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/13 14:23:12 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <math.h>
+# include <stdio.h>
+# include <string.h>
 
 typedef struct	s_pos
 {
-	int 	pos_x;
-	int 	pos_y;
-	double	dir_x;
-	double	dir_y;
-	double 	plane_x;
-	double	plane_y;
-	double	camera_x;
-	double	camera_y;
+	int			x;
+	int			y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+	double		camera_x;
+	double		camera_y;
 }				t_pos;
 
-typedef struct  s_img
+typedef struct	s_img
 {
-	void        *img;
-	char        *addr;
-	int         bpp;
-	int         llen;
-	int         endian;
-}               t_img;
+	void		*img;
+	char		*addr;
+	int			bpp;
+	int			line_len;
+	int			endian;
+	int 		line_h;
+}				t_img;
 
 typedef struct	s_map
 {
 	char		**map;
-	int 		map_x;
-	int 		map_y;
-	char 		*sprite;
+	int			x;
+	int			y;
+	char		*sprite;
 }				t_map;
 
 typedef struct	s_tex
 {
-	int 		t;
-	int 		r;
-	int 		g;
-	int 		b;
-	int			f_color;
-	int 		c_color;
+	unsigned int	t;
+	unsigned int	r;
+	unsigned int	g;
+	unsigned int	b;
+	int				f_color;
+	int				c_color;
 }				t_tex;
 
-typedef struct  s_win
+typedef struct	s_mov
 {
-	void    	*mlx;
-	void    	*mlx_win;
-	int 		win_x;
-	int 		win_y;
-	t_img 		img;
+	double		perp_wd;
+	int			step_x;
+	int			step_y;
+	int 		hit;
+	int 		side;
+}				t_mov;
+
+typedef struct	s_ray
+{
+	double		dir_x;
+	double		dir_y;
+	double		side_dx;
+	double		side_dy;
+	double		delta_dx;
+	double		delta_dy;
+}				t_ray;
+
+typedef struct	s_win
+{
+	void		*mlx;
+	void		*mlx_win;
+	int			x;
+	int			y;
+	t_img		img;
 	t_pos		pos;
-	t_map 		map;
-	t_tex 		tex;
-}               t_win;
+	t_ray		ray;
+	t_map		map;
+	t_tex		tex;
+	t_mov		mov;
+}				t_win;
 
-int		render_next_frame(t_win *win);
+int				render_next_frame(t_win *win);
 
-void	parse_file(char *s, t_win *win);
-void	parse_resolution(char **data, t_win *win, int *i);
-void	parse_sprite(void);
-void	parse_texture(char **data, t_win *win, int *i);
+void			parse_file(char *s, t_win *win);
+void			parse_resolution(char **data, t_win *win, int *i);
+void			parse_sprite(void);
+void			parse_texture(char **data, t_win *win, int *i);
 
-void	delete_data(char **data);
-int		close_key(int keycode, t_win *win);
-int		close_error(int i);
+void			delete_data(char **data);
+int				close_key(int keycode, t_win *win);
+int				close_error(int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/10 10:15:05 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/13 14:23:12 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 static void	init_win(t_win *win)
 {
 	win->mlx = mlx_init();
-	win->mlx_win = mlx_new_window(win->mlx, win->win_x, win->win_y, "cub3D");
-	win->img.img = mlx_new_image(win->mlx, win->win_x, win->win_y);
+	win->mlx_win = mlx_new_window(win->mlx, win->x, win->y, "cub3D");
+	win->img.img = mlx_new_image(win->mlx, win->x, win->y);
 	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bpp,
-			&win->img.llen, &win->img.endian);
+									  &win->img.line_len, &win->img.endian);
 }
 
 int			main(int argc, char **argv)

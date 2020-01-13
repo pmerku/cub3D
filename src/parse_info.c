@@ -20,8 +20,8 @@ void		parse_resolution(char **data, t_win *win, int *i)
 	s = ft_split(data[*i], ' ');
 	if (!(*s))
 		close_error(2);
-	win->win_x = ft_atoi(s[1]);
-	win->win_y = ft_atoi(s[2]);
+	win->x = ft_atoi(s[1]);
+	win->y = ft_atoi(s[2]);
 	delete_data(s);
 }
 
