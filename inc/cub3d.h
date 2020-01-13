@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/13 14:23:12 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/13 16:07:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 
 typedef struct	s_pos
 {
-	int			x;
-	int			y;
+	double		x;
+	double		y;
 	double		dir_x;
 	double		dir_y;
 	double		plane_x;
@@ -47,6 +47,8 @@ typedef struct	s_map
 	char		**map;
 	int			x;
 	int			y;
+	int 		map_l;
+	int 		map_h;
 	char		*sprite;
 }				t_map;
 
