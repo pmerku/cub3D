@@ -36,7 +36,7 @@ char				*ft_itoa_base(int n, int base)
 	size_t	len;
 
 	len = ft_intlen_base(n, base);
-	str = (char*)malloc(sizeof(char) * (len + 1));
+	str = (char*)malloc(sizeof(char) * len);
 	if (!str)
 		return (NULL);
 	if (n < 0 && base == 10)

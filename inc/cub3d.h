@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/13 16:07:16 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/15 09:41:43 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,19 @@
 # include <stdio.h>
 # include <string.h>
 
+typedef struct	s_mov
+{
+	double		perp_wd;
+	int			step_x;
+	int			step_y;
+	int 		hit;
+	int 		side;
+}				t_mov;
+
 typedef struct	s_pos
 {
 	double		x;
-	double		y;
+	double 		y;
 	double		dir_x;
 	double		dir_y;
 	double		plane_x;
@@ -31,6 +40,16 @@ typedef struct	s_pos
 	double		camera_x;
 	double		camera_y;
 }				t_pos;
+
+typedef struct	s_ray
+{
+	double		dir_x;
+	double		dir_y;
+	double		side_dx;
+	double		side_dy;
+	double		delta_dx;
+	double		delta_dy;
+}				t_ray;
 
 typedef struct	s_img
 {
@@ -47,8 +66,8 @@ typedef struct	s_map
 	char		**map;
 	int			x;
 	int			y;
-	int 		map_l;
 	int 		map_h;
+	int 		map_w;
 	char		*sprite;
 }				t_map;
 
@@ -61,25 +80,6 @@ typedef struct	s_tex
 	int				f_color;
 	int				c_color;
 }				t_tex;
-
-typedef struct	s_mov
-{
-	double		perp_wd;
-	int			step_x;
-	int			step_y;
-	int 		hit;
-	int 		side;
-}				t_mov;
-
-typedef struct	s_ray
-{
-	double		dir_x;
-	double		dir_y;
-	double		side_dx;
-	double		side_dy;
-	double		delta_dx;
-	double		delta_dy;
-}				t_ray;
 
 typedef struct	s_win
 {

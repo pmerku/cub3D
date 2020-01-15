@@ -32,7 +32,7 @@ char		*ft_itoa(int n)
 	size_t	len;
 
 	len = ft_intlen(n);
-	str = (char*)malloc(sizeof(char) * (len + 1));
+	str = (char*)malloc(sizeof(char) * len);
 	if (!str)
 		return (NULL);
 	if (n < 0)

@@ -14,10 +14,10 @@
 
 size_t	ft_strlen(const	char *s)
 {
-	const char	*ptr;
+	size_t	i;
 
-	ptr = s;
-	while (*s)
-		s++;
-	return (s - ptr);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

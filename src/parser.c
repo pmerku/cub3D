@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/13 14:09:47 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/15 13:23:04 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ static void	parse_map(char **data, t_map *map, int *i)
 	int		len;
 
 	len = 0;
-	while (data[len])
+	while (data[*i + len])
 		len++;
-	map->map_l = len;
-	map->map_h = ft_strlen(data[*i]);
+	map->map_h = len;
+	map->map_w = ft_strlen(data[*i]);
 	map->map = (char**)malloc(sizeof(char*) * (len + 1));
 	if (!map->map)
 		close_error(2);
@@ -78,9 +78,8 @@ char		**save_data(int fd)
 			close_error(1);
 		buf[res] = '\0';
 		tmp = map;
-		map = (map == NULL) ? ft_strdup(buf) : ft_strjoin(map, buf);
-		if (tmp != NULL)
-			free(tmp);
+		map = (tmp == NULL) ? ft_strdup(buf) : ft_strjoin(tmp, buf);
+		free(tmp);
 		if (!map)
 			close_error(2);
 	}
