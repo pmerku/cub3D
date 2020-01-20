@@ -21,7 +21,7 @@ int 	close_win(t_win *win)
 
 int		close_key(int keycode, t_win *win)
 {
-	if (keycode == 53)
+	if (keycode == KEY_ESC)
 	{
 		mlx_destroy_image(win->mlx, win->mlx_win);
 		exit(EXIT_SUCCESS);

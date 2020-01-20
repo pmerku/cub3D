@@ -35,7 +35,13 @@ NAME = cub3D
 # 							Objects and Includes
 # ----------------------------------------------------------------------------
 
-OBJ = main.o src/parser.o src/render.o src/shutdown.o src/parse_info.o
+OBJ = main.o
+
+OBJ += parser/parser.o parser/parse_info.o
+
+OBJ += renderer/render.o
+
+OBJ += utils/shutdown.o
 
 LIBFT = libft/libft.a
 

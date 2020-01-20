@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/15 09:41:43 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/20 17:12:55 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,25 @@
 # include <math.h>
 # include <stdio.h>
 # include <string.h>
+#include <nameser.h>
+
+# define KEY_W		13
+# define KEY_A		0
+# define KEY_S		1
+# define KEY_D		2
+# define KEY_UP		126
+# define KEY_LEFT	123
+# define KEY_DOWN	125
+# define KEY_RIGHT	124
+# define KEY_ESC	53
+
+typedef struct	s_key
+{
+	unsigned int	up;
+	unsigned int	left;
+	unsigned int	down;
+	unsigned int	right;
+}				t_key;
 
 typedef struct	s_mov
 {
@@ -27,6 +46,9 @@ typedef struct	s_mov
 	int			step_y;
 	int 		hit;
 	int 		side;
+	double 		m_speed;
+	double		r_speed;
+	unsigned int	key;
 }				t_mov;
 
 typedef struct	s_pos
@@ -73,7 +95,7 @@ typedef struct	s_map
 
 typedef struct	s_tex
 {
-	unsigned int	t;
+	unsigned int	a;
 	unsigned int	r;
 	unsigned int	g;
 	unsigned int	b;
@@ -93,6 +115,7 @@ typedef struct	s_win
 	t_map		map;
 	t_tex		tex;
 	t_mov		mov;
+	t_key		key;
 }				t_win;
 
 int				render_next_frame(t_win *win);
@@ -103,6 +126,10 @@ void			parse_sprite(void);
 void			parse_texture(char **data, t_win *win, int *i);
 
 void			delete_data(char **data);
+void			init_pos(t_win *win);
+void			move_pos(t_win *win);
+
+int 			close_win(t_win *win);
 int				close_key(int keycode, t_win *win);
 int				close_error(int i);
 
