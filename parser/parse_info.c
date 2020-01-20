@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/15 14:58:44 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/17 10:40:48 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		parse_sprite(void)
 {
 }
 
-static void	parse_trgb(char **data, t_win *win, int *i)
+static void	parse_argb(char **data, t_win *win, int *i)
 {
 	int		j;
 	char	**s;
@@ -47,21 +47,21 @@ static void	parse_trgb(char **data, t_win *win, int *i)
 	win->tex.r = ft_atoi(s[1]);
 	win->tex.g = ft_atoi(s[2]);
 	win->tex.b = ft_atoi(s[3]);
-	win->tex.t = 0;
+	win->tex.a = 255;
 	if ((win->tex.r > 255 || win->tex.g > 255 || win->tex.b > 255) &&
 			(win->tex.r < 0 || win->tex.g < 0 || win->tex.b < 0))
 		close_error(2);
 	if (data[*i][0] == 'F')
-		win->tex.f_color = win->tex.t << 24 | win->tex.r << 16 |
-				win->tex.g << 8 | win->tex.b;
+		win->tex.f_color = win->tex.a << 24 | win->tex.r << 16 |
+							win->tex.g << 8 | win->tex.b;
 	if (data[*i][0] == 'C')
-		win->tex.c_color = win->tex.t << 24 | win->tex.r << 16 |
-				win->tex.g << 8 | win->tex.b;
+		win->tex.c_color = win->tex.a << 24 | win->tex.r << 16 |
+							win->tex.g << 8 | win->tex.b;
 	delete_data(s);
 }
 
 void		parse_texture(char **data, t_win *win, int *i)
 {
 	if (data[*i][0] == 'F' || data[*i][0] == 'C')
-		parse_trgb(data, win, i);
+		parse_argb(data, win, i);
 }

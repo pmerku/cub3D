@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 18:46:33 by prmerku           #+#    #+#             */
-/*   Updated: 2019/12/07 18:46:33 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/17 10:39:20 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static char		**ft_str_arr(char **str, const char *s, char c)
 		if (*s == '\0')
 			continue ;
 		slen = ft_strhlen(s, c);
-		str[i] = (char*)malloc(sizeof(char) * slen);
+		str[i] = (char*)malloc(sizeof(char) * (slen + 1));
 		if (!str[i])
 			return (ft_free(str, i));
 		if (*s && *s != c)
@@ -88,7 +88,7 @@ char			**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	str = (char**)malloc(sizeof(char*) * ft_strnum(s, c));
+	str = (char**)malloc(sizeof(char*) * (ft_strnum(s, c) + 1));
 	if (!str)
 		return (NULL);
 	str = ft_str_arr(str, s, c);

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/15 13:23:04 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/17 11:03:20 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,12 @@ char		**save_data(int fd)
 void		parse_file(char *s, t_win *win)
 {
 	char	**data;
+	char 	*ptr;
 	int		fd;
 	int		i;
 
-	if (ft_strncmp(ft_strrchr(s, '.'), ".cub", 4) != 0)
+	ptr = ft_strrchr(s, '.');
+	if (!ptr || ft_strncmp(ptr, ".cub", 4) != 0)
 		close_error(0);
 	fd = open(s, O_RDONLY);
 	data = save_data(fd);
@@ -109,5 +111,6 @@ void		parse_file(char *s, t_win *win)
 			break ;
 		i++;
 	}
+	close(fd);
 	delete_data(data);
 }

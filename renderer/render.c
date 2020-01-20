@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/15 14:15:58 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/17 13:16:00 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void 	map_check(t_win *win)
 
 static void	init_pos(t_win *win)
 {
-	win->pos.x = 12;
-	win->pos.y = 12;
+	win->pos.x = 9;
+	win->pos.y = 7;
 	win->pos.dir_x = -1;
 	win->pos.dir_y = 0;
 	win->pos.plane_x = 0;
@@ -45,6 +45,8 @@ static void	init_pos(t_win *win)
 int			render_next_frame(t_win *win)
 {
 	int		i;
+	int drawStart;
+	int drawEnd;
 
 	i = 0;
 	init_pos(win);
@@ -55,8 +57,8 @@ int			render_next_frame(t_win *win)
 		win->ray.dir_y = win->pos.dir_y + win->pos.plane_y * win->pos.camera_x;
 		win->map.x = (int)win->pos.x;
 		win->map.y = (int)win->pos.y;
-		win->ray.delta_dx = fabs(1 / win->ray.dir_x);
-		win->ray.delta_dy = fabs(1 / win->ray.dir_y);
+		win->ray.delta_dx = sqrt(1 + (win->ray.dir_y * win->ray.dir_y) / (win->ray.dir_x * win->ray.dir_x));
+		win->ray.delta_dy = sqrt(1 + (win->ray.dir_x * win->ray.dir_x) / (win->ray.dir_y * win->ray.dir_y));
 		win->mov.step_x = (win->ray.dir_x < 0) ? -1 : 1;
 		win->ray.side_dx = (win->ray.dir_x < 0) ?
 				(win->pos.x - win->map.x) * win->ray.delta_dx :
@@ -85,14 +87,18 @@ int			render_next_frame(t_win *win)
 		(win->map.x - win->pos.x + (1 - win->mov.step_x) / 2) / win->ray.dir_x :
 		(win->map.y - win->pos.y + (1 - win->mov.step_y) / 2) / win->ray.dir_y;
 		win->img.line_h = (int)(win->y / win->mov.perp_wd);
-		int drawStart = -win->img.line_h / 2 + win->y / 2;
+		drawStart = -win->img.line_h / 2 + win->y / 2;
 		if (drawStart < 0)
 			drawStart = 0;
-		int drawEnd = win->img.line_h / 2 + win->y / 2;
+		drawEnd = win->img.line_h / 2 + win->y / 2;
+		printf("%d\n", win->img.line_h);
 		if (drawEnd >= win->y)
 			drawEnd = win->y - 1;
+		printf("%d | %d\n", drawStart, drawEnd);
 		for (int y = drawStart; y < drawEnd; y++)
+		{
 			pixel_put(&win->img, i, y, 0x000000FF);
+		}
 		i++;
 	}
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img.img, 0, 0);
