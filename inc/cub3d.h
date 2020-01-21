@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/20 17:12:55 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/21 16:16:25 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
-# include <stdio.h>
-# include <string.h>
-#include <nameser.h>
 
 # define KEY_W		13
 # define KEY_A		0
@@ -29,6 +26,8 @@
 # define KEY_LEFT	123
 # define KEY_DOWN	125
 # define KEY_RIGHT	124
+# define KEY_Q		12
+# define KEY_E		14
 # define KEY_ESC	53
 
 typedef struct	s_key
@@ -37,6 +36,8 @@ typedef struct	s_key
 	unsigned int	left;
 	unsigned int	down;
 	unsigned int	right;
+	unsigned int	rot_l;
+	unsigned int	rot_r;
 }				t_key;
 
 typedef struct	s_mov
@@ -44,23 +45,21 @@ typedef struct	s_mov
 	double		perp_wd;
 	int			step_x;
 	int			step_y;
-	int 		hit;
-	int 		side;
-	double 		m_speed;
+	int			hit;
+	int			side;
+	double		m_speed;
 	double		r_speed;
-	unsigned int	key;
 }				t_mov;
 
 typedef struct	s_pos
 {
 	double		x;
-	double 		y;
+	double		y;
 	double		dir_x;
 	double		dir_y;
 	double		plane_x;
 	double		plane_y;
 	double		camera_x;
-	double		camera_y;
 }				t_pos;
 
 typedef struct	s_ray
@@ -71,6 +70,8 @@ typedef struct	s_ray
 	double		side_dy;
 	double		delta_dx;
 	double		delta_dy;
+	int			draw_s;
+	int			draw_e;
 }				t_ray;
 
 typedef struct	s_img
@@ -80,7 +81,7 @@ typedef struct	s_img
 	int			bpp;
 	int			line_len;
 	int			endian;
-	int 		line_h;
+	int			line_h;
 }				t_img;
 
 typedef struct	s_map
@@ -88,8 +89,8 @@ typedef struct	s_map
 	char		**map;
 	int			x;
 	int			y;
-	int 		map_h;
-	int 		map_w;
+	int			map_h;
+	int			map_w;
 	char		*sprite;
 }				t_map;
 
@@ -117,20 +118,5 @@ typedef struct	s_win
 	t_mov		mov;
 	t_key		key;
 }				t_win;
-
-int				render_next_frame(t_win *win);
-
-void			parse_file(char *s, t_win *win);
-void			parse_resolution(char **data, t_win *win, int *i);
-void			parse_sprite(void);
-void			parse_texture(char **data, t_win *win, int *i);
-
-void			delete_data(char **data);
-void			init_pos(t_win *win);
-void			move_pos(t_win *win);
-
-int 			close_win(t_win *win);
-int				close_key(int keycode, t_win *win);
-int				close_error(int i);
 
 #endif

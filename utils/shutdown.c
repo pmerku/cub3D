@@ -13,7 +13,7 @@
 #include <cub3d.h>
 #include <mlx.h>
 
-int 	close_win(t_win *win)
+int		close_win(t_win *win)
 {
 	mlx_destroy_image(win->mlx, win->mlx_win);
 	exit(EXIT_SUCCESS);

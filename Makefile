@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/01/15 09:07:03 by prmerku          ###   ########.fr        #
+#    Updated: 2020/01/21 11:44:21 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,11 +37,11 @@ NAME = cub3D
 
 OBJ = main.o
 
-OBJ += parser/parser.o parser/parse_info.o
+OBJ += parser/parse_file.o parser/parse_info.o parser/parse_map.o
 
-OBJ += renderer/render.o
+OBJ += engine/renderer.o engine/movement.o engine/initialization.o
 
-OBJ += utils/shutdown.o
+OBJ += utils/shutdown.o utils/data_handle.o
 
 LIBFT = libft/libft.a
 
