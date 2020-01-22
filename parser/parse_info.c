@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 10:21:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/22 10:47:33 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		parse_resolution(char **data, t_win *win, int *i)
 
 	s = ft_split(data[*i], ' ');
 	if (!(*s))
-		close_error(2);
+		close_error("Malloc error\n");
 	win->x = ft_atoi(s[1]);
 	win->y = ft_atoi(s[2]);
 	delete_data(s);
@@ -66,7 +66,7 @@ static void	parse_argb(char **data, t_win *win, int *i)
 		(*(char *)ft_strchr(data[*i], ',')) = ' ';
 	s = ft_split(data[*i], ' ');
 	if (!(*s))
-		close_error(2);
+		close_error("Malloc error\n");
 	win->tex.r = ft_atoi(s[1]);
 	win->tex.g = ft_atoi(s[2]);
 	win->tex.b = ft_atoi(s[3]);
