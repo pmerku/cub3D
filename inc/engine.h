@@ -21,6 +21,7 @@ void	init_pos(t_win *win);
 void	init_ray(t_win *win, int i);
 void	init_calc(t_win *win);
 
+int		map_check(t_win *win, int x, int y);
 void	move_pos(t_win *win);
 
 #endif

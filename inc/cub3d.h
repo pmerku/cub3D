@@ -100,8 +100,8 @@ typedef struct	s_tex
 	unsigned int	r;
 	unsigned int	g;
 	unsigned int	b;
-	int				f_color;
-	int				c_color;
+	unsigned int	f_color;
+	unsigned int	c_color;
 }				t_tex;
 
 typedef struct	s_win

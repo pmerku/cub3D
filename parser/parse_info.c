@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/21 16:56:06 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/22 07:57:31 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,12 @@ void		parse_sprite(void)
 
 static void	parse_argb(char **data, t_win *win, int *i)
 {
-	int		j;
 	char	**s;
 
-	j = 0;
-	while (data[*i][j])
-	{
-		if (data[*i][j] == ',')
-			data[*i][j] = ' ';
-		j++;
-	}
-	if (!(s = ft_split(data[*i], ' ')))
+	while (ft_strchr(data[*i], ','))
+		(*(char *)ft_strchr(data[*i], ',')) = ' ';
+	s = ft_split(data[*i], ' ');
+	if (!(*s))
 		close_error(2);
 	win->tex.r = ft_atoi(s[1]);
 	win->tex.g = ft_atoi(s[2]);
