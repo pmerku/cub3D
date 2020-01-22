@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/21 11:38:58 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/22 10:21:02 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include <utils.h>
 #include <parser.h>
 #include <cub3d.h>
+
+/*
+** Parse the 2D array and depending on position parse with correct function
+**
+** @param  char  **data allocated 2D array to parse
+** @param  t_win *win   allocated global window structure
+** @param  int   *i     reference to index position
+** @return void
+*/
 
 static void	parse_info(char **data, t_win *win, int *i)
 {
@@ -25,6 +34,15 @@ static void	parse_info(char **data, t_win *win, int *i)
 		parse_texture(data, win, i);
 }
 
+/*
+** Parse the file and save the lines separately in a 2D array to parse
+**
+** @param  char  *s   path to file
+** @param  t_win *win allocated global window structure
+** @param  int   *i   reference to index position
+** @return void
+*/
+
 void		parse_file(char *s, t_win *win)
 {
 	char	**data;
@@ -34,7 +52,7 @@ void		parse_file(char *s, t_win *win)
 
 	ptr = ft_strrchr(s, '.');
 	if (!ptr || ft_strncmp(ptr, ".cub", 4) != 0)
-		close_error(0);
+		close_error("Invalid file\n");
 	fd = open(s, O_RDONLY);
 	data = save_data(fd);
 	i = 0;

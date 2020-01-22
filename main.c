@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/21 16:14:11 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/22 10:11:45 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include <engine.h>
 #include <cub3d.h>
 
+/*
+** Initialize window and image
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
+
 static void	init_win(t_win *win)
 {
 	win->mlx = mlx_init();
@@ -25,6 +32,14 @@ static void	init_win(t_win *win)
 	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bpp,
 			&win->img.line_len, &win->img.endian);
 }
+
+/*
+** Set key variable to 0 if released
+**
+** @param  int   keycode accordingly keycode for the key pressed
+** @param  t_win *win    allocated global window structure
+** @return int           status code
+*/
 
 int 		key_release(int keycode, t_win *win)
 {
@@ -45,6 +60,14 @@ int 		key_release(int keycode, t_win *win)
 	return (0);
 }
 
+/*
+** Set key variable to 1 if pressed
+**
+** @param  int   keycode accordingly keycode for the key pressed
+** @param  t_win *win    allocated global window structure
+** @return int           status code
+*/
+
 int 		key_press(int keycode, t_win *win)
 {
 	if (keycode == KEY_W || keycode == KEY_UP)
@@ -61,6 +84,14 @@ int 		key_press(int keycode, t_win *win)
 		win->key.rot_r = 1;
 	return (0);
 }
+
+/*
+** Main
+**
+** @param  int  argc   number of params
+** @param  char **argv 2D array string of params
+** @return int         status code
+*/
 
 int			main(int argc, char **argv)
 {

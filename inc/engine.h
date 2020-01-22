@@ -13,14 +13,24 @@
 #ifndef ENGINE_H
 # define ENGINE_H
 
+/*
+** ---------------------------------------------------------------------------
+** 							Header includes
+** ---------------------------------------------------------------------------
+*/
+
 # include <cub3d.h>
 
-int		render_next_frame(t_win *win);
+/*
+** ---------------------------------------------------------------------------
+** 							Engine functions
+** ---------------------------------------------------------------------------
+*/
 
+int		render_next_frame(t_win *win);
 void	init_pos(t_win *win);
 void	init_ray(t_win *win, int i);
 void	init_calc(t_win *win);
-
 int		map_check(t_win *win, int x, int y);
 void	move_pos(t_win *win);
 
