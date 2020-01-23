@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 10:11:45 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/23 16:18:38 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,31 @@
 #include <cub3d.h>
 
 /*
+** Initialized game struct
+*/
+
+static t_win g_win = {
+	.key = {
+		.up = 0,
+		.left = 0,
+		.down = 0,
+		.right = 0,
+		.rot_l = 0,
+		.rot_r = 0
+	},
+	.tex = {
+		.a = 0,
+		.r = 0,
+		.g = 0,
+		.b = 0
+	},
+	.mov = {
+		.m_speed = 0.05,
+		.r_speed = 0.03
+	},
+};
+
+/*
 ** Initialize window and image
 **
 ** @param  t_win *win allocated global window structure
@@ -26,11 +51,16 @@
 
 static void	init_win(t_win *win)
 {
-	win->mlx = mlx_init();
 	win->mlx_win = mlx_new_window(win->mlx, win->x, win->y, "cub3D");
+	if (!win->mlx_win)
+		close_error("Couldn't open window\n");
 	win->img.img = mlx_new_image(win->mlx, win->x, win->y);
+	if (!win->img.img)
+		close_error("Couldn't create image\n");
 	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bpp,
 			&win->img.line_len, &win->img.endian);
+	if (!win->img.addr)
+		close_error("Couldn't get image data\n");
 }
 
 /*
@@ -43,8 +73,6 @@ static void	init_win(t_win *win)
 
 int 		key_release(int keycode, t_win *win)
 {
-	if (keycode == KEY_ESC)
-		close_key(keycode, win);
 	if (keycode == KEY_W || keycode == KEY_UP)
 		win->key.up = 0;
 	if (keycode == KEY_S || keycode == KEY_DOWN)
@@ -70,6 +98,8 @@ int 		key_release(int keycode, t_win *win)
 
 int 		key_press(int keycode, t_win *win)
 {
+	if (keycode == KEY_ESC)
+		close_key(keycode, win);
 	if (keycode == KEY_W || keycode == KEY_UP)
 		win->key.up = 1;
 	if (keycode == KEY_S || keycode == KEY_DOWN)
@@ -95,9 +125,8 @@ int 		key_press(int keycode, t_win *win)
 
 int			main(int argc, char **argv)
 {
-	t_win	win;
-
-	if (argc != 2){
+	if (argc != 2)
+	{
 		if (argc == 3 && (ft_strncmp(argv[3], "--save", 6) == 0))
 		{
 			write(1, "Saved\n", 6);
@@ -106,13 +135,16 @@ int			main(int argc, char **argv)
 		write(1, "Error\n", 6);
 		exit (EXIT_FAILURE);
 	}
-	parse_file(argv[1], &win);
-	init_win(&win);
-	init_pos(&win);
-	mlx_hook(win.mlx_win, 2, (1L<<0), key_press, &win);
-	mlx_hook(win.mlx_win, 3, (1L<<1), key_release, &win);
-	mlx_hook(win.mlx_win, 17, 0L, close_win, &win);
-	mlx_loop_hook(win.mlx, &render_next_frame, &win);
-	mlx_loop(win.mlx);
+	g_win.mlx = mlx_init();
+	if (!g_win.mlx)
+		close_error("Couldn't initialize window\n");
+	parse_file(argv[1], &g_win);
+	init_win(&g_win);
+	init_pos(&g_win);
+	mlx_hook(g_win.mlx_win, 2, (1L<<0), key_press, &g_win);
+	mlx_hook(g_win.mlx_win, 3, (1L<<1), key_release, &g_win);
+	mlx_hook(g_win.mlx_win, 17, 0L, close_win, &g_win);
+	mlx_loop_hook(g_win.mlx, &render_next_frame, &g_win);
+	mlx_loop(g_win.mlx);
 	return (0);
 }

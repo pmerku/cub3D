@@ -6,13 +6,13 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 10:47:33 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/23 14:28:00 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <utils.h>
-#include <cub3d.h>
+#include <parser.h>
 
 /*
 ** Parse the 2D array and save the resolution separately in the
@@ -70,7 +70,6 @@ static void	parse_argb(char **data, t_win *win, int *i)
 	win->tex.r = ft_atoi(s[1]);
 	win->tex.g = ft_atoi(s[2]);
 	win->tex.b = ft_atoi(s[3]);
-	win->tex.a = 0;
 	if (win->tex.r > 255 || win->tex.g > 255 || win->tex.b > 255)
 		close_error("Incorrect ARGB numbers\n");
 	if (data[*i][0] == 'F')
@@ -96,4 +95,12 @@ void		parse_texture(char **data, t_win *win, int *i)
 {
 	if (data[*i][0] == 'F' || data[*i][0] == 'C')
 		parse_argb(data, win, i);
+	else if ((*(u_int16_t*)data[*i]) == (*(u_int16_t*)"NO"))
+		parse_nw(data, win, i);
+	else if ((*(u_int16_t*)data[*i]) == (*(u_int16_t*)"SO"))
+		parse_sw(data, win, i);
+	else if ((*(u_int16_t*)data[*i]) == (*(u_int16_t*)"WE"))
+		parse_ww(data, win, i);
+	else if ((*(u_int16_t*)data[*i]) == (*(u_int16_t*)"EA"))
+		parse_ew(data, win, i);
 }

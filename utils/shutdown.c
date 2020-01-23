@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 14:27:38 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 10:11:45 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/23 14:22:54 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,13 @@
 
 int		close_win(t_win *win)
 {
-	mlx_destroy_image(win->mlx, win->mlx_win);
-	exit(EXIT_SUCCESS);
+	if (win->mlx && win->mlx_win)
+	{
+		mlx_destroy_image(win->mlx, win->img.img);
+		//mlx_destroy_window(win->mlx, win->mlx_win); // TODO: fix segfault
+		exit(EXIT_SUCCESS);
+	}
+	return (0);
 }
 
 /*
@@ -40,8 +45,12 @@ int		close_key(int keycode, t_win *win)
 {
 	if (keycode == KEY_ESC)
 	{
-		mlx_destroy_image(win->mlx, win->mlx_win);
-		exit(EXIT_SUCCESS);
+		if (win->mlx && win->mlx_win)
+		{
+			mlx_destroy_image(win->mlx, win->img.img);
+			//mlx_destroy_window(win->mlx, win->mlx_win); // TODO: fix segfault
+			exit(EXIT_SUCCESS);
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 10:43:28 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/23 14:54:54 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
+# include <sys/types.h>
+
+
+#include <stdio.h>
 
 /*
 ** ---------------------------------------------------------------------------
@@ -50,23 +54,23 @@
 
 typedef struct	s_key
 {
-	unsigned int	up;
-	unsigned int	left;
-	unsigned int	down;
-	unsigned int	right;
-	unsigned int	rot_l;
-	unsigned int	rot_r;
+	unsigned int	up:1;
+	unsigned int	left:1;
+	unsigned int	down:1;
+	unsigned int	right:1;
+	unsigned int	rot_l:1;
+	unsigned int	rot_r:1;
 }				t_key;
 
 typedef struct	s_mov
 {
-	double		perp_wd;
-	int			step_x;
-	int			step_y;
-	int			hit;
-	int			side;
-	double		m_speed;
-	double		r_speed;
+	double			perp_wd;
+	int				step_x;
+	int				step_y;
+	unsigned int	hit:1;
+	unsigned int	side:1;
+	double			m_speed;
+	double			r_speed;
 }				t_mov;
 
 typedef struct	s_pos
@@ -114,12 +118,20 @@ typedef struct	s_map
 
 typedef struct	s_tex
 {
-	unsigned int	a;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	unsigned int	a:8;
+	unsigned int	r:8;
+	unsigned int	g:8;
+	unsigned int	b:8;
 	unsigned int	f_color;
 	unsigned int	c_color;
+	void			*n_wall;
+	char 			*dn_wall;
+	void			*s_wall;
+	char			*ds_wall;
+	void			*e_wall;
+	char 			*de_wall;
+	void			*w_wall;
+	char			*dw_wall;
 }				t_tex;
 
 typedef struct	s_win

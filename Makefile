@@ -37,7 +37,8 @@ NAME = cub3D
 
 OBJ = main.o
 
-OBJ += parser/parse_file.o parser/parse_info.o parser/parse_map.o
+OBJ += parser/parse_file.o parser/parse_info.o parser/parse_map.o \
+	parser/parse_tex.o
 
 OBJ += engine/renderer.o engine/movement.o engine/initialization.o
 

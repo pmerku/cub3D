@@ -33,4 +33,9 @@ void	parse_sprite(void);
 void	parse_texture(char **data, t_win *win, int *i);
 void	parse_map(char **data, t_map *map, int *i);
 
+void	parse_nw(char **data, t_win *win, int *i);
+void	parse_sw(char **data, t_win *win, int *i);
+void	parse_ww(char **data, t_win *win, int *i);
+void	parse_ew(char **data, t_win *win, int *i);
+
 #endif

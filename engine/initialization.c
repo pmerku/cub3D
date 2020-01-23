@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:52:18 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/21 16:26:43 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/23 15:00:19 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	init_pos(t_win *win)
 	win->pos.dir_y = 0;
 	win->pos.plane_x = 0;
 	win->pos.plane_y = 0.66;
-	win->mov.m_speed = 0.05;
-	win->mov.r_speed = 0.03;
 }
 
 void	init_ray(t_win *win, int i)

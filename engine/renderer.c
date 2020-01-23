@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 09:12:09 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/23 17:01:17 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	draw_pixels(t_win *win, int i)
 
 int			map_check(t_win *win, int y, int x)
 {
-	if (x < 0 || x >= win->map.map_h || y < 0 || y >= win->map.map_w)
+	if (x < 0 || x >= win->map.map_w || y < 0 || y >= win->map.map_h)
 		win->mov.hit = 1;
 	else if (win->map.map[y][x] == '1')
 		win->mov.hit = 1;
@@ -76,7 +76,28 @@ int			render_next_frame(t_win *win)
 			win->map.x += (!win->mov.side) ? win->mov.step_x : 0;
 			win->ray.side_dy += (win->mov.side) ? win->ray.delta_dy : 0;
 			win->map.y += (win->mov.side) ? win->mov.step_y : 0;
-			map_check(win, win->map.x, win->map.y);
+			map_check(win, win->map.y, win->map.x);
+		}
+		int texNum = win->map.map[win->map.y][win->map.x] - '1';
+
+		double wallX;
+		wallX = (!win->mov.side) ? win->pos.y + win->mov.perp_wd * win->ray.dir_y
+				: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
+		wallX -= floor(wallX);
+
+		int texX = (int)(wallX * (double)texWidth);
+		if ((win->mov.side == 0 && win->ray.dir_x > 0) || (win->mov.side == 1 && win->ray.dir_y < 0))
+			texX = texWidth - texX - 1;
+		double step = 1.0 * texHeigth / win->img.line_h;
+		double texPos = (win->ray.draw_s - win->y / 2 + win->img.line_h / 2) * step;
+		for (int y = win->ray.draw_s; y < win->ray.draw_e; y++)
+		{
+			int texY = (int)texPos & (texHeigth - 1);
+			texPos += step;
+			color = tex[texNum][texHeigth * texY + texX];
+			if (win->mov.side == 1)
+				color = (color >> 1) & 8355711;
+
 		}
 		init_calc(win);
 		draw_pixels(win, i);
