@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/25 10:11:36 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/25 12:25:46 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,16 @@ int			render_next_frame(t_win *win)
 			win->map.y += (win->mov.side) ? win->mov.step_y : 0;
 			map_check(win, win->map.y, win->map.x);
 		}
-		int texNum = win->map.map[win->map.y][win->map.x] - '1';
+		int texNum;
+
+		if (win->mov.side)
+			texNum = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
+		else
+			texNum = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
 
 		double wallX;
-		wallX = (!win->mov.side) ? win->pos.y + win->mov.perp_wd * win->ray.dir_y
+		wallX = (!win->mov.side)
+				? win->pos.y + win->mov.perp_wd * win->ray.dir_y
 				: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
 		wallX -= floor(wallX);
 
@@ -94,13 +100,12 @@ int			render_next_frame(t_win *win)
 		{
 			int texY = (int)texPos & (win->tex.tex_h - 1);
 			texPos += step;
-			win->color.tex_c = tex[texNum][win->tex.tex_h * texY + texX];
+			win->color.tex_c = win->tex.wall[texNum][win->tex.tex_h * texY + texX];
 			if (win->mov.side == 1)
 				win->color.tex_c = (win->color.tex_c >> 1) & 8355711;
-			buffertex[y][x];
+			init_calc(win);
+			draw_pixels(win, i);
 		}
-		init_calc(win);
-		draw_pixels(win, i);
 		i++;
 	}
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img.img, 0, 0);

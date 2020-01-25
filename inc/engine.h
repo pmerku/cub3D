@@ -6,12 +6,17 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:29:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/21 15:48:22 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/25 12:04:23 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENGINE_H
 # define ENGINE_H
+
+# define N_WALL	0
+# define S_WALL	1
+# define W_WALL	2
+# define E_WALL	3
 
 /*
 ** ---------------------------------------------------------------------------

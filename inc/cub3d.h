@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/25 10:02:57 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/25 12:18:52 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,14 +129,8 @@ typedef struct	s_color
 
 typedef struct	s_tex
 {
-	void		*n_wall;
-	char 		*dn_wall;
-	void		*s_wall;
-	char		*ds_wall;
-	void		*e_wall;
-	char 		*de_wall;
-	void		*w_wall;
-	char		*dw_wall;
+	void		**wall;
+	char 		**data;
 	int			tex_w;
 	int			tex_h;
 }				t_tex;
