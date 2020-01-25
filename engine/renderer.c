@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/25 12:25:46 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/25 12:32:33 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int			render_next_frame(t_win *win)
 			win->map.y += (win->mov.side) ? win->mov.step_y : 0;
 			map_check(win, win->map.y, win->map.x);
 		}
-		int texNum;
+		int texNum; // TODO: norm
 
 		if (win->mov.side)
 			texNum = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
@@ -100,7 +100,7 @@ int			render_next_frame(t_win *win)
 		{
 			int texY = (int)texPos & (win->tex.tex_h - 1);
 			texPos += step;
-			win->color.tex_c = win->tex.wall[texNum][win->tex.tex_h * texY + texX];
+			win->color.tex_c = win->tex.wall[texNum][win->tex.tex_h * texY + texX]; // TODO: convert texture pos to color pixel to print
 			if (win->mov.side == 1)
 				win->color.tex_c = (win->color.tex_c >> 1) & 8355711;
 			init_calc(win);

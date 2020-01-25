@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 11:04:59 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/25 12:19:54 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/25 12:25:46 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	parse_ew(char **data, t_win *win, int *i)
 			&win->img.line_len, &win->img.endian);
 	if (!win->tex.data[N_WALL])
 		close_error("Couldn't get texture data\n");
-	free(path);
+	free(path); // TODO: maybe recode how the texture are saved
 }
 
 void	parse_ww(char **data, t_win *win, int *i)
