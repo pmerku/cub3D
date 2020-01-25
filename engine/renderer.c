@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/23 17:01:17 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/25 10:11:36 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	draw_pixels(t_win *win, int i)
 	y = 0;
 	while (y <= win->ray.draw_s)
 	{
-		pixel_put(&win->img, i, y, win->tex.c_color);
+		pixel_put(&win->img, i, y, win->color.c_color);
 		y++;
 	}
 	while (y <= win->ray.draw_e)
@@ -40,7 +40,7 @@ static void	draw_pixels(t_win *win, int i)
 	}
 	while (y < win->y)
 	{
-		pixel_put(&win->img, i, y, win->tex.f_color);
+		pixel_put(&win->img, i, y, win->color.f_color);
 		y++;
 	}
 }
@@ -85,19 +85,19 @@ int			render_next_frame(t_win *win)
 				: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
 		wallX -= floor(wallX);
 
-		int texX = (int)(wallX * (double)texWidth);
+		int texX = (int)(wallX * (double)win->tex.tex_w);
 		if ((win->mov.side == 0 && win->ray.dir_x > 0) || (win->mov.side == 1 && win->ray.dir_y < 0))
-			texX = texWidth - texX - 1;
-		double step = 1.0 * texHeigth / win->img.line_h;
+			texX = win->tex.tex_w - texX - 1;
+		double step = 1.0 * win->tex.tex_h / win->img.line_h;
 		double texPos = (win->ray.draw_s - win->y / 2 + win->img.line_h / 2) * step;
 		for (int y = win->ray.draw_s; y < win->ray.draw_e; y++)
 		{
-			int texY = (int)texPos & (texHeigth - 1);
+			int texY = (int)texPos & (win->tex.tex_h - 1);
 			texPos += step;
-			color = tex[texNum][texHeigth * texY + texX];
+			win->color.tex_c = tex[texNum][win->tex.tex_h * texY + texX];
 			if (win->mov.side == 1)
-				color = (color >> 1) & 8355711;
-
+				win->color.tex_c = (win->color.tex_c >> 1) & 8355711;
+			buffertex[y][x];
 		}
 		init_calc(win);
 		draw_pixels(win, i);

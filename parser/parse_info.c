@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/23 14:28:00 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/25 09:48:44 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,17 @@ static void	parse_argb(char **data, t_win *win, int *i)
 	s = ft_split(data[*i], ' ');
 	if (!(*s))
 		close_error("Malloc error\n");
-	win->tex.r = ft_atoi(s[1]);
-	win->tex.g = ft_atoi(s[2]);
-	win->tex.b = ft_atoi(s[3]);
-	if (win->tex.r > 255 || win->tex.g > 255 || win->tex.b > 255)
+	win->color.r = ft_atoi(s[1]);
+	win->color.g = ft_atoi(s[2]);
+	win->color.b = ft_atoi(s[3]);
+	if (win->color.r > 255 || win->color.g > 255 || win->color.b > 255)
 		close_error("Incorrect ARGB numbers\n");
 	if (data[*i][0] == 'F')
-		win->tex.f_color = win->tex.a << 24 | win->tex.r << 16 |
-				win->tex.g << 8 | win->tex.b;
+		win->color.f_color = win->color.a << 24 | win->color.r << 16 |
+				win->color.g << 8 | win->color.b;
 	if (data[*i][0] == 'C')
-		win->tex.c_color = win->tex.a << 24 | win->tex.r << 16 |
-				win->tex.g << 8 | win->tex.b;
+		win->color.c_color = win->color.a << 24 | win->color.r << 16 |
+				win->color.g << 8 | win->color.b;
 	delete_data(s);
 }
 
