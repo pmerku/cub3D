@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/25 12:32:33 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/28 10:55:21 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,14 @@ static void	draw_pixels(t_win *win, int i)
 	int		y;
 
 	y = 0;
-	while (y <= win->ray.draw_s)
+	while (y < win->ray.draw_s)
 	{
 		pixel_put(&win->img, i, y, win->color.c_color);
 		y++;
 	}
 	while (y <= win->ray.draw_e)
 	{
-		pixel_put(&win->img, i, y, (win->mov.side)
-		? 0x000000AA : 0x000000FF);
+		pixel_put(&win->img, i, y, win->color.tex_c);
 		y++;
 	}
 	while (y < win->y)
@@ -47,9 +46,8 @@ static void	draw_pixels(t_win *win, int i)
 
 int			map_check(t_win *win, int y, int x)
 {
-	if (x < 0 || x >= win->map.map_w || y < 0 || y >= win->map.map_h)
-		win->mov.hit = 1;
-	else if (win->map.map[y][x] == '1')
+	if (x < 0 || x >= win->map.map_w || y < 0 || y >= win->map.map_h
+		|| win->map.map[y][x] == '1')
 		win->mov.hit = 1;
 	else
 	{
@@ -78,7 +76,8 @@ int			render_next_frame(t_win *win)
 			win->map.y += (win->mov.side) ? win->mov.step_y : 0;
 			map_check(win, win->map.y, win->map.x);
 		}
-		int texNum; // TODO: norm
+		// TODO: norm
+		int texNum;
 
 		if (win->mov.side)
 			texNum = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
@@ -91,21 +90,23 @@ int			render_next_frame(t_win *win)
 				: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
 		wallX -= floor(wallX);
 
-		int texX = (int)(wallX * (double)win->tex.tex_w);
+		int texX = (int)(wallX * (double)win->tex[texNum].tex_w);
 		if ((win->mov.side == 0 && win->ray.dir_x > 0) || (win->mov.side == 1 && win->ray.dir_y < 0))
-			texX = win->tex.tex_w - texX - 1;
-		double step = 1.0 * win->tex.tex_h / win->img.line_h;
+			texX = win->tex[texNum].tex_w - texX - 1;
+		double step = 1.0 * win->tex[texNum].tex_h / win->img.line_h;
 		double texPos = (win->ray.draw_s - win->y / 2 + win->img.line_h / 2) * step;
 		for (int y = win->ray.draw_s; y < win->ray.draw_e; y++)
 		{
-			int texY = (int)texPos & (win->tex.tex_h - 1);
+			int texY = (int)texPos & (win->tex[texNum].tex_h - 1);
 			texPos += step;
-			win->color.tex_c = win->tex.wall[texNum][win->tex.tex_h * texY + texX]; // TODO: convert texture pos to color pixel to print
+			//TODO: convert texture pos to color pixel to print
+			win->color.tex_c = ((((unsigned int *)win->tex[texNum].data))[texY * win->tex[texNum].line_len + i]);
 			if (win->mov.side == 1)
 				win->color.tex_c = (win->color.tex_c >> 1) & 8355711;
 			init_calc(win);
 			draw_pixels(win, i);
 		}
+
 		i++;
 	}
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img.img, 0, 0);

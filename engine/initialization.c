@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:52:18 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/23 15:00:19 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/28 10:21:10 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	init_pos(t_win *win)
 {
-	win->pos.x = 10;
-	win->pos.y = 5;
-	win->pos.dir_x = -1;
-	win->pos.dir_y = 0;
-	win->pos.plane_x = 0;
-	win->pos.plane_y = 0.66;
+	win->pos.x = 2;
+	win->pos.y = 8;
+	win->pos.dir_x = 0;
+	win->pos.dir_y = 1;
+	win->pos.plane_x = 0.66;
+	win->pos.plane_y = 0;
 }
 
 void	init_ray(t_win *win, int i)
 {
 	win->pos.camera_x = 2 * i / (double)win->x - 1;
-	win->ray.dir_x = win->pos.dir_x + win->pos.plane_x * win->pos.camera_x;
-	win->ray.dir_y = win->pos.dir_y + win->pos.plane_y * win->pos.camera_x;
+	win->ray.dir_y = win->pos.dir_x + win->pos.plane_x * win->pos.camera_x;
+	win->ray.dir_x = win->pos.dir_y + win->pos.plane_y * win->pos.camera_x;
 	win->map.x = (int)win->pos.x;
 	win->map.y = (int)win->pos.y;
 	win->ray.delta_dx = fabs(1 / win->ray.dir_x);

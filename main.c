@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/25 12:18:30 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/27 13:53:13 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@ static t_win g_win = {
 		.right = 0,
 		.rot_l = 0,
 		.rot_r = 0
-	},
-	.mov = {
-		.m_speed = 0.05,
-		.r_speed = 0.03
 	},
 	.color = {
 		.a = 0,

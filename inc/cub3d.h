@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/25 12:18:52 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/28 10:42:01 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,15 +124,19 @@ typedef struct	s_color
 	unsigned int	b:8;
 	unsigned int	f_color;
 	unsigned int	c_color;
-	unsigned int	tex_c;
+	unsigned int	tex_n;
+	u_int		tex_c;
 }				t_color;
 
 typedef struct	s_tex
 {
-	void		**wall;
-	char 		**data;
+	void		*wall;
+	char 		*data;
 	int			tex_w;
 	int			tex_h;
+	int			bpp;
+	int			line_len;
+	int			endian;
 }				t_tex;
 
 typedef struct	s_win
@@ -146,7 +150,7 @@ typedef struct	s_win
 	t_ray		ray;
 	t_map		map;
 	t_color		color;
-	t_tex		tex;
+	t_tex		tex[5];
 	t_mov		mov;
 	t_key		key;
 }				t_win;
