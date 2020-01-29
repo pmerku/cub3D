@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 15:41:39 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/29 15:57:18 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ static int	mandatory_elements(t_win *win)
 
 static void	parse_info(char **data, t_win *win, int index)
 {
-	if (data[index][0] == 'R')
+	if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"R "))
 		parse_resolution(data, win, index);
-	else if (data[index][0] == 'S' && data[index][1] == ' ')
+	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"S "))
 		parse_sprite();
-	else if (data[index][0] == 'F' || data[index][0] == 'C')
+	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"F ")
+		|| (*(u_int16_t *)data[index]) == (*(u_int16_t *)"C "))
 		parse_argb(data, win, index);
 	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"NO"))
 		parse_w(data, win, index, N_WALL);
