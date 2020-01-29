@@ -6,21 +6,11 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:52:18 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/28 10:21:10 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/29 14:27:36 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-void	init_pos(t_win *win)
-{
-	win->pos.x = 2;
-	win->pos.y = 8;
-	win->pos.dir_x = 0;
-	win->pos.dir_y = 1;
-	win->pos.plane_x = 0.66;
-	win->pos.plane_y = 0;
-}
 
 void	init_ray(t_win *win, int i)
 {
@@ -48,10 +38,10 @@ void	init_calc(t_win *win)
 			+ (1. - win->mov.step_x) / 2) / win->ray.dir_x
 			: (win->map.y - win->pos.y
 			+ (1. - win->mov.step_y) / 2) / win->ray.dir_y;
-	win->img.line_h = (int)(win->y / win->mov.perp_wd);
-	win->ray.draw_s = (win->img.line_h * -1) / 2 + win->y / 2;
+	win->img[win->i].line_h = (int)(win->y / win->mov.perp_wd);
+	win->ray.draw_s = (win->img[win->i].line_h * -1) / 2 + win->y / 2;
 	win->ray.draw_s = (win->ray.draw_s < 0) ? 0 : win->ray.draw_s;
-	win->ray.draw_e = win->img.line_h / 2 + win->y / 2;
+	win->ray.draw_e = win->img[win->i].line_h / 2 + win->y / 2;
 	win->ray.draw_e = (win->ray.draw_e >= win->y)
 			? win->y - 1 : win->ray.draw_e;
 }

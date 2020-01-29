@@ -6,13 +6,27 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:27:59 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 10:21:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/29 10:01:48 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <utils.h>
 #include <cub3d.h>
+
+static size_t	line_size(const char *s)
+{
+	size_t	size;
+
+	size = 0;
+	while (*s)
+	{
+		if (*s != ' ')
+			size++;
+		s++;
+	}
+	return (size);
+}
 
 /*
 ** Parse the 2D array and save the map separately in the global window struct
@@ -23,26 +37,35 @@
 ** @return void
 */
 
-void	parse_map(char **data, t_map *map, int *i)
+void	parse_map(char **data, t_win *win)
 {
-	int		len;
+	int		pos;
+	int		i;
+	int 	j;
 
-	len = 0;
-	while (data[*i + len])
-		len++;
-	map->map_h = len;
-	map->map_w = ft_strlen(data[*i]);
-	map->map = (char**)malloc(sizeof(char*) * (len + 1));
-	if (!map->map)
-		close_error("Malloc error\n");
-	map->map[len] = NULL;
-	len = 0;
-	while (data[*i] && data[*i][0] == '1')
+	pos = 0;
+	while (data[pos])
+		pos++;
+	win->map.map_h = pos;
+	win->map.map = (char**)malloc(sizeof(char*) * (pos + 1));
+	malloc_check(win->map.map);
+	pos = 0;
+	while (data[pos])
 	{
-		map->map[len] = ft_strdup(data[*i]);
-		if (!map->map[len])
-			close_error("Malloc error\n");
-		(*i)++;
-		len++;
+		i = 0;
+		j = 0;
+		win->map.map[pos] = ft_malloc(line_size(data[pos]) + 1);
+		while (data[pos][j])
+		{
+			if (data[pos][j] != ' ')
+			{
+				win->map.map[pos][i] = data[pos][j];
+				i++;
+			}
+			j++;
+		}
+		win->map.map[pos][i] = '\0';
+		pos++;
 	}
+	win->map.map[pos] = NULL;
 }

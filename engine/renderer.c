@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/28 10:55:21 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/29 13:40:56 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,32 @@ static void	draw_pixels(t_win *win, int i)
 	y = 0;
 	while (y < win->ray.draw_s)
 	{
-		pixel_put(&win->img, i, y, win->color.c_color);
+		pixel_put(&win->img[win->i], i, y, win->color.c_color);
 		y++;
 	}
 	while (y <= win->ray.draw_e)
 	{
-		pixel_put(&win->img, i, y, win->color.tex_c);
+//		win->color.tex_y = (int)win->color.tex_pos & (win->tex[win->color.tex_i].tex_h - 1);
+//		win->color.tex_pos += win->color.step;
+//		win->color.tex_c = win->tex[win->color.tex_i].data[win->tex[win->color.tex_i].tex_h * win->color.tex_y + win->color.tex_x];
+//		if (win->mov.side == 1)
+//			win->color.tex_c = (win->color.tex_c >> 1) & 8355711;
+//		pixel_put(&win->img, i, y, (win->mov.side == 1)
+//		? win->color.tex_c : (win->color.tex_c >> 1) & 8355711);
+		pixel_put(&win->img[win->i], i, y, (win->mov.side == 1) ? 0x00FF0000 : 0x00AA0000);
 		y++;
 	}
 	while (y < win->y)
 	{
-		pixel_put(&win->img, i, y, win->color.f_color);
+		pixel_put(&win->img[win->i], i, y, win->color.f_color);
 		y++;
 	}
 }
 
-int			map_check(t_win *win, int y, int x)
+int			query_map(t_win *win, int x, int y)
 {
-	if (x < 0 || x >= win->map.map_w || y < 0 || y >= win->map.map_h
-		|| win->map.map[y][x] == '1')
+	if (y <= 0 || y >= win->map.map_w || x <= 0 || x >= win->map.map_h
+		|| win->map.map[x][y] == '1')
 		win->mov.hit = 1;
 	else
 	{
@@ -74,15 +81,16 @@ int			render_next_frame(t_win *win)
 			win->map.x += (!win->mov.side) ? win->mov.step_x : 0;
 			win->ray.side_dy += (win->mov.side) ? win->ray.delta_dy : 0;
 			win->map.y += (win->mov.side) ? win->mov.step_y : 0;
-			map_check(win, win->map.y, win->map.x);
+			query_map(win, win->map.y, win->map.x);
 		}
-		// TODO: norm
-		int texNum;
+		init_calc(win);
 
+		// TODO: norm
+		// TODO: texture printing
 		if (win->mov.side)
-			texNum = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
+			win->color.tex_i = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
 		else
-			texNum = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
+			win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
 
 		double wallX;
 		wallX = (!win->mov.side)
@@ -90,25 +98,16 @@ int			render_next_frame(t_win *win)
 				: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
 		wallX -= floor(wallX);
 
-		int texX = (int)(wallX * (double)win->tex[texNum].tex_w);
+		win->color.tex_x = (int)(wallX * (double)win->tex[win->color.tex_i].tex_w);
 		if ((win->mov.side == 0 && win->ray.dir_x > 0) || (win->mov.side == 1 && win->ray.dir_y < 0))
-			texX = win->tex[texNum].tex_w - texX - 1;
-		double step = 1.0 * win->tex[texNum].tex_h / win->img.line_h;
-		double texPos = (win->ray.draw_s - win->y / 2 + win->img.line_h / 2) * step;
-		for (int y = win->ray.draw_s; y < win->ray.draw_e; y++)
-		{
-			int texY = (int)texPos & (win->tex[texNum].tex_h - 1);
-			texPos += step;
-			//TODO: convert texture pos to color pixel to print
-			win->color.tex_c = ((((unsigned int *)win->tex[texNum].data))[texY * win->tex[texNum].line_len + i]);
-			if (win->mov.side == 1)
-				win->color.tex_c = (win->color.tex_c >> 1) & 8355711;
-			init_calc(win);
-			draw_pixels(win, i);
-		}
+			win->color.tex_x = win->tex[win->color.tex_i].tex_w - win->color.tex_x - 1;
+		win->color.step = 1.0 * win->tex[win->color.tex_i].tex_h / win->img[win->i].line_h;
+		win->color.tex_pos = (win->ray.draw_s - win->y / 2 + win->img[win->i].line_h / 2) * win->color.step;
 
+		draw_pixels(win, i);
 		i++;
 	}
-	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img.img, 0, 0);
+	win->i = !win->i;
+	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	return (0);
 }

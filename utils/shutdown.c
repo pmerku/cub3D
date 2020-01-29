@@ -26,7 +26,8 @@ int		close_win(t_win *win)
 {
 	if (win->mlx && win->mlx_win)
 	{
-		mlx_destroy_image(win->mlx, win->img.img);
+		mlx_destroy_image(win->mlx, win->img[0].img);
+		mlx_destroy_image(win->mlx, win->img[1].img);
 		//mlx_destroy_window(win->mlx, win->mlx_win); // TODO: fix segfault
 		exit(EXIT_SUCCESS);
 	}
@@ -47,7 +48,8 @@ int		close_key(int keycode, t_win *win)
 	{
 		if (win->mlx && win->mlx_win)
 		{
-			mlx_destroy_image(win->mlx, win->img.img);
+			mlx_destroy_image(win->mlx, win->img[0].img);
+			mlx_destroy_image(win->mlx, win->img[1].img);
 			//mlx_destroy_window(win->mlx, win->mlx_win); // TODO: fix segfault
 			exit(EXIT_SUCCESS);
 		}

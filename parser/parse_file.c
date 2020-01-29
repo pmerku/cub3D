@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/22 10:21:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/29 15:41:39 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,57 +15,111 @@
 #include <parser.h>
 #include <cub3d.h>
 
+static int	mandatory_elements(t_win *win)
+{
+	int		res;
+
+	res = 0;
+	res += (win->x == 0);
+	res += (win->y == 0);
+	res += (win->tex[N_WALL].wall == NULL);
+	res += (win->tex[S_WALL].wall == NULL);
+	res += (win->tex[E_WALL].wall == NULL);
+	res += (win->tex[W_WALL].wall == NULL);
+	// TODO: sprites parsing
+	//res += (win->map.sprite == NULL);
+	res += (win->color.f_color == 0xFF000000);
+	res += (win->color.c_color == 0xFF000000);
+	return (res == 0);
+}
+
 /*
 ** Parse the 2D array and depending on position parse with correct function
 **
 ** @param  char  **data allocated 2D array to parse
-** @param  t_win *win   allocated global window structure
-** @param  int   *i     reference to index position
+** @param  t_win   *win allocated global window structure
+** @param  int    index reference to index position
 ** @return void
 */
 
-static void	parse_info(char **data, t_win *win, int *i)
+static void	parse_info(char **data, t_win *win, int index)
 {
-	if (data[*i][0] == 'R')
-		parse_resolution(data, win, i);
-	else if (data[*i][0] == 'S')
+	if (data[index][0] == 'R')
+		parse_resolution(data, win, index);
+	else if (data[index][0] == 'S' && data[index][1] == ' ')
 		parse_sprite();
-	else
-		parse_texture(data, win, i);
+	else if (data[index][0] == 'F' || data[index][0] == 'C')
+		parse_argb(data, win, index);
+	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"NO"))
+		parse_w(data, win, index, N_WALL);
+	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"SO"))
+		parse_w(data, win, index, S_WALL);
+	else if ((*(u_int16_t*)data[index]) == (*(u_int16_t*)"WE"))
+		parse_w(data, win, index, W_WALL);
+	else if ((*(u_int16_t*)data[index]) == (*(u_int16_t*)"EA"))
+		parse_w(data, win, index, E_WALL);
+	else if (data[index][0] != '1' && data[index][0] != 16)
+		close_error("Unknown element\n");
 }
 
-/*
-** Parse the file and save the lines separately in a 2D array to parse
-**
-** @param  char  *s   path to file
-** @param  t_win *win allocated global window structure
-** @param  int   *i   reference to index position
-** @return void
-*/
-
-void		parse_file(char *s, t_win *win)
+static void	parse_settings(char *data, t_win *win)
 {
-	char	**data;
+	int		index;
+	char	**elements;
+
+	elements = ft_split(data, '\n');
+	free(data);
+	malloc_check(elements);
+	index = 0;
+	while (elements[index] && elements[index][0] != '1')
+	{
+		parse_info(elements, win, index);
+		index++;
+	}
+	parse_map(&elements[index], win);
+	delete_data(elements);
+}
+
+static void	parse_elements(int fd, t_win *win)
+{
+	char	*data;
+	char	*tmp;
+	int 	res;
+
+	res = 1;
+	data = ft_strdup("");
+	malloc_check(data);
+	while (res > 0)
+	{
+		res = get_next_line(fd, &tmp);
+		if (res < 0)
+			close_error("Failed to read file\n");
+		if (ft_strlen(tmp) == 0)
+		{
+			tmp = ft_strjoin_free1(tmp, "\n");
+			malloc_check(tmp);
+			*tmp = 16;
+		}
+		tmp = ft_strjoin_free1(tmp, "\n");
+		malloc_check(tmp);
+		data = ft_strjoin_free12(data, tmp);
+		malloc_check(data);
+	}
+	parse_settings(data, win);
+}
+
+void		parse_file(char *path, t_win *win)
+{
 	char	*ptr;
 	int		fd;
-	int		i;
 
-	ptr = ft_strrchr(s, '.');
+	ptr = ft_strrchr(path, '.');
 	if (!ptr || ft_strncmp(ptr, ".cub", 4) != 0)
 		close_error("Invalid file\n");
-	fd = open(s, O_RDONLY);
-	data = save_data(fd);
-	i = 0;
-	while (data[i])
-	{
-		if (data[i][0] != '1' && data[i])
-			parse_info(data, win, &i);
-		else
-			parse_map(data, &win->map, &i);
-		if (!data[i])
-			break ;
-		i++;
-	}
+	fd = open(path, O_RDONLY);
+	parse_elements(fd, win);
 	close(fd);
-	delete_data(data);
+	if (!mandatory_elements(win))
+		close_error("Missing elements\n");
+	map_validate(win);
 }

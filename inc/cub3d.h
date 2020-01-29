@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/28 10:42:01 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/29 15:02:00 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@
 # define KEY_Q		12
 # define KEY_E		14
 # define KEY_ESC	53
+
+# define N_WALL	0
+# define S_WALL	1
+# define W_WALL	2
+# define E_WALL	3
+
+# define CHAR_SET	"0123NSEW"
+# define SPAWN_SET	"NSEW"
 
 /*
 ** ---------------------------------------------------------------------------
@@ -118,14 +126,18 @@ typedef struct	s_map
 
 typedef struct	s_color
 {
-	unsigned int	a:8;
-	unsigned int	r:8;
-	unsigned int	g:8;
-	unsigned int	b:8;
-	unsigned int	f_color;
-	unsigned int	c_color;
-	unsigned int	tex_n;
+	u_int		a;
+	u_int		r;
+	u_int		g;
+	u_int		b;
+	u_int		f_color;
+	u_int		c_color;
+	u_int		tex_x;
+	u_int		tex_y;
 	u_int		tex_c;
+	double		step;
+	double		tex_pos;
+	int			tex_i;
 }				t_color;
 
 typedef struct	s_tex
@@ -145,12 +157,13 @@ typedef struct	s_win
 	void		*mlx_win;
 	int			x;
 	int			y;
-	t_img		img;
+	t_img		img[2];
+	u_int		i:1;
 	t_pos		pos;
 	t_ray		ray;
 	t_map		map;
 	t_color		color;
-	t_tex		tex[5];
+	t_tex		tex[4];
 	t_mov		mov;
 	t_key		key;
 }				t_win;

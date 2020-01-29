@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/27 13:53:13 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/29 14:27:27 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 */
 
 static t_win g_win = {
+	.x = 0,
+	.y = 0,
+	.i = 0,
 	.key = {
 		.up = 0,
 		.left = 0,
@@ -35,8 +38,12 @@ static t_win g_win = {
 		.r = 0,
 		.g = 0,
 		.b = 0,
-		.c_color = 0x0000FF00,
-		.f_color = 0x000000FF
+		.c_color = 0xFF000000,
+		.f_color = 0xFF000000
+	},
+	.pos = {
+		.x = 0,
+		.y = 0
 	}
 };
 
@@ -52,12 +59,19 @@ static void	init_win(t_win *win)
 	win->mlx_win = mlx_new_window(win->mlx, win->x, win->y, "cub3D");
 	if (!win->mlx_win)
 		close_error("Couldn't open window\n");
-	win->img.img = mlx_new_image(win->mlx, win->x, win->y);
-	if (!win->img.img)
+	win->img[0].img = mlx_new_image(win->mlx, win->x, win->y);
+	win->img[1].img = mlx_new_image(win->mlx, win->x, win->y);
+	if (!win->img[0].img || !win->img[1].img)
 		close_error("Couldn't create image\n");
-	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bpp,
-			&win->img.line_len, &win->img.endian);
-	if (!win->img.addr)
+	win->img[0].addr = mlx_get_data_addr(win->img[0].img,
+			&win->img[0].bpp,
+			&win->img[0].line_len,
+			&win->img[0].endian);
+	win->img[1].addr = mlx_get_data_addr(win->img[1].img,
+			&win->img[1].bpp,
+			&win->img[1].line_len,
+			&win->img[1].endian);
+	if (!win->img[0].addr || !win->img[1].addr)
 		close_error("Couldn't get image data\n");
 }
 
@@ -130,15 +144,13 @@ int			main(int argc, char **argv)
 			write(1, "Saved\n", 6);
 			exit (EXIT_SUCCESS);
 		}
-		write(1, "Error\n", 6);
-		exit (EXIT_FAILURE);
+		close_error("Missing parameters\n");
 	}
 	g_win.mlx = mlx_init();
 	if (!g_win.mlx)
 		close_error("Couldn't initialize window\n");
 	parse_file(argv[1], &g_win);
 	init_win(&g_win);
-	init_pos(&g_win);
 	mlx_hook(g_win.mlx_win, 2, (1L<<0), key_press, &g_win);
 	mlx_hook(g_win.mlx_win, 3, (1L<<1), key_release, &g_win);
 	mlx_hook(g_win.mlx_win, 17, 0L, close_win, &g_win);
