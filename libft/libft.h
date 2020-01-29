@@ -57,6 +57,9 @@ char				**ft_split(char const *s, char c);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strdup(const char *s1);
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strjoin_free1(char const *s1, char const *s2);
+char				*ft_strjoin_free2(char const *s1, char const *s2);
+char				*ft_strjoin_free12(char const *s1, char const *s2);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_strnstr(const char *haystack, const char *needle,
 								size_t len);
