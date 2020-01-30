@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/30 16:50:23 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 16:51:24 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	draw_tex(t_win *win, t_tex *tex, int i, int y)
 {
 	u_int	color;
 
-	// TODO: correct texture printing
+	// TODO: correct texture printing (combine pixels together to form a color)
 	win->ray.wall_x = (!win->mov.side)
 			? win->pos.y + win->mov.perp_wd * win->ray.dir_y
 			: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
