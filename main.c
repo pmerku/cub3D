@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 14:27:27 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 15:12:32 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ static t_win g_win = {
 	},
 	.pos = {
 		.x = 0,
-		.y = 0
+		.y = 0,
+		.dir_x = 0,
+		.dir_y = 0,
+		.plane_x = 0,
+		.plane_y = 0
 	}
 };
 
@@ -54,24 +58,17 @@ static t_win g_win = {
 ** @return void
 */
 
-static void	init_win(t_win *win)
+static void	init_win(t_img *img, t_win *win)
 {
-	win->mlx_win = mlx_new_window(win->mlx, win->x, win->y, "cub3D");
-	if (!win->mlx_win)
-		close_error("Couldn't open window\n");
-	win->img[0].img = mlx_new_image(win->mlx, win->x, win->y);
-	win->img[1].img = mlx_new_image(win->mlx, win->x, win->y);
-	if (!win->img[0].img || !win->img[1].img)
+	img->img = mlx_new_image(win->mlx, win->x, win->y);
+	img->img = mlx_new_image(win->mlx, win->x, win->y);
+	if (!img->img)
 		close_error("Couldn't create image\n");
-	win->img[0].addr = mlx_get_data_addr(win->img[0].img,
-			&win->img[0].bpp,
-			&win->img[0].line_len,
-			&win->img[0].endian);
-	win->img[1].addr = mlx_get_data_addr(win->img[1].img,
-			&win->img[1].bpp,
-			&win->img[1].line_len,
-			&win->img[1].endian);
-	if (!win->img[0].addr || !win->img[1].addr)
+	img->addr = mlx_get_data_addr(img->img, &img->bpp,
+			&img->line_len, &img->endian);
+	img->addr = mlx_get_data_addr(img->img, &img->bpp,
+			&img->line_len, &img->endian);
+	if (!img->addr)
 		close_error("Couldn't get image data\n");
 }
 
@@ -83,7 +80,7 @@ static void	init_win(t_win *win)
 ** @return int           status code
 */
 
-int 		key_release(int keycode, t_win *win)
+int			key_release(int keycode, t_win *win)
 {
 	if (keycode == KEY_W || keycode == KEY_UP)
 		win->key.up = 0;
@@ -108,7 +105,7 @@ int 		key_release(int keycode, t_win *win)
 ** @return int           status code
 */
 
-int 		key_press(int keycode, t_win *win)
+int			key_press(int keycode, t_win *win)
 {
 	if (keycode == KEY_ESC)
 		close_key(keycode, win);
@@ -142,7 +139,7 @@ int			main(int argc, char **argv)
 		if (argc == 3 && (ft_strncmp(argv[3], "--save", 6) == 0))
 		{
 			write(1, "Saved\n", 6);
-			exit (EXIT_SUCCESS);
+			exit(EXIT_SUCCESS);
 		}
 		close_error("Missing parameters\n");
 	}
@@ -150,11 +147,15 @@ int			main(int argc, char **argv)
 	if (!g_win.mlx)
 		close_error("Couldn't initialize window\n");
 	parse_file(argv[1], &g_win);
-	init_win(&g_win);
-	mlx_hook(g_win.mlx_win, 2, (1L<<0), key_press, &g_win);
-	mlx_hook(g_win.mlx_win, 3, (1L<<1), key_release, &g_win);
+	g_win.mlx_win = mlx_new_window(g_win.mlx, g_win.x, g_win.y, "cub3D");
+	if (!g_win.mlx_win)
+		close_error("Couldn't open window\n");
+	init_win(&g_win.img[0], &g_win);
+	init_win(&g_win.img[1], &g_win);
+	mlx_hook(g_win.mlx_win, 2, (1L << 0), key_press, &g_win);
+	mlx_hook(g_win.mlx_win, 3, (1L << 1), key_release, &g_win);
 	mlx_hook(g_win.mlx_win, 17, 0L, close_win, &g_win);
-	mlx_loop_hook(g_win.mlx, &render_next_frame, &g_win);
+	mlx_loop_hook(g_win.mlx, render_next_frame, &g_win);
 	mlx_loop(g_win.mlx);
 	return (0);
 }

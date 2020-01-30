@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:31:35 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 09:07:43 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 14:55:22 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@
 
 int		close_win(t_win *win);
 int		close_key(int keycode, t_win *win);
-int		close_error(char *);
+int		close_error(char *s);
 void	delete_data(char **data);
-char	**save_data(int fd);
 
 void	malloc_check(void *ptr);
 void	*ft_malloc(size_t size);

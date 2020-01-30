@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 15:02:00 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 14:55:22 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,29 +60,26 @@
 ** ---------------------------------------------------------------------------
 */
 
-typedef struct	s_key
-{
-	unsigned int	up:1;
-	unsigned int	left:1;
-	unsigned int	down:1;
-	unsigned int	right:1;
-	unsigned int	rot_l:1;
-	unsigned int	rot_r:1;
+typedef struct	s_key {
+	u_int		up:1;
+	u_int		left:1;
+	u_int		down:1;
+	u_int		right:1;
+	u_int		rot_l:1;
+	u_int		rot_r:1;
 }				t_key;
 
-typedef struct	s_mov
-{
-	double			perp_wd;
-	int				step_x;
-	int				step_y;
-	unsigned int	hit:1;
-	unsigned int	side:1;
-	double			m_speed;
-	double			r_speed;
+typedef struct	s_mov {
+	double		perp_wd;
+	int			step_x;
+	int			step_y;
+	u_int		hit:1;
+	u_int		side:1;
+	double		m_speed;
+	double		r_speed;
 }				t_mov;
 
-typedef struct	s_pos
-{
+typedef struct	s_pos {
 	double		x;
 	double		y;
 	double		dir_x;
@@ -92,8 +89,7 @@ typedef struct	s_pos
 	double		camera_x;
 }				t_pos;
 
-typedef struct	s_ray
-{
+typedef struct	s_ray {
 	double		dir_x;
 	double		dir_y;
 	double		side_dx;
@@ -102,10 +98,10 @@ typedef struct	s_ray
 	double		delta_dy;
 	int			draw_s;
 	int			draw_e;
+	double		wall_x;
 }				t_ray;
 
-typedef struct	s_img
-{
+typedef struct	s_img {
 	void		*img;
 	char		*addr;
 	int			bpp;
@@ -114,8 +110,7 @@ typedef struct	s_img
 	int			line_h;
 }				t_img;
 
-typedef struct	s_map
-{
+typedef struct	s_map {
 	char		**map;
 	int			x;
 	int			y;
@@ -124,35 +119,29 @@ typedef struct	s_map
 	char		*sprite;
 }				t_map;
 
-typedef struct	s_color
-{
+typedef struct	s_color {
 	u_int		a;
 	u_int		r;
 	u_int		g;
 	u_int		b;
 	u_int		f_color;
 	u_int		c_color;
-	u_int		tex_x;
-	u_int		tex_y;
-	u_int		tex_c;
-	double		step;
-	double		tex_pos;
 	int			tex_i;
 }				t_color;
 
-typedef struct	s_tex
-{
+typedef struct	s_tex {
 	void		*wall;
-	char 		*data;
+	char		*data;
 	int			tex_w;
 	int			tex_h;
 	int			bpp;
 	int			line_len;
 	int			endian;
+	u_int		tex_x;
+	u_int		tex_y;
 }				t_tex;
 
-typedef struct	s_win
-{
+typedef struct	s_win {
 	void		*mlx;
 	void		*mlx_win;
 	int			x;
