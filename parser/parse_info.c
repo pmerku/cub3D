@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 15:44:26 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 11:48:26 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 ** @return void
 */
 
-void	parse_resolution(char **data, t_win *win, int i)
+void	parse_resolution(char *data, t_win *win)
 {
 	char	**s;
 
-	s = ft_split(data[i], ' ');
+	s = ft_split(data, ' ');
 	malloc_check(s);
 	win->x = ft_atoi(s[1]);
 	win->y = ft_atoi(s[2]);
@@ -60,23 +60,23 @@ void	parse_sprite(void)
 ** @return void
 */
 
-void	parse_argb(char **data, t_win *win, int i)
+void	parse_argb(char *data, t_win *win)
 {
 	char	**s;
 
-	while (ft_strchr(data[i], ','))
-		(*(char *)ft_strchr(data[i], ',')) = ' ';
-	s = ft_split(data[i], ' ');
+	while (ft_strchr(data, ','))
+		(*(char *)ft_strchr(data, ',')) = ' ';
+	s = ft_split(data, ' ');
 	malloc_check(s);
 	win->color.r = ft_atoi(s[1]);
 	win->color.g = ft_atoi(s[2]);
 	win->color.b = ft_atoi(s[3]);
 	if (win->color.r > 255 || win->color.g > 255 || win->color.b > 255)
 		close_error("Incorrect ARGB numbers\n");
-	if (data[i][0] == 'F')
+	if (*data == 'F')
 		win->color.f_color = win->color.a << 24 | win->color.r << 16 |
 				win->color.g << 8 | win->color.b;
-	else if (data[i][0] == 'C')
+	else if (*data == 'C')
 		win->color.c_color = win->color.a << 24 | win->color.r << 16 |
 				win->color.g << 8 | win->color.b;
 	delete_data(s);

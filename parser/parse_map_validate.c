@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 14:44:37 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 15:05:55 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static size_t	map_h_edge(char *row)
 	return (col);
 }
 
-static void 	map_spawn_pos(t_win *win, char *row, int index)
+static void		map_spawn_pos(t_win *win, char *row, int index)
 {
 	int		col;
 
@@ -43,18 +43,14 @@ static void 	map_spawn_pos(t_win *win, char *row, int index)
 		if (row[col] == 'N' || row[col] == 'S')
 		{
 			win->pos.dir_x = (row[col] == 'N') ? -1 : 1;
-			win->pos.dir_y = 0;
-			win->pos.plane_x = 0;
 			win->pos.plane_y = (row[col] == 'N') ? 0.66 : -0.66;
 			row[col] = '0';
 			break ;
 		}
 		else if (row[col] == 'E' || row[col] == 'W')
 		{
-			win->pos.dir_x = (row[col] == 'E') ? -1 : 1;
-			win->pos.dir_y = 0;
-			win->pos.plane_x = 0;
-			win->pos.plane_y = (row[col] == 'E') ? -0.66 : 0.66;
+			win->pos.dir_y = (row[col] == 'W') ? -1 : 1;
+			win->pos.plane_x = (row[col] == 'W') ? -0.66 : 0.66;
 			row[col] = '0';
 			break ;
 		}
@@ -85,7 +81,7 @@ static void		map_char_check(char **map, t_win *win)
 					close_error("Too many spawn points\n");
 			}
 			if (!ft_strchr(CHAR_SET, map[row][col]))
-				close_error("Invalid char in map\n");
+				close_error("Invalid map\n");
 			col++;
 		}
 		row++;
@@ -94,9 +90,9 @@ static void		map_char_check(char **map, t_win *win)
 
 void			map_validate(t_win *win)
 {
-	size_t	col;
-	size_t	row;
-	size_t	pos;
+	size_t col;
+	size_t row;
+	size_t pos;
 
 	row = 0;
 	while (win->map.map[row])

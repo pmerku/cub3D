@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 15:57:18 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 13:22:39 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,24 @@ static int	mandatory_elements(t_win *win)
 ** @return void
 */
 
-static void	parse_info(char **data, t_win *win, int index)
+static void	parse_info(char **data, t_win *win)
 {
-	if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"R "))
-		parse_resolution(data, win, index);
-	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"S "))
+	if ((*(u_int16_t *)*data) == (*(u_int16_t *)"R "))
+		parse_resolution(*data, win);
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"S "))
 		parse_sprite();
-	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"F ")
-		|| (*(u_int16_t *)data[index]) == (*(u_int16_t *)"C "))
-		parse_argb(data, win, index);
-	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"NO"))
-		parse_w(data, win, index, N_WALL);
-	else if ((*(u_int16_t *)data[index]) == (*(u_int16_t *)"SO"))
-		parse_w(data, win, index, S_WALL);
-	else if ((*(u_int16_t*)data[index]) == (*(u_int16_t*)"WE"))
-		parse_w(data, win, index, W_WALL);
-	else if ((*(u_int16_t*)data[index]) == (*(u_int16_t*)"EA"))
-		parse_w(data, win, index, E_WALL);
-	else if (data[index][0] != '1' && data[index][0] != 16)
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"F ")
+		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"C "))
+		parse_argb(*data, win);
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"NO"))
+		parse_w(*data, win, N_WALL);
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"SO"))
+		parse_w(*data, win, S_WALL);
+	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"WE"))
+		parse_w(*data, win, W_WALL);
+	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"EA"))
+		parse_w(*data, win, E_WALL);
+	else if (**data != '1' && **data != 16)
 		close_error("Unknown element\n");
 }
 
@@ -74,7 +74,7 @@ static void	parse_settings(char *data, t_win *win)
 	index = 0;
 	while (elements[index] && elements[index][0] != '1')
 	{
-		parse_info(elements, win, index);
+		parse_info(&elements[index], win);
 		index++;
 	}
 	parse_map(&elements[index], win);
@@ -85,7 +85,7 @@ static void	parse_elements(int fd, t_win *win)
 {
 	char	*data;
 	char	*tmp;
-	int 	res;
+	int		res;
 
 	res = 1;
 	data = ft_strdup("");
@@ -123,4 +123,6 @@ void		parse_file(char *path, t_win *win)
 	if (!mandatory_elements(win))
 		close_error("Missing elements\n");
 	map_validate(win);
+	if (win->pos.x == 0 || win->pos.y == 0)
+		close_error("No spawn point\n");
 }

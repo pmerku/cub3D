@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:27:59 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/29 10:01:48 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/30 15:10:42 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,11 @@ static size_t	line_size(const char *s)
 	return (size);
 }
 
-/*
-** Parse the 2D array and save the map separately in the global window struct
-**
-** @param  char  **data allocated 2D array to parse
-** @param  t_win *win   allocated global window structure
-** @param  int   *i     reference to index position
-** @return void
-*/
-
-void	parse_map(char **data, t_win *win)
+void			map_copy(char **data, t_win *win, int pos)
 {
-	int		pos;
 	int		i;
-	int 	j;
+	int		j;
 
-	pos = 0;
-	while (data[pos])
-		pos++;
-	win->map.map_h = pos;
-	win->map.map = (char**)malloc(sizeof(char*) * (pos + 1));
-	malloc_check(win->map.map);
-	pos = 0;
 	while (data[pos])
 	{
 		i = 0;
@@ -68,4 +51,26 @@ void	parse_map(char **data, t_win *win)
 		pos++;
 	}
 	win->map.map[pos] = NULL;
+}
+
+/*
+** Parse the 2D array and save the map separately in the global window struct
+**
+** @param  char  **data allocated 2D array to parse
+** @param  t_win *win   allocated global window structure
+** @param  int   *i     reference to index position
+** @return void
+*/
+
+void			parse_map(char **data, t_win *win)
+{
+	int		pos;
+
+	pos = 0;
+	while (data[pos])
+		pos++;
+	win->map.map_h = pos;
+	win->map.map = (char**)malloc(sizeof(char*) * (pos + 1));
+	malloc_check(win->map.map);
+	map_copy(data, win, 0);
 }
