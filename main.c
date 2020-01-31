@@ -86,13 +86,13 @@ int			key_release(int keycode, t_win *win)
 		win->key.up = 0;
 	if (keycode == KEY_S || keycode == KEY_DOWN)
 		win->key.down = 0;
-	if (keycode == KEY_A || keycode == KEY_LEFT)
+	if (keycode == KEY_A)
 		win->key.left = 0;
-	if (keycode == KEY_D || keycode == KEY_RIGHT)
+	if (keycode == KEY_D)
 		win->key.right = 0;
-	if (keycode == KEY_Q)
+	if (keycode == KEY_LEFT)
 		win->key.rot_l = 0;
-	if (keycode == KEY_E)
+	if (keycode == KEY_RIGHT)
 		win->key.rot_r = 0;
 	return (0);
 }
@@ -113,13 +113,13 @@ int			key_press(int keycode, t_win *win)
 		win->key.up = 1;
 	if (keycode == KEY_S || keycode == KEY_DOWN)
 		win->key.down = 1;
-	if (keycode == KEY_A || keycode == KEY_LEFT)
+	if (keycode == KEY_A)
 		win->key.left = 1;
-	if (keycode == KEY_D || keycode == KEY_RIGHT)
+	if (keycode == KEY_D)
 		win->key.right = 1;
-	if (keycode == KEY_Q)
+	if (keycode == KEY_LEFT)
 		win->key.rot_l = 1;
-	if (keycode == KEY_E)
+	if (keycode == KEY_RIGHT)
 		win->key.rot_r = 1;
 	return (0);
 }

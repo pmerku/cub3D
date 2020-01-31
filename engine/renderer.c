@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/30 16:51:24 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/31 15:20:03 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,31 @@ static void	pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+static int	px_color(t_tex *tex)
+{
+	return (*(int*)(tex->data
+		+ (4 * tex->tex_w * (int)tex->tex_y) + (4 * (int)tex->tex_x)));
+}
+
 static int	draw_tex(t_win *win, t_tex *tex, int i, int y)
 {
 	u_int	color;
 
-	// TODO: correct texture printing (combine pixels together to form a color)
 	win->ray.wall_x = (!win->mov.side)
 			? win->pos.y + win->mov.perp_wd * win->ray.dir_y
 			: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
 	win->ray.wall_x -= floor(win->ray.wall_x);
 	tex->tex_x = (int)(win->ray.wall_x * tex->tex_w) % tex->tex_w;
+	if (!win->mov.side && win->ray.dir_x > 0)
+		tex->tex_x = tex->tex_w - tex->tex_x - 1;
+	else if (win->mov.side && win->ray.dir_y < 0)
+		tex->tex_x = tex->tex_w - tex->tex_x - 1;
 	y = win->ray.draw_s;
 	while (y < win->ray.draw_e)
 	{
 		tex->tex_y = (int)(((y - win->y * .5 + win->img[win->i].line_h * .5)
 				* tex->tex_h) / win->img[win->i].line_h) % tex->tex_h;
-		color = *(unsigned int*)(tex->data
-				+ (tex->line_len * tex->tex_y + tex->tex_x));
+		color = px_color(tex);
 		pixel_put(&win->img[win->i], i, y, color);
 		y++;
 	}

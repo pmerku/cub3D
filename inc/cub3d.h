@@ -42,8 +42,6 @@
 # define KEY_LEFT	123
 # define KEY_DOWN	125
 # define KEY_RIGHT	124
-# define KEY_Q		12
-# define KEY_E		14
 # define KEY_ESC	53
 
 # define N_WALL	0
