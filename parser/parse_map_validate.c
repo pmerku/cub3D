@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/30 15:05:55 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/31 17:44:28 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,28 @@ static void		map_spawn_pos(t_win *win, char *row, int index)
 	int		col;
 
 	col = 0;
-	while (row[col])
+	while (*row)
 	{
-		if (row[col] == 'N' || row[col] == 'S')
+		if (*row == 'N' || *row == 'S')
 		{
-			win->pos.dir_x = (row[col] == 'N') ? -1 : 1;
-			win->pos.plane_y = (row[col] == 'N') ? 0.66 : -0.66;
-			row[col] = '0';
+			win->pos.dir_x = (*row == 'N') ? -1 : 1;
+			win->pos.plane_y = (*row == 'N') ? 0.66 : -0.66;
+			*row = '0';
 			break ;
 		}
-		else if (row[col] == 'E' || row[col] == 'W')
+		else if (*row == 'E' || *row == 'W')
 		{
-			win->pos.dir_y = (row[col] == 'W') ? -1 : 1;
-			win->pos.plane_x = (row[col] == 'W') ? -0.66 : 0.66;
-			row[col] = '0';
+			win->pos.dir_y = (*row == 'W') ? -1 : 1;
+			win->pos.plane_x = (*row == 'W') ? -0.66 : 0.66;
+			*row = '0';
 			break ;
 		}
-		col++;
+		if (*row != ' ')
+			col++;
+		row++;
 	}
-	if (query_map(win, index, col))
-		close_error("Invalid spawn point\n");
-	win->pos.x = (col == 1) ? col + 0.2 : col;
-	win->pos.y = (index == 1) ? index + 0.2 : index;
+	win->pos.x = col + 0.5;
+	win->pos.y = index + 0.5;
 }
 
 static void		map_char_check(char **map, t_win *win)
@@ -81,7 +81,7 @@ static void		map_char_check(char **map, t_win *win)
 					close_error("Too many spawn points\n");
 			}
 			if (!ft_strchr(CHAR_SET, map[row][col]))
-				close_error("Invalid map\n");
+				close_error("Unsupported character in map\n");
 			col++;
 		}
 		row++;
@@ -108,6 +108,7 @@ void			map_validate(t_win *win)
 			close_error("Invalid map\n");
 		pos++;
 	}
-	map_h_edge(win->map.map[row - 1]);
+	if (col != map_h_edge(win->map.map[row - 1]))
+		close_error("Invalid map\n");
 	map_char_check(win->map.map, win);
 }

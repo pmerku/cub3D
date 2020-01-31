@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/31 15:20:03 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/01/31 17:57:03 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	draw_pixels(t_win *win, int i)
 
 int			query_map(t_win *win, double y, double x)
 {
-	if (y < 0 || y >= win->map.map_w || x < 0 || x >= win->map.map_h
+	if (y < 0 || y >= win->map.map_h || x < 0 || x >= win->map.map_w
 		|| win->map.map[(int)y][(int)x] == '1')
 	{
 		if (win->map.map[(int)floor(y)][(int)floor(x)] == '1'
