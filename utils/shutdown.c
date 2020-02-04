@@ -28,7 +28,7 @@ int		close_win(t_win *win)
 	{
 		mlx_destroy_image(win->mlx, win->img[0].img);
 		mlx_destroy_image(win->mlx, win->img[1].img);
-		//mlx_destroy_window(win->mlx, win->mlx_win); // TODO: fix segfault
+		//mlx_destroy_window(win->mlx_updated, win->mlx_win); // TODO: fix segfault
 		exit(EXIT_SUCCESS);
 	}
 	return (0);
@@ -50,7 +50,7 @@ int		close_key(int keycode, t_win *win)
 		{
 			mlx_destroy_image(win->mlx, win->img[0].img);
 			mlx_destroy_image(win->mlx, win->img[1].img);
-			//mlx_destroy_window(win->mlx, win->mlx_win); // TODO: fix segfault
+			//mlx_destroy_window(win->mlx_updated, win->mlx_win); // TODO: fix segfault
 			exit(EXIT_SUCCESS);
 		}
 	}

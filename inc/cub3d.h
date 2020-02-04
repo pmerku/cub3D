@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/31 18:04:21 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/04 17:25:59 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define S_WALL	1
 # define W_WALL	2
 # define E_WALL	3
+# define SPRITE	4
 
 # define CHAR_SET	"0123NSEW"
 # define SPAWN_SET	"NSEW"
@@ -114,7 +115,6 @@ typedef struct	s_map {
 	int			y;
 	int			map_h;
 	int			map_w;
-	char		*sprite;
 }				t_map;
 
 typedef struct	s_color {
@@ -126,6 +126,12 @@ typedef struct	s_color {
 	u_int		c_color;
 	int			tex_i;
 }				t_color;
+
+typedef struct	s_spr {
+	double		*zbuff;
+	int			x;
+	int 		y;
+}				t_spr;
 
 typedef struct	s_tex {
 	void		*wall;
@@ -150,7 +156,8 @@ typedef struct	s_win {
 	t_ray		ray;
 	t_map		map;
 	t_color		color;
-	t_tex		tex[4];
+	t_tex		tex[5];
+	t_spr		spr;
 	t_mov		mov;
 	t_key		key;
 }				t_win;

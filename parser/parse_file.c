@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/30 13:22:39 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/03 10:41:31 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include <utils.h>
 #include <parser.h>
 #include <cub3d.h>
+
+/*
+** Check if all mandatory elements in '.cub' file are present
+**
+** @param  t_win *win allocated global window structure
+** @return int        status code 0 if all elements are present
+*/
 
 static int	mandatory_elements(t_win *win)
 {
@@ -26,8 +33,7 @@ static int	mandatory_elements(t_win *win)
 	res += (win->tex[S_WALL].wall == NULL);
 	res += (win->tex[E_WALL].wall == NULL);
 	res += (win->tex[W_WALL].wall == NULL);
-	// TODO: sprites parsing
-	//res += (win->map.sprite == NULL);
+	res += (win->tex[SPRITE].wall == NULL);
 	res += (win->color.f_color == 0xFF000000);
 	res += (win->color.c_color == 0xFF000000);
 	return (res == 0);
@@ -46,22 +52,30 @@ static void	parse_info(char **data, t_win *win)
 {
 	if ((*(u_int16_t *)*data) == (*(u_int16_t *)"R "))
 		parse_resolution(*data, win);
-	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"S "))
-		parse_sprite();
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"F ")
 		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"C "))
 		parse_argb(*data, win);
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"S "))
+		parse_tex(*data, win, SPRITE);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"NO"))
-		parse_w(*data, win, N_WALL);
+		parse_tex(*data, win, N_WALL);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"SO"))
-		parse_w(*data, win, S_WALL);
+		parse_tex(*data, win, S_WALL);
 	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"WE"))
-		parse_w(*data, win, W_WALL);
+		parse_tex(*data, win, W_WALL);
 	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"EA"))
-		parse_w(*data, win, E_WALL);
+		parse_tex(*data, win, E_WALL);
 	else if (**data != '1' && **data != 16)
 		close_error("Unknown element\n");
 }
+
+/*
+** Parse array by splitting it into a 2D array and parse each line
+**
+** @param  char  *data saved array
+** @param  t_win  *win allocated global window structure
+** @return void
+*/
 
 static void	parse_settings(char *data, t_win *win)
 {
@@ -80,6 +94,14 @@ static void	parse_settings(char *data, t_win *win)
 	parse_map(&elements[index], win);
 	delete_data(elements);
 }
+
+/*
+** Read the file and save it in an array
+**
+** @param  int     fd file descriptor index
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 static void	parse_elements(int fd, t_win *win)
 {
@@ -108,6 +130,14 @@ static void	parse_elements(int fd, t_win *win)
 	}
 	parse_settings(data, win);
 }
+
+/*
+** Parse file name, parse the elements of the file and validate the map
+**
+** @param  char  *path path to file name
+** @param  t_win  *win allocated global window structure
+** @return void
+*/
 
 void		parse_file(char *path, t_win *win)
 {

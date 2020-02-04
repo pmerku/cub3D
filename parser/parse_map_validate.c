@@ -6,16 +6,22 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/31 17:44:28 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/03 10:55:11 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 #include <libft.h>
-#include <engine.h>
 #include <cub3d.h>
 
-static size_t	map_h_edge(char *row)
+/*
+** Parse the string and check if the boundaries are correct
+**
+** @param  const char *row passed string to loop over
+** @return size_t     number of columns in the map
+*/
+
+static size_t	map_h_edge(const char *row)
 {
 	size_t	pos;
 	size_t	col;
@@ -32,6 +38,14 @@ static size_t	map_h_edge(char *row)
 	}
 	return (col);
 }
+
+/*
+** Parse the string and set spawn point for the player with correct rotation
+**
+** @param  t_win *win allocated global window structure
+** @param  char  *row passed string to loop over
+** @return void
+*/
 
 static void		map_spawn_pos(t_win *win, char *row, int index)
 {
@@ -62,6 +76,15 @@ static void		map_spawn_pos(t_win *win, char *row, int index)
 	win->pos.y = index + 0.5;
 }
 
+/*
+** Parse the 2D array and check for unsupported characters.
+** If a supported character is found skip it or set spawn point for player.
+**
+** @param  char  **map allocated 2D array to parse
+** @param  t_win  *win allocated global window structure
+** @return void
+*/
+// TODO: fix spawn rotation
 static void		map_char_check(char **map, t_win *win)
 {
 	size_t	row;
@@ -87,6 +110,13 @@ static void		map_char_check(char **map, t_win *win)
 		row++;
 	}
 }
+
+/*
+** Validate map and check if map is a square/rectangle
+**
+** @param  t_win   *win allocated global window structure
+** @return void
+*/
 
 void			map_validate(t_win *win)
 {

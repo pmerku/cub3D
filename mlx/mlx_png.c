@@ -104,7 +104,7 @@ unsigned char (*(mipng_defilter[]))(unsigned char *buff, int pos, int a, int b, 
   mipng_defilter_paeth
 };
 
-// only work for mlx mac or img 32bpp
+// only work for mlx_updated mac or img 32bpp
 int	mipng_fill_img(void *img, unsigned char *buf, png_info_t *pi)
 {
   unsigned int	current_filter;
@@ -363,24 +363,24 @@ void	*mlx_int_parse_png(void *xvar, unsigned char *fptr, int size, int *width, i
 
   if ((err = mipng_magic(fptr, size)))
     {
-      warnx("mlx PNG error : %s", mipng_err[err]);
+      warnx("mlx_updated PNG error : %s", mipng_err[err]);
       return ((void *)0);
     }
   fptr += PNG_MAGIC_SIZE;
   size -= PNG_MAGIC_SIZE;
   if ((err = mipng_structure(fptr, size, &hdr, &dat)))
     {
-      warnx("mlx PNG error : %s", mipng_err[err]);
+      warnx("mlx_updated PNG error : %s", mipng_err[err]);
       return ((void *)0);
     }
   if ((err = mipng_verif_hdr(hdr, &pi)))
     {
-      warnx("mlx PNG error : %s", mipng_err[err]);
+      warnx("mlx_updated PNG error : %s", mipng_err[err]);
       return ((void *)0);
     }
   if (!(img = mlx_new_image(xvar, pi.width, pi.height)))
     {
-      warnx("mlx PNG error : Can't create mlx image");
+      warnx("mlx_updated PNG error : Can't create mlx_updated image");
       return ((void *)0);
     }
   *width = pi.width;
@@ -388,7 +388,7 @@ void	*mlx_int_parse_png(void *xvar, unsigned char *fptr, int size, int *width, i
   if ((err = mipng_data(img, dat, &pi)))
     {
       mlx_destroy_image(xvar, img);
-      warnx("mlx PNG error : %s", mipng_err[err]);
+      warnx("mlx_updated PNG error : %s", mipng_err[err]);
       return ((void *)0);
     }
   return (img);

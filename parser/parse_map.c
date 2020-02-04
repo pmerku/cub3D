@@ -6,13 +6,20 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:27:59 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/30 15:10:42 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/03 10:48:45 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <utils.h>
 #include <cub3d.h>
+
+/*
+** Loop over string and return the length of the string without spaces
+**
+** @param  const char *s passed string
+** @return size_t        length of the string
+*/
 
 static size_t	line_size(const char *s)
 {
@@ -27,6 +34,15 @@ static size_t	line_size(const char *s)
 	}
 	return (size);
 }
+
+/*
+** Parse the 2D array and save the map separately in the global window struct
+**
+** @param  char  **data allocated 2D array to parse
+** @param  t_win   *win allocated global window structure
+** @param  int      pos starting position index
+** @return void
+*/
 
 void			map_copy(char **data, t_win *win, int pos)
 {
@@ -54,11 +70,10 @@ void			map_copy(char **data, t_win *win, int pos)
 }
 
 /*
-** Parse the 2D array and save the map separately in the global window struct
+** Allocate memory for the map
 **
 ** @param  char  **data allocated 2D array to parse
-** @param  t_win *win   allocated global window structure
-** @param  int   *i     reference to index position
+** @param  t_win   *win allocated global window structure
 ** @return void
 */
 

@@ -1,5 +1,5 @@
 /*
-** mlx.h for MinilibX in 
+** mlx_updated.h for MinilibX in
 ** 
 ** Made by Charlie Root
 ** Login   <ol@42.fr>
@@ -108,7 +108,7 @@ int	mlx_loop (void *mlx_ptr);
 
 /*
 **  Usually asked...
-**   mlx_string_put display may vary in size between OS and between mlx implementations
+**   mlx_string_put display may vary in size between OS and between mlx_updated implementations
 */
 
 int	mlx_string_put(void *mlx_ptr, void *win_ptr, int x, int y, int color,

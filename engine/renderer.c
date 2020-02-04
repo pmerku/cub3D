@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/31 17:57:03 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/04 18:15:19 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,14 @@ static void	pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-static int	px_color(t_tex *tex)
+static int	px_color(t_tex *tex, int id)
 {
-	return (*(int*)(tex->data
-		+ (4 * tex->tex_w * (int)tex->tex_y) + (4 * (int)tex->tex_x)));
+	if (id == S_WALL || id == W_WALL)
+		return (*(int*)(tex->data + (tex->line_len * (int)tex->tex_y) +
+			(4 * (int)tex->tex_x)));
+	else
+		return (*(int*)(tex->data + (tex->line_len * (int)tex->tex_y) +
+			(4 * tex->tex_w) - (((int)tex->tex_x + 1) * 4)));
 }
 
 static int	draw_tex(t_win *win, t_tex *tex, int i, int y)
@@ -37,16 +41,12 @@ static int	draw_tex(t_win *win, t_tex *tex, int i, int y)
 			: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
 	win->ray.wall_x -= floor(win->ray.wall_x);
 	tex->tex_x = (int)(win->ray.wall_x * tex->tex_w) % tex->tex_w;
-	if (!win->mov.side && win->ray.dir_x > 0)
-		tex->tex_x = tex->tex_w - tex->tex_x - 1;
-	else if (win->mov.side && win->ray.dir_y < 0)
-		tex->tex_x = tex->tex_w - tex->tex_x - 1;
 	y = win->ray.draw_s;
 	while (y < win->ray.draw_e)
 	{
 		tex->tex_y = (int)(((y - win->y * .5 + win->img[win->i].line_h * .5)
 				* tex->tex_h) / win->img[win->i].line_h) % tex->tex_h;
-		color = px_color(tex);
+		color = px_color(tex, win->color.tex_i);
 		pixel_put(&win->img[win->i], i, y, color);
 		y++;
 	}
@@ -62,6 +62,8 @@ static void	draw_pixels(t_win *win, int i)
 		win->color.tex_i = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
 	else
 		win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
+	if (win->map.map[win->map.y][win->map.x] == '2')
+		win->color.tex_i = E_WALL;
 	while (y < win->ray.draw_s)
 	{
 		pixel_put(&win->img[win->i], i, y, win->color.c_color);
@@ -118,8 +120,16 @@ int			render_next_frame(t_win *win)
 		}
 		init_calc(win);
 		draw_pixels(win, i);
+		win->spr.zbuff[i] = win->mov.perp_wd;
 		i++;
 	}
+	// TODO: sprite
+	if (win->map.map[win->map.y][win->map.x] == '2')
+	{
+		win->spr.x = win->map.x;
+		win->spr.y = win->map.y;
+	}
+	draw_sprite(win, i);
 	win->i = !win->i;
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	return (0);

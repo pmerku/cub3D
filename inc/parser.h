@@ -29,11 +29,10 @@
 
 void	parse_file(char *path, t_win *win);
 void	parse_resolution(char *data, t_win *win);
-void	parse_sprite(void);
 void	parse_argb(char *data, t_win *win);
 void	parse_map(char **data, t_win *win);
 void	map_validate(t_win *win);
 
-void	parse_w(char *data, t_win *win, int i);
+void	parse_tex(char *data, t_win *win, int i);
 
 #endif

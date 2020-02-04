@@ -1,4 +1,4 @@
-// mlx xpm
+// mlx_updated xpm
 // by ol
 
 #include <stdlib.h>
