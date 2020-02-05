@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/03 10:41:31 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/05 15:23:50 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ static void	parse_info(char **data, t_win *win)
 		parse_tex(*data, win, W_WALL);
 	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"EA"))
 		parse_tex(*data, win, E_WALL);
+	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"FT"))
+		parse_tex(*data, win, FLOOR);
+	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"CT"))
+		parse_tex(*data, win, CEILING);
 	else if (**data != '1' && **data != 16)
 		close_error("Unknown element\n");
 }

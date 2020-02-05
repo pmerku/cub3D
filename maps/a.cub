@@ -6,8 +6,11 @@ EA ./textures/tnt.png
 
 S ./textures/barrel.png
 
-F 180,18,180
-C 14,144,14
+FT ./textures/bluestone.png
+CT ./textures/purplestone.png
+
+F 200, 80, 200
+C 80, 200, 80
 
 11111111111111111111
 10000000000000000001

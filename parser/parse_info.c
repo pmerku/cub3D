@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/03 10:31:44 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/05 15:22:24 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,6 @@ void	parse_tex(char *data, t_win *win, int i)
 	if (!win->tex[i].data)
 		close_error("Couldn't get texture data\n");
 	free(path);
+	win->color.c_color = (i == CEILING) ? 0xAA000000 : win->color.c_color;
+	win->color.f_color = (i == FLOOR) ? 0xAA000000 : win->color.f_color;
 }

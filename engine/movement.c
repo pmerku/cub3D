@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:44:25 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/31 18:08:07 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/05 13:28:18 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void		move_pos(t_mov *mov, t_win *win)
 	double		dir_x;
 	double		plane_x;
 
-	mov->m_speed = 0.04;
-	mov->r_speed = 0.02;
+	mov->m_speed = MOV_SPEED;
+	mov->r_speed = ROT_SPEED;
 	if ((win->key.right || win->key.left) && (win->key.up || win->key.down))
 		mov->m_speed /= 2;
 	dir_x = win->pos.dir_x;

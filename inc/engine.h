@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:29:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/03 11:27:52 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/05 14:58:03 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@
 */
 
 int		render_next_frame(t_win *win);
-void	init_ray(t_win *win, int i);
-void	init_calc(t_win *win);
-int		query_map(t_win *win, double x, double y);
 void	move_pos(t_mov *mov, t_win *win);
 
+void	draw_back(t_win *win);
+int		draw_tex(t_win *win, t_tex *tex, int i, int y);
 void	draw_sprite(t_win *win, int i);
+
+int		query_map(t_win *win, double y, double x);
+int		px_color(t_tex *tex, int id);
+void	pixel_put(t_img *img, int x, int y, int color);
 
 #endif

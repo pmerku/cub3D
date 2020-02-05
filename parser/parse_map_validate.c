@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/03 10:55:11 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/05 13:30:15 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static void		map_char_check(char **map, t_win *win)
 ** @param  t_win   *win allocated global window structure
 ** @return void
 */
-
+// TODO: change wall checking (map surrounded by walls)
 void			map_validate(t_win *win)
 {
 	size_t col;

@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/02/03 17:48:59 by prmerku          ###   ########.fr        #
+#    Updated: 2020/02/05 13:27:00 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ OBJ = main.o
 OBJ += parser/parse_file.o parser/parse_info.o parser/parse_map.o \
 	parser/parse_map_validate.o
 
-OBJ += engine/renderer.o engine/movement.o engine/initialization.o \
+OBJ += engine/renderer.o engine/movement.o engine/draw.o engine/draw_utils.o \
 	engine/sprites.o
 
 OBJ += utils/shutdown.o utils/data_handle.o

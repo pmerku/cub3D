@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/04 18:15:19 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/05 15:50:13 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,41 @@
 #include <engine.h>
 #include <cub3d.h>
 
-static void	pixel_put(t_img *img, int x, int y, int color)
+static void	init_ray(t_win *win, int i)
 {
-	char	*dst;
-
-	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	*(unsigned int*)dst = color;
+	win->pos.camera_x = 2 * i / (double)win->x - 1;
+	win->ray.dir_y = win->pos.dir_x + win->pos.plane_x * win->pos.camera_x;
+	win->ray.dir_x = win->pos.dir_y + win->pos.plane_y * win->pos.camera_x;
+	win->map.x = (int)win->pos.x;
+	win->map.y = (int)win->pos.y;
+	win->ray.delta_dx = fabs(1 / win->ray.dir_x);
+	win->ray.delta_dy = fabs(1 / win->ray.dir_y);
+	win->mov.step_x = (win->ray.dir_x < 0) ? -1 : 1;
+	win->ray.side_dx = (win->ray.dir_x < 0)
+		   	? (win->pos.x - win->map.x) * win->ray.delta_dx
+		   	: (win->map.x + 1.0 - win->pos.x) * win->ray.delta_dx;
+	win->mov.step_y = (win->ray.dir_y < 0) ? -1 : 1;
+	win->ray.side_dy = (win->ray.dir_y < 0)
+			? (win->pos.y - win->map.y) * win->ray.delta_dy
+			: (win->map.y + 1.0 - win->pos.y) * win->ray.delta_dy;
 }
 
-static int	px_color(t_tex *tex, int id)
+static void	init_calc(t_win *win)
 {
-	if (id == S_WALL || id == W_WALL)
-		return (*(int*)(tex->data + (tex->line_len * (int)tex->tex_y) +
-			(4 * (int)tex->tex_x)));
-	else
-		return (*(int*)(tex->data + (tex->line_len * (int)tex->tex_y) +
-			(4 * tex->tex_w) - (((int)tex->tex_x + 1) * 4)));
+	win->mov.perp_wd = (!win->mov.side)
+			? (win->map.x - win->pos.x
+			+ (1. - win->mov.step_x) / 2) / win->ray.dir_x
+			: (win->map.y - win->pos.y
+			+ (1. - win->mov.step_y) / 2) / win->ray.dir_y;
+	win->img[win->i].line_h = (int)(win->y / win->mov.perp_wd);
+	win->ray.draw_s = (win->img[win->i].line_h * -1) / 2 + win->y / 2;
+	win->ray.draw_s = (win->ray.draw_s < 0) ? 0 : win->ray.draw_s;
+	win->ray.draw_e = win->img[win->i].line_h / 2 + win->y / 2;
+	win->ray.draw_e = (win->ray.draw_e >= win->y)
+			? win->y - 1 : win->ray.draw_e;
 }
 
-static int	draw_tex(t_win *win, t_tex *tex, int i, int y)
-{
-	u_int	color;
-
-	win->ray.wall_x = (!win->mov.side)
-			? win->pos.y + win->mov.perp_wd * win->ray.dir_y
-			: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
-	win->ray.wall_x -= floor(win->ray.wall_x);
-	tex->tex_x = (int)(win->ray.wall_x * tex->tex_w) % tex->tex_w;
-	y = win->ray.draw_s;
-	while (y < win->ray.draw_e)
-	{
-		tex->tex_y = (int)(((y - win->y * .5 + win->img[win->i].line_h * .5)
-				* tex->tex_h) / win->img[win->i].line_h) % tex->tex_h;
-		color = px_color(tex, win->color.tex_i);
-		pixel_put(&win->img[win->i], i, y, color);
-		y++;
-	}
-	return (y);
-}
-
-static void	draw_pixels(t_win *win, int i)
+static void	draw_wall(t_win *win, int i)
 {
 	int		y;
 
@@ -64,63 +59,44 @@ static void	draw_pixels(t_win *win, int i)
 		win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
 	if (win->map.map[win->map.y][win->map.x] == '2')
 		win->color.tex_i = E_WALL;
-	while (y < win->ray.draw_s)
+	while (y < win->ray.draw_s && y < win->y)
 	{
-		pixel_put(&win->img[win->i], i, y, win->color.c_color);
+		if (win->tex[CEILING].wall == NULL)
+			pixel_put(&win->img[win->i], i, y, win->color.c_color);
 		y++;
 	}
 	y = draw_tex(win, &win->tex[win->color.tex_i], i, y);
 	while (y < win->y)
 	{
-		pixel_put(&win->img[win->i], i, y, win->color.f_color);
+		if (win->tex[FLOOR].wall == NULL)
+			pixel_put(&win->img[win->i], i, y, win->color.f_color);
 		y++;
 	}
 }
 
-int			query_map(t_win *win, double y, double x)
-{
-	if (y < 0 || y >= win->map.map_h || x < 0 || x >= win->map.map_w
-		|| win->map.map[(int)y][(int)x] == '1')
-	{
-		if (win->map.map[(int)floor(y)][(int)floor(x)] == '1'
-			|| win->map.map[(int)ceil(y)][(int)ceil(x)] == '1')
-			win->mov.hit = 1;
-		win->mov.hit = 1;
-	}
-	else
-	{
-		win->mov.hit = 0;
-		return (0);
-	}
-	return (1);
-}
-
 int			render_next_frame(t_win *win)
 {
-	t_ray	*ray;
-	t_mov	*mov;
 	int		i;
 
 	i = 0;
-	ray = &win->ray;
-	mov = &win->mov;
-	move_pos(mov, win);
+	move_pos(&win->mov, win);
+	draw_back(win);
 	while (i < win->x)
 	{
-		mov->hit = 0;
+		win->mov.hit = 0;
 		init_ray(win, i);
-		while (!mov->hit)
+		while (!win->mov.hit)
 		{
-			mov->side = (ray->side_dx >= ray->side_dy);
-			ray->side_dx += (!mov->side) ? ray->delta_dx : 0;
-			win->map.x += (!mov->side) ? mov->step_x : 0;
-			ray->side_dy += (mov->side) ? ray->delta_dy : 0;
-			win->map.y += (mov->side) ? mov->step_y : 0;
+			win->mov.side = (win->ray.side_dx >= win->ray.side_dy);
+			win->ray.side_dx += (!win->mov.side) ? win->ray.delta_dx : 0;
+			win->map.x += (!win->mov.side) ? win->mov.step_x : 0;
+			win->ray.side_dy += (win->mov.side) ? win->ray.delta_dy : 0;
+			win->map.y += (win->mov.side) ? win->mov.step_y : 0;
 			query_map(win, win->map.y, win->map.x);
 		}
 		init_calc(win);
-		draw_pixels(win, i);
-		win->spr.zbuff[i] = win->mov.perp_wd;
+		draw_wall(win, i);
+		//win->spr.zbuff[i] = win->mov.perp_wd;
 		i++;
 	}
 	// TODO: sprite
@@ -129,7 +105,7 @@ int			render_next_frame(t_win *win)
 		win->spr.x = win->map.x;
 		win->spr.y = win->map.y;
 	}
-	draw_sprite(win, i);
+	//draw_sprite(win, i);
 	win->i = !win->i;
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	return (0);
