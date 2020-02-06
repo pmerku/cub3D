@@ -1,13 +1,13 @@
-R 1270 720
+R 640 480
 NO ./textures/colorstone.png
-SO ./textures/mossy.png
+SO ./textures/bluestone.png
 WE ./textures/wood.png
-EA ./textures/tnt.png
+EA ./textures/purplestone.png
 
 S ./textures/barrel.png
 
-FT ./textures/purplestone.png
-CT ./textures/bluestone.png
+FT ./textures/greystone.png
+CT ./textures/mossy.png
 
 F 200, 80, 200
 C 80, 200, 80

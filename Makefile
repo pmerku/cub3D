@@ -41,7 +41,7 @@ OBJ += parser/parse_file.o parser/parse_info.o parser/parse_map.o \
 	parser/parse_map_validate.o
 
 OBJ += engine/renderer.o engine/movement.o engine/draw_back.o \
-	engine/draw_utils.o engine/draw_walls.o engine/sprites.o
+	engine/draw_utils.o engine/draw_walls.o engine/draw_sprites.o
 
 OBJ += utils/shutdown.o utils/data_handle.o
 

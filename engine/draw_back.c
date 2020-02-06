@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:52:18 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 08:32:59 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 11:01:13 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@ static void	draw_tex_back(t_win *win, int y)
 {
 	int		x;
 
-	win->ray.dir_x0 = win->ray.dir_x - win->pos.plane_x;
-	win->ray.dir_y0 = win->ray.dir_y - win->pos.plane_y;
-	win->ray.dir_x1 = win->ray.dir_x + win->pos.plane_x;
-	win->ray.dir_y1 = win->ray.dir_y + win->pos.plane_y;
-	win->pos.rwd = (.5 * win->y) / (y - win->y / 2);
+	win->ray.dir_x0 = win->pos.dir_x - win->pos.plane_x;
+	win->ray.dir_y0 = win->pos.dir_y - win->pos.plane_y;
+	win->ray.dir_x1 = win->pos.dir_x + win->pos.plane_x;
+	win->ray.dir_y1 = win->pos.dir_y + win->pos.plane_y;
+	win->pos.rwd = (float)(.5 * win->y) / (float)(y - win->y / 2.);
 	win->mov.step_fx = win->pos.rwd * (win->ray.dir_x1 - win->ray.dir_x0)
-			/ win->x;
+			/ (float)win->x;
 	win->mov.step_fy = win->pos.rwd * (win->ray.dir_y1 - win->ray.dir_y0)
-			/ win->x;
-	win->ray.fx = win->pos.x + win->pos.rwd * win->ray.dir_x0;
-	win->ray.fy = win->pos.y + win->pos.rwd * win->ray.dir_y0;
+			/ (float)win->x;
+	win->ray.fx = (float)win->pos.y + win->pos.rwd * win->ray.dir_x0;
+	win->ray.fy = (float)win->pos.x + win->pos.rwd * win->ray.dir_y0;
 	x = 0;
 	while (x < win->x)
 	{

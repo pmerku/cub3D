@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 07:54:51 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 08:38:22 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,6 @@ typedef struct	s_color {
 */
 
 typedef struct	s_spr {
-	double		*zbuff;
 	int			x;
 	int			y;
 }				t_spr;

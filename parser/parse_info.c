@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/05 15:22:24 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 11:03:04 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	parse_resolution(char *data, t_win *win)
 	win->x = ft_atoi(s[1]);
 	win->y = ft_atoi(s[2]);
 	win->x = (win->x > 2560) ? 2560 : win->x;
-	win->y = (win->y > 2560) ? 2560 : win->y;
+	win->y = (win->y > 1440) ? 1440 : win->y;
 	win->x = (win->x < 250) ? 250 : win->x;
 	win->y = (win->y < 250) ? 250 : win->y;
 	delete_data(s);

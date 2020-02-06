@@ -6,12 +6,11 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 07:56:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 10:27:07 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
-#include <time.h>
 #include <engine.h>
 #include <cub3d.h>
 
@@ -52,15 +51,9 @@ static void	init_calc(t_win *win)
 int			render_next_frame(t_win *win)
 {
 	int		i;
-	double	time_old1;
+	double	z_buff[win->x];
 
 	i = 0;
-	time_old1 = win->time_old0;
-	win->time_delta = ((double)clock() - time_old1) / 1000;
-	win->time_old0 = (double)clock();
-	win->mov.m_speed = win->time_delta / 16 * MOV_SPEED;
-	win->mov.r_speed = win->time_delta / 16 * ROT_SPEED;
-
 	move_pos(&win->mov, win);
 	draw_back(win);
 	while (i < win->x)
@@ -78,16 +71,16 @@ int			render_next_frame(t_win *win)
 		}
 		init_calc(win);
 		draw_wall(win, i);
-		//win->spr.zbuff[i] = win->mov.perp_wd;
+		z_buff[i] = win->mov.perp_wd;
 		i++;
 	}
 	// TODO: sprite
 	if (win->map.map[win->map.y][win->map.x] == '2')
 	{
-		win->spr.x = win->map.x;
-		win->spr.y = win->map.y;
+		win->spr.x = win->map.y;
+		win->spr.y = win->map.x;
 	}
-	//draw_sprite(win, i);
+	draw_sprite(win, i, z_buff);
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	win->i = !win->i;
 	return (0);

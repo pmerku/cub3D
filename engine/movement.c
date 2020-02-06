@@ -6,10 +6,11 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:44:25 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 07:55:36 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 08:36:52 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <time.h>
 #include <engine.h>
 #include <cub3d.h>
 
@@ -73,9 +74,15 @@ static void	rotate(t_mov *mov, t_win *win, double dir_x, double plane_x)
 
 void		move_pos(t_mov *mov, t_win *win)
 {
-	double		dir_x;
-	double		plane_x;
+	double	dir_x;
+	double	plane_x;
+	double	time_old1;
 
+	time_old1 = win->time_old0;
+	win->time_delta = ((double)clock() - time_old1) / 1000;
+	win->time_old0 = (double)clock();
+	win->mov.m_speed = win->time_delta / 16 * MOV_SPEED;
+	win->mov.r_speed = win->time_delta / 16 * ROT_SPEED;
 	if ((win->key.right || win->key.left) && (win->key.up || win->key.down))
 		mov->m_speed /= 2;
 	dir_x = win->pos.dir_x;
