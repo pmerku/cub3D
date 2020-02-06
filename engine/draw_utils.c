@@ -40,12 +40,12 @@ void	pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int		px_color(t_tex *tex, int id)
+int		px_color(t_tex *tex, double y, double x, int id)
 {
 	if (id == N_WALL || id == E_WALL)
-		return (*(int*)(tex->data + (tex->line_len * (int)tex->tex_y) +
-			(4 * tex->tex_w) - (((int)tex->tex_x + 1) * 4)));
+		return (*(int*)(tex->data + (tex->line_len * (int)y) +
+			(4 * tex->tex_w) - (((int)x + 1) * 4)));
 	else
-		return (*(int*)(tex->data + (tex->line_len * (int)tex->tex_y) +
-			(4 * (int)tex->tex_x)));
+		return (*(int*)(tex->data + (tex->line_len * (int)y) +
+			(4 * (int)x)));
 }

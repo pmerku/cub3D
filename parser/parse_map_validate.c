@@ -84,7 +84,7 @@ static void		map_spawn_pos(t_win *win, char *row, int index)
 ** @param  t_win  *win allocated global window structure
 ** @return void
 */
-// TODO: fix spawn rotation
+
 static void		map_char_check(char **map, t_win *win)
 {
 	size_t	row;

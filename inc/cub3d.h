@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/05 15:39:56 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 07:54:51 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@
 # define CHAR_SET	"0123NSEW"
 # define SPAWN_SET	"NSEW"
 
-# define MOV_SPEED	0.04
-# define ROT_SPEED	0.015
+# define MOV_SPEED	0.035
+# define ROT_SPEED	0.017
 
 /*
 ** ---------------------------------------------------------------------------
@@ -208,6 +208,8 @@ typedef struct	s_win {
 	void		*mlx_win;
 	int			x;
 	int			y;
+	double		time_old0;
+	double		time_delta;
 	t_img		img[2];
 	u_int		i:1;
 	t_pos		pos;

@@ -6,11 +6,12 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/05 15:50:13 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 07:56:02 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
+#include <time.h>
 #include <engine.h>
 #include <cub3d.h>
 
@@ -48,37 +49,18 @@ static void	init_calc(t_win *win)
 			? win->y - 1 : win->ray.draw_e;
 }
 
-static void	draw_wall(t_win *win, int i)
-{
-	int		y;
-
-	y = 0;
-	if (win->mov.side)
-		win->color.tex_i = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
-	else
-		win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
-	if (win->map.map[win->map.y][win->map.x] == '2')
-		win->color.tex_i = E_WALL;
-	while (y < win->ray.draw_s && y < win->y)
-	{
-		if (win->tex[CEILING].wall == NULL)
-			pixel_put(&win->img[win->i], i, y, win->color.c_color);
-		y++;
-	}
-	y = draw_tex(win, &win->tex[win->color.tex_i], i, y);
-	while (y < win->y)
-	{
-		if (win->tex[FLOOR].wall == NULL)
-			pixel_put(&win->img[win->i], i, y, win->color.f_color);
-		y++;
-	}
-}
-
 int			render_next_frame(t_win *win)
 {
 	int		i;
+	double	time_old1;
 
 	i = 0;
+	time_old1 = win->time_old0;
+	win->time_delta = ((double)clock() - time_old1) / 1000;
+	win->time_old0 = (double)clock();
+	win->mov.m_speed = win->time_delta / 16 * MOV_SPEED;
+	win->mov.r_speed = win->time_delta / 16 * ROT_SPEED;
+
 	move_pos(&win->mov, win);
 	draw_back(win);
 	while (i < win->x)
@@ -106,7 +88,7 @@ int			render_next_frame(t_win *win)
 		win->spr.y = win->map.y;
 	}
 	//draw_sprite(win, i);
-	win->i = !win->i;
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
+	win->i = !win->i;
 	return (0);
 }

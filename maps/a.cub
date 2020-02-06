@@ -1,4 +1,4 @@
-R 640 480
+R 1270 720
 NO ./textures/colorstone.png
 SO ./textures/mossy.png
 WE ./textures/wood.png
@@ -6,8 +6,8 @@ EA ./textures/tnt.png
 
 S ./textures/barrel.png
 
-FT ./textures/bluestone.png
-CT ./textures/purplestone.png
+FT ./textures/purplestone.png
+CT ./textures/bluestone.png
 
 F 200, 80, 200
 C 80, 200, 80
@@ -21,9 +21,9 @@ C 80, 200, 80
 10000000111000000001
 10000000111002000001
 10000000000000000001
+1000000000N000000001
 10000000000000000001
 10000000000000000001
 10000000000000000001
-1000000000000N000001
 10000000000000000001
 11111111111111111111
