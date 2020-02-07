@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:44:25 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 08:36:52 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/07 14:08:27 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,17 @@ static void	move_up_down(t_mov *mov, t_win *win)
 
 	dir = win->pos.dir_y * mov->m_speed;
 	dir2 = win->pos.dir_x * mov->m_speed;
-	if (win->key.up && query_map(win, win->pos.y, win->pos.x + dir) == 0)
+	if (win->key.up &&
+	query_map(win, win->pos.y, win->pos.x + dir) == 0)
 		win->pos.x += dir;
-	if (win->key.up && query_map(win, win->pos.y + dir2, win->pos.x) == 0)
+	if (win->key.up &&
+	query_map(win, win->pos.y + dir2, win->pos.x) == 0)
 		win->pos.y += dir2;
-	if (win->key.down && query_map(win, win->pos.y, win->pos.x - dir) == 0)
+	if (win->key.down &&
+	query_map(win, win->pos.y, win->pos.x - dir) == 0)
 		win->pos.x -= dir;
-	if (win->key.down && query_map(win, win->pos.y - dir2, win->pos.x) == 0)
+	if (win->key.down &&
+	query_map(win, win->pos.y - dir2, win->pos.x) == 0)
 		win->pos.y -= dir2;
 }
 
@@ -38,13 +42,17 @@ static void	move_left_right(t_mov *mov, t_win *win)
 
 	dir = cos(acos(win->pos.dir_x) + M_PI) * mov->m_speed;
 	dir2 = cos(acos(win->pos.dir_y) + M_PI) * mov->m_speed;
-	if (win->key.left && query_map(win, win->pos.y, win->pos.x - dir) == 0)
+	if (win->key.left &&
+	query_map(win, win->pos.y, win->pos.x - dir) == 0)
 		win->pos.x -= dir;
-	if (win->key.left && query_map(win, win->pos.y + dir2, win->pos.x) == 0)
+	if (win->key.left &&
+	query_map(win, win->pos.y + dir2, win->pos.x) == 0)
 		win->pos.y += dir2;
-	if (win->key.right && query_map(win, win->pos.y, win->pos.x + dir) == 0)
+	if (win->key.right &&
+	query_map(win, win->pos.y, win->pos.x + dir) == 0)
 		win->pos.x += dir;
-	if (win->key.right && query_map(win, win->pos.y - dir2, win->pos.x) == 0)
+	if (win->key.right &&
+	query_map(win, win->pos.y - dir2, win->pos.x) == 0)
 		win->pos.y -= dir2;
 }
 
@@ -81,8 +89,8 @@ void		move_pos(t_mov *mov, t_win *win)
 	time_old1 = win->time_old0;
 	win->time_delta = ((double)clock() - time_old1) / 1000;
 	win->time_old0 = (double)clock();
-	win->mov.m_speed = win->time_delta / 16 * MOV_SPEED;
-	win->mov.r_speed = win->time_delta / 16 * ROT_SPEED;
+	mov->m_speed = win->time_delta / 16 * MOV_SPEED;
+	mov->r_speed = win->time_delta / 16 * ROT_SPEED;
 	if ((win->key.right || win->key.left) && (win->key.up || win->key.down))
 		mov->m_speed /= 2;
 	dir_x = win->pos.dir_x;

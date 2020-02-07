@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 10:24:39 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/07 11:18:36 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static t_win g_win = {
 		.g = 0,
 		.b = 0,
 		.c_color = 0xFF000000,
-		.f_color = 0xFF000000
+		.f_color = 0xFF000000,
+		.spr_i = 0
 	},
 	.pos = {
 		.x = 0,

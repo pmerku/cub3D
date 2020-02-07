@@ -1,16 +1,13 @@
 R 1270 720
-NO ./textures/colorstone.png
-SO ./textures/bluestone.png
-WE ./textures/wood.png
-EA ./textures/purplestone.png
+NO ./textures/tnt.png
+SO ./textures/tnt.png
+WE ./textures/tnt.png
+EA ./textures/tnt.png
 
 S ./textures/barrel.png
-ST ./textures/barrel.png
-ST ./textures/barrel.png
-SI ./textures/barrel.png
 
-FT ./textures/greystone.png
-CT ./textures/mossy.png
+FT ./textures/tnt.png
+CT ./textures/tnt.png
 
 F 200, 80, 200
 C 80, 200, 80

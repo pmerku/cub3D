@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 08:38:22 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/07 14:27:23 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,23 @@
 # define KEY_RIGHT	124
 # define KEY_ESC	53
 
+# define MOV_SPEED	0.035
+# define ROT_SPEED	0.005
+# define OFFSET		0.2 // TODO: hit-box
+
 # define N_WALL		0
 # define S_WALL		1
 # define W_WALL		2
 # define E_WALL		3
 # define FLOOR		4
 # define CEILING	5
-# define SPRITE		6
+# define T_NUM		6
+
+# define S_NUM		5
 
 # define CHAR_SET	"0123NSEW"
 # define SPAWN_SET	"NSEW"
-
-# define MOV_SPEED	0.035
-# define ROT_SPEED	0.017
+# define SPRITE_SET	"23"
 
 /*
 ** ---------------------------------------------------------------------------
@@ -77,6 +81,16 @@ typedef struct	s_key {
 	u_int		rot_r:1;
 }				t_key;
 
+typedef struct	s_hb {
+	int			n;
+	int 		s;
+	int 		w;
+	int 		e;
+	int 		ne;
+	int 		se;
+	int 		nw;
+	int 		sw;
+}				t_hb;
 /*
 ** Movement struct
 */
@@ -93,8 +107,6 @@ typedef struct	s_mov {
 	float		step_fy;
 	int			cell_x;
 	int			cell_y;
-	int			tx;
-	int			ty;
 }				t_mov;
 
 /*
@@ -171,6 +183,7 @@ typedef struct	s_color {
 	u_int		f_color;
 	u_int		c_color;
 	int			tex_i;
+	int 		spr_i;
 }				t_color;
 
 /*
@@ -180,6 +193,15 @@ typedef struct	s_color {
 typedef struct	s_spr {
 	int			x;
 	int			y;
+	void		*tex;
+	char		*data;
+	int			tex_w;
+	int			tex_h;
+	int			bpp;
+	int			line_len;
+	int			endian;
+	u_int		tex_x;
+	u_int		tex_y;
 }				t_spr;
 
 /*
@@ -215,10 +237,11 @@ typedef struct	s_win {
 	t_ray		ray;
 	t_map		map;
 	t_color		color;
-	t_tex		tex[7];
-	t_spr		spr;
+	t_tex		tex[T_NUM];
+	t_spr		spr[S_NUM];
 	t_mov		mov;
 	t_key		key;
+	t_hb		hb;
 }				t_win;
 
 /*

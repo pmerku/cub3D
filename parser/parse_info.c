@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 11:03:04 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/07 12:04:44 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ void	parse_resolution(char *data, t_win *win)
 	malloc_check(s);
 	win->x = ft_atoi(s[1]);
 	win->y = ft_atoi(s[2]);
+	if (win->x == 0 || win->y == 0)
+	{
+		delete_data(s);
+		close_error("Invalid resolution\n");
+	}
 	win->x = (win->x > 2560) ? 2560 : win->x;
 	win->y = (win->y > 1440) ? 1440 : win->y;
 	win->x = (win->x < 250) ? 250 : win->x;
@@ -58,7 +63,10 @@ void	parse_argb(char *data, t_win *win)
 	win->color.g = ft_atoi(s[2]);
 	win->color.b = ft_atoi(s[3]);
 	if (win->color.r > 255 || win->color.g > 255 || win->color.b > 255)
+	{
+		delete_data(s);
 		close_error("Incorrect ARGB numbers\n");
+	}
 	if (*data == 'F')
 		win->color.f_color = win->color.a << 24 | win->color.r << 16 |
 				win->color.g << 8 | win->color.b;
@@ -90,11 +98,17 @@ void	parse_tex(char *data, t_win *win, int i)
 	win->tex[i].wall = mlx_png_file_to_image(win->mlx, path,
 			&win->tex[i].tex_w, &win->tex[i].tex_h);
 	if (!win->tex[i].wall)
+	{
+		free(path);
 		close_error("Invalid texture\n");
+	}
 	win->tex[i].data = mlx_get_data_addr(win->tex[i].wall,
 			&win->tex[i].bpp, &win->tex[i].line_len, &win->tex[i].endian);
 	if (!win->tex[i].data)
+	{
+		free(path);
 		close_error("Couldn't get texture data\n");
+	}
 	free(path);
 	win->color.c_color = (i == CEILING) ? 0xAA000000 : win->color.c_color;
 	win->color.f_color = (i == FLOOR) ? 0xAA000000 : win->color.f_color;

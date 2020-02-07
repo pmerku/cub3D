@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 07:46:30 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 07:47:51 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/06 13:31:28 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		draw_tex(t_win *win, t_tex *tex, int i, int y)
 	win->ray.wall_x -= floor(win->ray.wall_x);
 	tex->tex_x = (int)(win->ray.wall_x * tex->tex_w) % tex->tex_w;
 	y = win->ray.draw_s;
-	while (y < win->ray.draw_e)
+	while (y <= win->ray.draw_e && y < win->y)
 	{
 		tex->tex_y = (int)(((y - win->y * .5 + win->img[win->i].line_h * .5)
 				* tex->tex_h) / win->img[win->i].line_h) % tex->tex_h;

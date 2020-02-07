@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/02/06 07:57:37 by prmerku          ###   ########.fr        #
+#    Updated: 2020/02/07 12:06:13 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,15 +35,17 @@ NAME = cub3D
 # 							Objects and Includes
 # ----------------------------------------------------------------------------
 
-OBJ = main.o
+SRC = main
 
-OBJ += parser/parse_file.o parser/parse_info.o parser/parse_map.o \
-	parser/parse_map_validate.o
+SRC += parser/parse_file parser/parse_info parser/parse_sprites \
+	parser/parse_map parser/parse_map_validate
 
-OBJ += engine/renderer.o engine/movement.o engine/draw_back.o \
-	engine/draw_utils.o engine/draw_walls.o engine/draw_sprites.o
+SRC += engine/renderer engine/movement engine/draw_back \
+	engine/draw_utils engine/draw_walls engine/draw_sprites
 
-OBJ += utils/shutdown.o utils/data_handle.o
+SRC += utils/shutdown utils/data_handle
+
+OBJ = $(addsuffix .o, $(SRC) )
 
 LIBFT = libft/libft.a
 
@@ -52,6 +54,8 @@ MLX = libmlx.dylib
 # ----------------------------------------------------------------------------
 # 							Rules
 # ----------------------------------------------------------------------------
+
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
@@ -94,5 +98,3 @@ fclean: clean
 	@printf "${MAGENTA}  Finished${NC}\n"
 
 re: fclean all
-
-.PHONY: all clean fclean re

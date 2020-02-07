@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 10:10:30 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/07 11:59:05 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,12 @@ static void		map_spawn_pos(t_win *win, char *row, int index)
 	win->pos.y = index + 0.5;
 }
 
+static void		sprite_pos(t_win *win, int row, int col)
+{
+	win->spr[win->color.spr_i].x = row;
+	win->spr[win->color.spr_i].y = col;
+}
+
 /*
 ** Parse the 2D array and check for unsupported characters.
 ** If a supported character is found skip it or set spawn point for player.
@@ -103,6 +109,8 @@ static void		map_char_check(char **map, t_win *win)
 				else
 					close_error("Too many spawn points\n");
 			}
+			if (ft_strchr(SPRITE_SET, map[row][col]))
+				sprite_pos(win, row, col);
 			if (!ft_strchr(CHAR_SET, map[row][col]))
 				close_error("Unsupported character in map\n");
 			col++;

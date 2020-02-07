@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 10:10:30 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/07 11:47:01 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int	mandatory_elements(t_win *win)
 	res += (win->tex[S_WALL].wall == NULL);
 	res += (win->tex[E_WALL].wall == NULL);
 	res += (win->tex[W_WALL].wall == NULL);
-	res += (win->tex[SPRITE].wall == NULL);
 	res += (win->color.f_color == 0xFF000000);
 	res += (win->color.c_color == 0xFF000000);
 	return (res == 0);
@@ -55,8 +54,10 @@ static void	parse_info(char **data, t_win *win)
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"F ")
 		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"C "))
 		parse_argb(*data, win);
-	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"S "))
-		parse_tex(*data, win, SPRITE);
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"S ")
+		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"ST")
+		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"SI"))
+		parse_sprites(*data, win);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"NO"))
 		parse_tex(*data, win, N_WALL);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"SO"))
