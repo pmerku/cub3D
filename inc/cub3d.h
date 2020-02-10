@@ -46,7 +46,7 @@
 
 # define MOV_SPEED	0.035
 # define ROT_SPEED	0.005
-# define OFFSET		0.2 // TODO: hit-box
+# define OFFSET		0.2		// TODO: hit-box
 
 # define N_WALL		0
 # define S_WALL		1
@@ -54,13 +54,22 @@
 # define E_WALL		3
 # define FLOOR		4
 # define CEILING	5
-# define T_NUM		6
+# define DOOR		6
+# define T_NUM		7
 
-# define S_NUM		5
+# define SPR_T		0	//tex
+# define SPR_I		10	//item
+# define SPR_C		11	//collectible
+# define SPR_TR		12	//trap
+# define SPR_M		13	//monster
+# define S_NUM		14
 
-# define CHAR_SET	"0123NSEW"
+# define CHAR_SET	"0123456789NSEWHDMICT"
 # define SPAWN_SET	"NSEW"
-# define SPRITE_SET	"23"
+# define SPRITE_SET	"23456789MICT"
+# define SPR_1_SET	"23456789"
+# define SPR_2_SET	"MICT"
+# define EXTRA_SET	"HD" // H = hidden, D = door
 
 /*
 ** ---------------------------------------------------------------------------
@@ -202,6 +211,7 @@ typedef struct	s_spr {
 	int			endian;
 	u_int		tex_x;
 	u_int		tex_y;
+	int 		id;
 }				t_spr;
 
 /*

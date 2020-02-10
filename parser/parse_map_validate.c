@@ -76,12 +76,6 @@ static void		map_spawn_pos(t_win *win, char *row, int index)
 	win->pos.y = index + 0.5;
 }
 
-static void		sprite_pos(t_win *win, int row, int col)
-{
-	win->spr[win->color.spr_i].x = row;
-	win->spr[win->color.spr_i].y = col;
-}
-
 /*
 ** Parse the 2D array and check for unsupported characters.
 ** If a supported character is found skip it or set spawn point for player.
@@ -109,8 +103,6 @@ static void		map_char_check(char **map, t_win *win)
 				else
 					close_error("Too many spawn points\n");
 			}
-			if (ft_strchr(SPRITE_SET, map[row][col]))
-				sprite_pos(win, row, col);
 			if (!ft_strchr(CHAR_SET, map[row][col]))
 				close_error("Unsupported character in map\n");
 			col++;
@@ -149,4 +141,6 @@ void			map_validate(t_win *win)
 	if (col != map_h_edge(win->map.map[row - 1]))
 		close_error("Invalid map\n");
 	map_char_check(win->map.map, win);
+	if (win->pos.x == 0 || win->pos.y == 0)
+		close_error("No spawn point\n");
 }

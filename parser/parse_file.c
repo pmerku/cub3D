@@ -54,9 +54,7 @@ static void	parse_info(char **data, t_win *win)
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"F ")
 		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"C "))
 		parse_argb(*data, win);
-	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"S ")
-		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"ST")
-		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"SI"))
+	else if (*data[0] == 'S' && *data[1] != '0')
 		parse_sprites(*data, win);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"NO"))
 		parse_tex(*data, win, N_WALL);
@@ -158,6 +156,5 @@ void		parse_file(char *path, t_win *win)
 	if (!mandatory_elements(win))
 		close_error("Missing elements\n");
 	map_validate(win);
-	if (win->pos.x == 0 || win->pos.y == 0)
-		close_error("No spawn point\n");
+	sprite_set(win);
 }
