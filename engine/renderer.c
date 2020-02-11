@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 12:13:16 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/11 16:20:15 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int			render_next_frame(t_win *win)
 		win->z_buff[i] = win->mov.perp_wd;
 		i++;
 	}
-	draw_sprite(win, i, win->z_buff);
+	draw_sprite(win);
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	win->i = !win->i;
 	return (0);
