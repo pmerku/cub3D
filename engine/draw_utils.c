@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 13:18:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/05 14:52:20 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/11 09:07:12 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 int		query_map(t_win *win, double y, double x)
 {
 	if (y < 0 || y >= win->map.map_h || x < 0 || x >= win->map.map_w
-		|| win->map.map[(int)y][(int)x] == '1')
+		|| win->map.map[(int)y][(int)x] == '1'
+		|| win->map.map[(int)y][(int)x] == 'H')
 	{
-		if (win->map.map[(int)floor(y)][(int)floor(x)] == '1'
-			|| win->map.map[(int)ceil(y)][(int)ceil(x)] == '1')
-			win->mov.hit = 1;
 		win->mov.hit = 1;
+		if (win->map.map[(int)y][(int)x] == 'H')
+			return (0);
 	}
 	else
 	{

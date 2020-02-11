@@ -15,14 +15,12 @@
 
 static void	draw_px(t_win *win, t_tex *tex, int x, int y)
 {
-	u_int	color;
-
 	tex->tex_x = (int)(tex->tex_w * (win->ray.fx - win->mov.cell_x))
 			& (tex->tex_w - 1);
 	tex->tex_y = (int)(tex->tex_h * (win->ray.fy - win->mov.cell_y))
 			& (tex->tex_h - 1);
-	color = px_color(tex, tex->tex_y, tex->tex_x, 1);
-	pixel_put(&win->img[win->i], x, y, color);
+	pixel_put(&win->img[win->i], x, y,
+			px_color(tex, tex->tex_y, tex->tex_x, 1));
 }
 
 static void	draw_px_back(t_win *win, t_ray *ray, int x, int y)

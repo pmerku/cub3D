@@ -25,7 +25,7 @@ NC = \033[0m
 # 							Flags and Lib name
 # ----------------------------------------------------------------------------
 
-CFLAGS = -Wall -Wextra -Werror -Ilibft -Imlx -Iinc
+CFLAGS = -Wall -Wextra -Werror -Ilibft -Imlx -Iinc -Ofast
 
 MLXFLAGS = -Lmlx/ -lmlx -framework OpenGL -framework AppKit
 

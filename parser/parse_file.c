@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/07 11:47:01 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/11 12:13:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	parse_info(char **data, t_win *win)
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"F ")
 		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"C "))
 		parse_argb(*data, win);
-	else if (*data[0] == 'S' && *data[1] != '0')
+	else if (data[0][0] == 'S' && data[0][1] != 'O')
 		parse_sprites(*data, win);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"NO"))
 		parse_tex(*data, win, N_WALL);
@@ -157,4 +157,6 @@ void		parse_file(char *path, t_win *win)
 		close_error("Missing elements\n");
 	map_validate(win);
 	sprite_set(win);
+	win->z_buff = ft_calloc(win->x, sizeof(double));
+	malloc_check(win->z_buff);
 }

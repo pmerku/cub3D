@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/07 14:27:23 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/11 12:07:09 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 
 #include <stdio.h>
+#include <mach/notify.h>
 
 /*
 ** ---------------------------------------------------------------------------
@@ -44,8 +45,8 @@
 # define KEY_RIGHT	124
 # define KEY_ESC	53
 
-# define MOV_SPEED	0.035
-# define ROT_SPEED	0.005
+# define MOV_SPEED	0.04
+# define ROT_SPEED	0.018
 # define OFFSET		0.2		// TODO: hit-box
 
 # define N_WALL		0
@@ -55,20 +56,20 @@
 # define FLOOR		4
 # define CEILING	5
 # define DOOR		6
-# define T_NUM		7
+# define T_NUM		15
 
-# define SPR_T		0	//tex
-# define SPR_I		10	//item
-# define SPR_C		11	//collectible
-# define SPR_TR		12	//trap
-# define SPR_M		13	//monster
-# define S_NUM		14
+# define SPR_T1		8	//sprite tex
+# define SPR_T2		9
+# define SPR_T3		10
+# define SPR_I		11	//item
+# define SPR_C		12	//collectible
+# define SPR_TR		13	//trap
+# define SPR_M		14	//monster
+# define S_NUM		7
 
-# define CHAR_SET	"0123456789NSEWHDMICT"
+# define CHAR_SET	"01234NSEWHDMICT"
 # define SPAWN_SET	"NSEW"
-# define SPRITE_SET	"23456789MICT"
-# define SPR_1_SET	"23456789"
-# define SPR_2_SET	"MICT"
+# define SPRITE_SET	"234MICT"
 # define EXTRA_SET	"HD" // H = hidden, D = door
 
 /*
@@ -131,6 +132,8 @@ typedef struct	s_pos {
 	double		plane_y;
 	double		camera_x;
 	float		rwd;
+	double		tmp_x;
+	double		tmp_y;
 }				t_pos;
 
 /*
@@ -195,23 +198,23 @@ typedef struct	s_color {
 	int 		spr_i;
 }				t_color;
 
+typedef struct	s_typ {
+	char		c;
+	int			tex_i;
+}				t_typ;
+
 /*
 ** Sprites struct
 */
 
 typedef struct	s_spr {
-	int			x;
-	int			y;
-	void		*tex;
-	char		*data;
-	int			tex_w;
-	int			tex_h;
-	int			bpp;
-	int			line_len;
-	int			endian;
+	double		x;
+	double		y;
 	u_int		tex_x;
 	u_int		tex_y;
-	int 		id;
+	int 		tex_id;
+	double		dist;
+	int 		hid;
 }				t_spr;
 
 /*
@@ -248,7 +251,10 @@ typedef struct	s_win {
 	t_map		map;
 	t_color		color;
 	t_tex		tex[T_NUM];
-	t_spr		spr[S_NUM];
+	t_typ		type[S_NUM];
+	double		*z_buff;
+	t_spr		*spr;
+	int			spr_i;
 	t_mov		mov;
 	t_key		key;
 	t_hb		hb;

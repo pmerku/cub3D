@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/07 14:24:40 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/11 12:13:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static void	init_calc(t_win *win, t_ray *ray)
 int			render_next_frame(t_win *win)
 {
 	int		i;
-	double	z_buff[win->x];
 
 	i = 0;
 	move_pos(&win->mov, win);
@@ -62,19 +61,26 @@ int			render_next_frame(t_win *win)
 		init_ray(win, &win->ray, i);
 		while (!win->mov.hit)
 		{
-			win->mov.side = (win->ray.side_dx >= win->ray.side_dy);
-			win->ray.side_dx += (!win->mov.side) ? win->ray.delta_dx : 0;
-			win->map.x += (!win->mov.side) ? win->mov.step_x : 0;
-			win->ray.side_dy += (win->mov.side) ? win->ray.delta_dy : 0;
-			win->map.y += (win->mov.side) ? win->mov.step_y : 0;
+			if (win->ray.side_dx < win->ray.side_dy)
+			{
+				win->ray.side_dx += win->ray.delta_dx;
+				win->map.x += win->mov.step_x;
+				win->mov.side = 0;
+			}
+			else
+			{
+				win->ray.side_dy += win->ray.delta_dy;
+				win->map.y += win->mov.step_y;
+				win->mov.side = 1;
+			}
 			query_map(win, win->map.y, win->map.x);
 		}
 		init_calc(win, &win->ray);
 		draw_wall(win, i);
-		z_buff[i] = win->mov.perp_wd;
+		win->z_buff[i] = win->mov.perp_wd;
 		i++;
 	}
-	//draw_sprite(win, i, z_buff); // TODO: sprite
+	draw_sprite(win, i, win->z_buff);
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	win->i = !win->i;
 	return (0);

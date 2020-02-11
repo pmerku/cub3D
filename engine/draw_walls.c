@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 07:46:30 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/06 13:31:28 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/11 09:20:25 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 int		draw_tex(t_win *win, t_tex *tex, int i, int y)
 {
-	u_int	color;
-
 	win->ray.wall_x = (!win->mov.side)
 			? win->pos.y + win->mov.perp_wd * win->ray.dir_y
 			: win->pos.x + win->mov.perp_wd * win->ray.dir_x;
@@ -27,8 +25,8 @@ int		draw_tex(t_win *win, t_tex *tex, int i, int y)
 	{
 		tex->tex_y = (int)(((y - win->y * .5 + win->img[win->i].line_h * .5)
 				* tex->tex_h) / win->img[win->i].line_h) % tex->tex_h;
-		color = px_color(tex, tex->tex_y, tex->tex_x, win->color.tex_i);
-		pixel_put(&win->img[win->i], i, y, color);
+		pixel_put(&win->img[win->i], i, y,
+				px_color(tex, tex->tex_y, tex->tex_x, win->color.tex_i));
 		y++;
 	}
 	return (y);
@@ -43,8 +41,8 @@ void	draw_wall(t_win *win, int i)
 		win->color.tex_i = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
 	else
 		win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
-	if (win->map.map[win->map.y][win->map.x] == '2')
-		win->color.tex_i = E_WALL;
+	if (win->map.map[win->map.y][win->map.x] == 'H')
+		win->color.tex_i = SPR_TR;
 	while (y < win->ray.draw_s && y < win->y)
 	{
 		if (win->tex[CEILING].wall == NULL)
