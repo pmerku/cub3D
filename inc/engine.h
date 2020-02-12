@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:29:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 16:20:15 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/12 13:27:41 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,21 @@
 */
 
 int		render_next_frame(t_win *win);
-void	move_pos(t_mov *mov, t_win *win);
+
+void	move_right(t_mov *mov, t_win *win);
+void	move_left(t_mov *mov, t_win *win);
+void	move_up(t_mov *mov, t_win *win);
+void	move_down(t_mov *mov, t_win *win);
+void	rotate_l(t_mov *mov, t_win *win, double dir_x, double plane_x);
+void	rotate_r(t_mov *mov, t_win *win, double dir_x, double plane_x);
 
 void	draw_back(t_win *win);
-void	draw_wall(t_win *win, int i);
+void	draw_wall(t_win *win, int i, int y);
 int		draw_tex(t_win *win, t_tex *tex, int i, int y);
-void	draw_sprite(t_win *win);
+void	draw_sprite(t_win *win, t_sdt *sdt);
+
+void	sprite_sort(t_spr *spr, int first, int last);
+void 	sprite_dist(t_win *win);
 
 int		query_map(t_win *win, double y, double x);
 int		px_color(t_tex *tex, double y, double x, int id);

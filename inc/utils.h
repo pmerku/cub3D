@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:31:35 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/30 14:55:22 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/12 14:44:29 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 ** 							Utils functions
 ** ---------------------------------------------------------------------------
 */
+
+void	save_frame(t_win *win);
+u_int	get_px(t_img *img, int x, int y);
+u_int	get_r(u_int color);
+u_int	get_g(u_int color);
+u_int	get_b(u_int color);
 
 int		close_win(t_win *win);
 int		close_key(int keycode, t_win *win);

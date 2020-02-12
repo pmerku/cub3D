@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 10:04:01 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/12 15:01:14 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,10 @@ int			main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		if (argc == 3 && (ft_strncmp(argv[3], "--save", 6) == 0))
-		{
-			write(1, "Saved\n", 6);
-			exit(EXIT_SUCCESS);
-		}
-		close_error("Missing parameters\n");
+		if (argc == 3 && (ft_strncmp(argv[2], "--save", 6) == 0))
+			g_win.save = 1;
+		else
+			close_error("Missing parameters\n");
 	}
 	g_win.mlx = mlx_init();
 	if (!g_win.mlx)

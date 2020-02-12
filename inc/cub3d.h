@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 12:07:09 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/12 15:22:02 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@
 ** ---------------------------------------------------------------------------
 */
 
+# define BMP_FILE	"frame.bmp"
+# define BMP_BPP	3
+# define BMP_HSIZE	14
+# define BMP_ISIZE	40
+
 # define KEY_W		13
 # define KEY_A		0
 # define KEY_S		1
@@ -45,9 +50,8 @@
 # define KEY_RIGHT	124
 # define KEY_ESC	53
 
-# define MOV_SPEED	0.04
-# define ROT_SPEED	0.018
-# define OFFSET		0.2		// TODO: hit-box
+# define MOV_SPEED	0.0575
+# define ROT_SPEED	0.0275
 
 # define N_WALL		0
 # define S_WALL		1
@@ -56,16 +60,17 @@
 # define FLOOR		4
 # define CEILING	5
 # define DOOR		6
-# define T_NUM		15
 
-# define SPR_T1		8	//sprite tex
-# define SPR_T2		9
-# define SPR_T3		10
-# define SPR_I		11	//item
-# define SPR_C		12	//collectible
-# define SPR_TR		13	//trap
-# define SPR_M		14	//monster
+# define SPR_T1		7	//sprite tex
+# define SPR_T2		8
+# define SPR_T3		9
+# define SPR_I		10	//item
+# define SPR_C		11	//collectible
+# define SPR_TR		12	//trap
+# define SPR_M		13	//monster
+
 # define S_NUM		7
+# define T_NUM		14
 
 # define CHAR_SET	"01234NSEWHDMICT"
 # define SPAWN_SET	"NSEW"
@@ -90,17 +95,6 @@ typedef struct	s_key {
 	u_int		rot_l:1;
 	u_int		rot_r:1;
 }				t_key;
-
-typedef struct	s_hb {
-	int			n;
-	int 		s;
-	int 		w;
-	int 		e;
-	int 		ne;
-	int 		se;
-	int 		nw;
-	int 		sw;
-}				t_hb;
 /*
 ** Movement struct
 */
@@ -194,6 +188,7 @@ typedef struct	s_color {
 	u_int		b;
 	u_int		f_color;
 	u_int		c_color;
+	u_int 		bmp_color;
 	int			tex_i;
 	int 		spr_i;
 }				t_color;
@@ -207,14 +202,26 @@ typedef struct	s_typ {
 ** Sprites struct
 */
 
+typedef struct	s_sdt {
+	double		spr_x;
+	double		spr_y;
+	double		inv_d;
+	double		trs_x;
+	double		trs_y;
+	int 		spr_sx;
+	int 		spr_d;
+	int			draw_sy;
+	int			draw_ey;
+	int			draw_sx;
+	int			draw_ex;
+	int			d;
+}				t_sdt;
+
 typedef struct	s_spr {
 	double		x;
 	double		y;
-	u_int		tex_x;
-	u_int		tex_y;
 	int 		tex_id;
 	double		dist;
-	int 		hid;
 }				t_spr;
 
 /*
@@ -242,8 +249,7 @@ typedef struct	s_win {
 	void		*mlx_win;
 	int			x;
 	int			y;
-	double		time_old0;
-	double		time_delta;
+	int			save:1;
 	t_img		img[2];
 	u_int		i:1;
 	t_pos		pos;
@@ -253,11 +259,11 @@ typedef struct	s_win {
 	t_tex		tex[T_NUM];
 	t_typ		type[S_NUM];
 	double		*z_buff;
+	t_sdt		sdt;
 	t_spr		*spr;
 	int			spr_i;
 	t_mov		mov;
 	t_key		key;
-	t_hb		hb;
 }				t_win;
 
 /*
