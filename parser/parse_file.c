@@ -68,6 +68,8 @@ static void	parse_info(char **data, t_win *win)
 		parse_tex(*data, win, FLOOR);
 	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"CT"))
 		parse_tex(*data, win, CEILING);
+	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"D "))
+		parse_tex(*data, win, DOOR);
 	else if (**data != '1' && **data != 16)
 		close_error("Unknown element\n");
 }

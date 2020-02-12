@@ -6,12 +6,13 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 16:20:15 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/12 13:55:00 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
 #include <engine.h>
+#include <utils.h>
 #include <cub3d.h>
 
 static void	init_ray(t_win *win, t_ray *ray, int i)
@@ -48,13 +49,8 @@ static void	init_calc(t_win *win, t_ray *ray)
 			? win->y - 1 : ray->draw_e;
 }
 
-int			render_next_frame(t_win *win)
+static void	perform_dda(t_win *win, int i)
 {
-	int		i;
-
-	i = 0;
-	move_pos(&win->mov, win);
-	draw_back(win);
 	while (i < win->x)
 	{
 		win->mov.hit = 0;
@@ -76,12 +72,37 @@ int			render_next_frame(t_win *win)
 			query_map(win, win->map.y, win->map.x);
 		}
 		init_calc(win, &win->ray);
-		draw_wall(win, i);
+		draw_wall(win, i, 0);
 		win->z_buff[i] = win->mov.perp_wd;
 		i++;
 	}
-	draw_sprite(win);
+}
+
+int			render_next_frame(t_win *win)
+{
+	win->mov.m_speed = MOV_SPEED;
+	if ((win->key.up || win->key.down) && (win->key.right || win->key.left))
+		win->mov.m_speed /= 1.8;
+	if (win->key.up)
+		move_up(&win->mov, win);
+	if (win->key.down)
+		move_down(&win->mov, win);
+	if (win->key.left)
+		move_left(&win->mov, win);
+	if (win->key.right)
+		move_right(&win->mov, win);
+	if (win->key.rot_l)
+		rotate_l(&win->mov, win, win->pos.dir_x, win->pos.plane_x);
+	if (win->key.rot_r)
+		rotate_r(&win->mov, win, win->pos.dir_x, win->pos.plane_x);
+	draw_back(win);
+	sprite_dist(win);
+	sprite_sort(win->spr, 0, win->spr_i - 1);
+	perform_dda(win, 0);
+	draw_sprite(win, &win->sdt);
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
+	if (win->save)
+		save_frame(win);
 	win->i = !win->i;
 	return (0);
 }

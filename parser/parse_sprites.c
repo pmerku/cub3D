@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 11:53:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 12:10:04 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/12 11:22:15 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static int	sprite_pos(t_win *win, char *c, int *pos)
 			win->spr[*pos].y = win->pos.tmp_y + .5;
 			win->spr[*pos].tex_id = win->type[i].tex_i;
 			(*pos)++;
-			*c = '0';
 			return (1);
 		}
 		i++;

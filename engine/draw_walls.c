@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 07:46:30 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 09:20:25 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/12 13:44:50 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,29 @@ int		draw_tex(t_win *win, t_tex *tex, int i, int y)
 	return (y);
 }
 
-void	draw_wall(t_win *win, int i)
+void	draw_wall(t_win *win, int i, int y)
 {
-	int		y;
-
-	y = 0;
 	if (win->mov.side)
 		win->color.tex_i = (win->map.y < win->pos.y) ? W_WALL : E_WALL;
 	else
 		win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
 	if (win->map.map[win->map.y][win->map.x] == 'H')
-		win->color.tex_i = SPR_TR;
-	while (y < win->ray.draw_s && y < win->y)
+		win->color.tex_i = SPR_TR;		// TODO: in case no tex provided (segfault)
+	if (win->tex[CEILING].wall == NULL)
 	{
-		if (win->tex[CEILING].wall == NULL)
+		while (y < win->ray.draw_s && y < win->y)
+		{
 			pixel_put(&win->img[win->i], i, y, win->color.c_color);
-		y++;
+			y++;
+		}
 	}
-	y = draw_tex(win, &win->tex[win->color.tex_i], i, y);
-	while (y < win->y)
+	y = draw_tex(win, &win->tex[win->color.tex_i], i, win->ray.draw_s);
+	if (win->tex[FLOOR].wall == NULL)
 	{
-		if (win->tex[FLOOR].wall == NULL)
+		while (y < win->y)
+		{
 			pixel_put(&win->img[win->i], i, y, win->color.f_color);
-		y++;
+			y++;
+		}
 	}
 }
