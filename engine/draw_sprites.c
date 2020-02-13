@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 11:26:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 11:34:55 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:18:18 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ static void	sprite_calc(t_win *win, t_spr *spr, t_sdt *sdt)
 
 static void	sprite_tex(t_win *win, t_tex *tex, t_sdt *sdt, int id)
 {
-	int 	y;
+	int		y;
 	u_int	color;
 
 	y = sdt->draw_sy;
 	tex->tex_x = (int)(256 * (sdt->draw_sx - (-sdt->spr_d / 2 + sdt->spr_sx))
 			* tex->tex_w / sdt->spr_d) / 256;
-	if (sdt->trs_y > 0 && sdt->draw_sx > 0 && sdt->draw_sx < win->x
-		&& sdt->trs_y < win->z_buff[sdt->draw_sx])
+	if (sdt->trs_y >= 0 && sdt->draw_sx >= 0 && sdt->draw_sx <= win->x
+		&& sdt->trs_y <= win->z_buff[sdt->draw_sx])
 	{
-		while (y < sdt->draw_ey)
+		while (y <= sdt->draw_ey)
 		{
 			sdt->d = y * 256 - win->y * 128 + sdt->spr_d * 128;
 			tex->tex_y = ((sdt->d * tex->tex_h) / sdt->spr_d) / 256;
@@ -58,19 +58,19 @@ static void	sprite_tex(t_win *win, t_tex *tex, t_sdt *sdt, int id)
 	}
 }
 
-void		draw_sprite(t_win *win, t_sdt *sdt)
+void		draw_sprite(t_win *win, t_sdt *sdt, int i)
 {
-	int 	i;
-
-	i = 0;
 	while (i < win->spr_i)
 	{
-		sprite_calc(win, &win->spr[i], sdt);
-		while (sdt->draw_sx < sdt->draw_ex)
+		if (win->spr[i].hide == 0)
 		{
-			sprite_tex(win, &win->tex[win->spr[i].tex_id], sdt,
-					win->spr[i].tex_id);
-			sdt->draw_sx++;
+			sprite_calc(win, &win->spr[i], sdt);
+			while (sdt->draw_sx <= sdt->draw_ex)
+			{
+				sprite_tex(win, &win->tex[win->spr[i].tex_id], sdt,
+						win->spr[i].tex_id);
+				sdt->draw_sx++;
+			}
 		}
 		i++;
 	}

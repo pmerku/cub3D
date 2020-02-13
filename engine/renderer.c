@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 13:55:00 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 07:57:21 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 static void	init_ray(t_win *win, t_ray *ray, int i)
 {
+	win->mov.hit = 0;
 	win->pos.camera_x = 2 * i / (double)win->x - 1;
 	ray->dir_y = win->pos.dir_x + win->pos.plane_x * win->pos.camera_x;
 	ray->dir_x = win->pos.dir_y + win->pos.plane_y * win->pos.camera_x;
@@ -26,8 +27,8 @@ static void	init_ray(t_win *win, t_ray *ray, int i)
 	ray->delta_dy = fabs(1 / ray->dir_y);
 	win->mov.step_x = (ray->dir_x < 0) ? -1 : 1;
 	ray->side_dx = (ray->dir_x < 0)
-		   	? (win->pos.x - win->map.x) * ray->delta_dx
-		   	: (win->map.x + 1.0 - win->pos.x) * ray->delta_dx;
+			? (win->pos.x - win->map.x) * ray->delta_dx
+			: (win->map.x + 1.0 - win->pos.x) * ray->delta_dx;
 	win->mov.step_y = (ray->dir_y < 0) ? -1 : 1;
 	ray->side_dy = (ray->dir_y < 0)
 			? (win->pos.y - win->map.y) * ray->delta_dy
@@ -53,7 +54,6 @@ static void	perform_dda(t_win *win, int i)
 {
 	while (i < win->x)
 	{
-		win->mov.hit = 0;
 		init_ray(win, &win->ray, i);
 		while (!win->mov.hit)
 		{
@@ -99,7 +99,7 @@ int			render_next_frame(t_win *win)
 	sprite_dist(win);
 	sprite_sort(win->spr, 0, win->spr_i - 1);
 	perform_dda(win, 0);
-	draw_sprite(win, &win->sdt);
+	draw_sprite(win, &win->sdt, 0);
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	if (win->save)
 		save_frame(win);

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 13:50:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 14:58:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:11:35 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static u_char	*bitmap_info(u_int h, u_int w)
 static void		save_bitmap(u_char *img, int h, int w)
 {
 	u_char	pad[3];
-	int 	pad_s;
+	int		pad_s;
 	int		img_f;
 
 	img_f = open(BMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0755);
@@ -67,11 +67,12 @@ static void		save_bitmap(u_char *img, int h, int w)
 	close(img_f);
 }
 
-static void		set_px(t_win *win, int x, int y, u_char *img, int i)
+static void		set_px(t_win *win, u_char *img, int i)
 {
 	u_char	*ptr;
 
-	ptr = img + (BMP_BPP * win->x * y) + (x * BMP_BPP) + i;
+	ptr = img + (BMP_BPP * win->x * (int)win->pos.tmp_y)
+			+ ((int)win->pos.tmp_y * BMP_BPP) + i;
 	if (i == 0)
 		*ptr = get_b(win->color.bmp_color);
 	else if (i == 1)
@@ -93,10 +94,11 @@ void			save_frame(t_win *win)
 		win->pos.tmp_x = 0;
 		while (win->pos.tmp_x < win->x)
 		{
-			win->color.bmp_color = get_px(&win->img[win->i], (int)win->pos.tmp_x, (int)win->pos.tmp_y);
-			set_px(win, (int)win->pos.tmp_x, (int)win->pos.tmp_y, img, 0);
-			set_px(win, (int)win->pos.tmp_x, (int)win->pos.tmp_y, img, 1);
-			set_px(win, (int)win->pos.tmp_x, (int)win->pos.tmp_y, img, 2);
+			win->color.bmp_color = get_px(&win->img[win->i],
+					(int)win->pos.tmp_x, (int)win->pos.tmp_y);
+			set_px(win, img, 0);
+			set_px(win, img, 1);
+			set_px(win, img, 2);
 			win->pos.tmp_x++;
 		}
 		win->pos.tmp_y++;

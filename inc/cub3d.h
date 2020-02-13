@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 15:22:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:16:53 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,24 @@
 # include <math.h>
 # include <sys/types.h>
 
-
-#include <stdio.h>
-#include <mach/notify.h>
-
 /*
 ** ---------------------------------------------------------------------------
 ** 							Macro defines
 ** ---------------------------------------------------------------------------
 */
 
+/*
+** BITMAP macros
+*/
+
 # define BMP_FILE	"frame.bmp"
 # define BMP_BPP	3
 # define BMP_HSIZE	14
 # define BMP_ISIZE	40
+
+/*
+** Movement macros
+*/
 
 # define KEY_W		13
 # define KEY_A		0
@@ -50,8 +54,12 @@
 # define KEY_RIGHT	124
 # define KEY_ESC	53
 
-# define MOV_SPEED	0.0575
+# define MOV_SPEED	0.0475
 # define ROT_SPEED	0.0275
+
+/*
+** Texture id macros
+*/
 
 # define N_WALL		0
 # define S_WALL		1
@@ -60,22 +68,40 @@
 # define FLOOR		4
 # define CEILING	5
 # define DOOR		6
+# define DOOR_H		7
 
-# define SPR_T1		7	//sprite tex
-# define SPR_T2		8
-# define SPR_T3		9
-# define SPR_I		10	//item
-# define SPR_C		11	//collectible
-# define SPR_TR		12	//trap
-# define SPR_M		13	//monster
+/*
+** Sprite id macros
+*/
 
-# define S_NUM		7
-# define T_NUM		14
+# define SPR_T1		8
+# define SPR_T2		9
+# define SPR_T3		10
+# define SPR_I		11
+# define SPR_C		12
+# define SPR_TR		13
+# define SPR_M		14
+
+/*
+** Supported texture/sprites id macros
+*/
+
+# define S_NUM		8
+# define T_NUM		15
 
 # define CHAR_SET	"01234NSEWHDMICT"
 # define SPAWN_SET	"NSEW"
 # define SPRITE_SET	"234MICT"
-# define EXTRA_SET	"HD" // H = hidden, D = door
+# define EXTRA_SET	"HD"
+
+/*
+** Map query macros
+*/
+
+# define HIT_C		"1H"
+# define HIT_NC		"04ICH"
+# define HIT_P		"IC"
+# define FLOOD		"1234MICTHD"
 
 /*
 ** ---------------------------------------------------------------------------
@@ -95,6 +121,7 @@ typedef struct	s_key {
 	u_int		rot_l:1;
 	u_int		rot_r:1;
 }				t_key;
+
 /*
 ** Movement struct
 */
@@ -131,7 +158,7 @@ typedef struct	s_pos {
 }				t_pos;
 
 /*
-** Raycaster struct
+** Ray-caster struct
 */
 
 typedef struct	s_ray {
@@ -174,7 +201,6 @@ typedef struct	s_map {
 	int			x;
 	int			y;
 	int			map_h;
-	int			map_w;
 }				t_map;
 
 /*
@@ -188,10 +214,14 @@ typedef struct	s_color {
 	u_int		b;
 	u_int		f_color;
 	u_int		c_color;
-	u_int 		bmp_color;
+	u_int		bmp_color;
 	int			tex_i;
-	int 		spr_i;
+	int			spr_i;
 }				t_color;
+
+/*
+** Sprite type struct
+*/
 
 typedef struct	s_typ {
 	char		c;
@@ -199,7 +229,7 @@ typedef struct	s_typ {
 }				t_typ;
 
 /*
-** Sprites struct
+** Sprite-caster struct
 */
 
 typedef struct	s_sdt {
@@ -208,8 +238,8 @@ typedef struct	s_sdt {
 	double		inv_d;
 	double		trs_x;
 	double		trs_y;
-	int 		spr_sx;
-	int 		spr_d;
+	int			spr_sx;
+	int			spr_d;
 	int			draw_sy;
 	int			draw_ey;
 	int			draw_sx;
@@ -217,11 +247,16 @@ typedef struct	s_sdt {
 	int			d;
 }				t_sdt;
 
+/*
+** Sprite struct
+*/
+
 typedef struct	s_spr {
 	double		x;
 	double		y;
-	int 		tex_id;
+	int			tex_id;
 	double		dist;
+	int			hide:1;
 }				t_spr;
 
 /*

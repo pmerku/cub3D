@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/11 08:57:37 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:14:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,28 @@ void	parse_tex(char *data, t_win *win, int i)
 	free(path);
 	win->color.c_color = (i == CEILING) ? 0xAA000000 : win->color.c_color;
 	win->color.f_color = (i == FLOOR) ? 0xAA000000 : win->color.f_color;
+}
+
+void	parse_sprites(char *data, t_win *win)
+{
+	int		i;
+
+	i = SPR_T1;
+	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S "))
+	{
+		while (win->tex[i].wall != NULL)
+			i++;
+		parse_tex(data, win, i);
+	}
+	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SM"))
+		parse_tex(data, win, SPR_M);
+	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SI"))
+		parse_tex(data, win, SPR_I);
+	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SC"))
+		parse_tex(data, win, SPR_C);
+	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"ST"))
+		parse_tex(data, win, SPR_TR);
+	if (win->color.spr_i >= S_NUM)
+		close_error("Too many sprites\n");
+	win->color.spr_i++;
 }

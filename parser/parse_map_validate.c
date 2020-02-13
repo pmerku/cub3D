@@ -6,38 +6,13 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 15:13:49 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:12:42 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 #include <libft.h>
 #include <cub3d.h>
-
-/*
-** Parse the string and check if the boundaries are correct
-**
-** @param  const char *row passed string to loop over
-** @return size_t     number of columns in the map
-*/
-
-static size_t	map_h_edge(const char *row)
-{
-	size_t	pos;
-	size_t	col;
-
-	pos = 0;
-	col = 0;
-	while (row[pos])
-	{
-		if (row[pos] != '1')
-			close_error("Invalid map\n");
-		if (row[pos] == '1')
-			col++;
-		pos++;
-	}
-	return (col);
-}
 
 /*
 ** Parse the string and set spawn point for the player with correct rotation
@@ -47,7 +22,7 @@ static size_t	map_h_edge(const char *row)
 ** @return void
 */
 
-static void		map_spawn_pos(t_win *win, char *row, int index)
+static void	map_spawn_pos(t_win *win, char *row, int index)
 {
 	int		col;
 
@@ -76,9 +51,9 @@ static void		map_spawn_pos(t_win *win, char *row, int index)
 	win->pos.y = index + 0.5;
 }
 
-static void		extra_check(t_win *win, int c)
+static void	extra_check(t_win *win, int c)
 {
-	if ((win->tex[SPR_TR].wall == NULL && c == 'H')
+	if ((win->tex[DOOR_H].wall == NULL && c == 'H')
 		|| (win->tex[DOOR].wall == NULL && c == 'D'))
 		close_error("Missing textures\n");
 }
@@ -92,7 +67,7 @@ static void		extra_check(t_win *win, int c)
 ** @return void
 */
 
-static void		map_char_check(char **map, t_win *win)
+static void	map_char_check(char **map, t_win *win)
 {
 	size_t	row;
 	size_t	col;
@@ -126,30 +101,40 @@ static void		map_char_check(char **map, t_win *win)
 ** @param  t_win   *win allocated global window structure
 ** @return void
 */
-// TODO: change wall checking (map surrounded by walls)
-void			map_validate(t_win *win)
-{
-	size_t col;
-	size_t row;
-	size_t pos;
 
-	row = 0;
-	while (win->map.map[row])
-		row++;
-	col = map_h_edge(win->map.map[0]);
-	if (row < 3 || col < 3)
+static void	flood_fill(t_win *win, int x, int y)
+{
+	if (y < 0 || x < 0 || win->map.map[y][x] == '\0' || y > win->map.map_h - 1)
 		close_error("Invalid map\n");
-	win->map.map_w = col;
-	pos = 1;
-	while (pos < row - 1)
-	{
-		if (win->map.map[pos][0] != '1' || win->map.map[pos][col - 1] != '1')
-			close_error("Invalid map\n");
-		pos++;
-	}
-	if (col != map_h_edge(win->map.map[row - 1]))
-		close_error("Invalid map\n");
+	if (win->map.map[y][x] == '1' || win->map.map[y][x] == '0')
+		return ;
+	if (win->map.map[y][x] != '$')
+		return ;
+	if (!ft_strchr(FLOOD, win->map.map[y][x]))
+		win->map.map[y][x] += 12;
+	flood_fill(win, x + 1, y);
+	flood_fill(win, x - 1, y);
+	flood_fill(win, x, y + 1);
+	flood_fill(win, x, y - 1);
+}
+
+void		map_validate(t_win *win)
+{
+	int		x;
+	int		y;
+
 	map_char_check(win->map.map, win);
-	if (win->pos.x == 0 || win->pos.y == 0)
-		close_error("No spawn point\n");
+	y = 0;
+	while (y < win->map.map_h)
+	{
+		x = 0;
+		while (win->map.map[y][x])
+		{
+			if (win->map.map[y][x] == '0')
+				win->map.map[y][x] -= 12;
+			x++;
+		}
+		y++;
+	}
+	flood_fill(win, (int)win->pos.x, (int)win->pos.y);
 }

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 07:46:30 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 13:44:50 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 07:58:00 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	draw_wall(t_win *win, int i, int y)
 	else
 		win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
 	if (win->map.map[win->map.y][win->map.x] == 'H')
-		win->color.tex_i = SPR_TR;		// TODO: in case no tex provided (segfault)
+		win->color.tex_i = DOOR_H;
 	if (win->tex[CEILING].wall == NULL)
 	{
 		while (y < win->ray.draw_s && y < win->y)

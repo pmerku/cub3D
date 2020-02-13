@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/02/12 10:42:58 by prmerku          ###   ########.fr        #
+#    Updated: 2020/02/13 09:03:03 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ SRC += parser/parse_file parser/parse_info parser/parse_sprites \
 	parser/parse_map parser/parse_map_validate
 
 SRC += engine/renderer engine/movement engine/rotation engine/draw_back \
-	engine/draw_utils engine/draw_walls engine/draw_sprites engine/sprite_utils
+	engine/engine_utils engine/draw_walls engine/draw_sprites \
+	engine/sprite_utils
 
 SRC += utils/shutdown utils/data_handle utils/bitmap utils/bitmap_utils
 
@@ -59,9 +60,9 @@ MLX = libmlx.dylib
 
 all: $(NAME)
 
-f: $(MLX) $(LIBFT) $(OBJ)
+f: $(OBJ)
 	@printf "Compiling - ${YELLOW}[Fast build]${NC}\n"
-	@$(CC) $(CFLAGS) $(MLXFLAGS) -o $(NAME) $^
+	@$(CC) $(CFLAGS) $(MLXFLAGS) -o $(NAME) $^ $(MLX) $(LIBFT)
 	@printf "${MAGENTA}  Finished${NC}\n"
 
 $(NAME): $(MLX) $(LIBFT) $(OBJ)

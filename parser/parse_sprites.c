@@ -6,38 +6,13 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 11:53:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 11:22:15 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:14:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <parser.h>
 #include <utils.h>
 #include <cub3d.h>
-
-void		parse_sprites(char *data, t_win *win)
-{
-	int		i;
-
-	i = SPR_T1;
-	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S "))
-	{
-		while (win->tex[i].wall != NULL)
-			i++;
-		parse_tex(data, win, i);
-	}
-	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SM"))
-		parse_tex(data, win, SPR_M);
-	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SI"))
-		parse_tex(data, win, SPR_I);
-	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SC"))
-		parse_tex(data, win, SPR_C);
-	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"ST"))
-		parse_tex(data, win, SPR_TR);
-	if (win->color.spr_i >= S_NUM)
-		close_error("Too many sprites\n");
-	win->color.spr_i++;
-}
 
 static int	sprite_pos(t_win *win, char *c, int *pos)
 {
@@ -51,6 +26,7 @@ static int	sprite_pos(t_win *win, char *c, int *pos)
 			win->spr[*pos].x = win->pos.tmp_x + .5;
 			win->spr[*pos].y = win->pos.tmp_y + .5;
 			win->spr[*pos].tex_id = win->type[i].tex_i;
+			win->spr[*pos].hide = 0;
 			(*pos)++;
 			return (1);
 		}
@@ -61,8 +37,8 @@ static int	sprite_pos(t_win *win, char *c, int *pos)
 
 static void	save_sprite(t_win *win)
 {
-	int 	y;
-	int 	x;
+	int		y;
+	int		x;
 	int		pos;
 
 	pos = 0;
@@ -70,7 +46,7 @@ static void	save_sprite(t_win *win)
 	while (y < win->map.map_h)
 	{
 		x = 0;
-		while (x < win->map.map_w)
+		while (win->map.map[y][x])
 		{
 			if (ft_strchr(SPRITE_SET, win->map.map[y][x]))
 			{
@@ -87,7 +63,7 @@ static void	save_sprite(t_win *win)
 
 static int	sprite_on(t_win *win, char c)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (i < S_NUM)
@@ -119,7 +95,7 @@ static void	sprite_init(t_win *win)
 
 void		sprite_set(t_win *win)
 {
-	int 	x;
+	int		x;
 	int		y;
 
 	sprite_init(win);
@@ -127,7 +103,7 @@ void		sprite_set(t_win *win)
 	while (y < win->map.map_h)
 	{
 		x = 0;
-		while (x < win->map.map_w)
+		while (win->map.map[y][x])
 		{
 			if (ft_strchr(SPRITE_SET, win->map.map[y][x]))
 			{

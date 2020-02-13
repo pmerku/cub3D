@@ -6,13 +6,13 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 10:42:02 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 11:16:42 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:21:56 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void 			sprite_dist(t_win *win)
+void		sprite_dist(t_win *win)
 {
 	int		i;
 
@@ -31,6 +31,7 @@ static void	sprite_dup(t_spr *dst, t_spr *src)
 	dst->y = src->y;
 	dst->tex_id = src->tex_id;
 	dst->dist = src->dist;
+	dst->hide = src->hide;
 }
 
 static void	sprite_swap(t_spr *left, t_spr *right)
@@ -44,8 +45,8 @@ static void	sprite_swap(t_spr *left, t_spr *right)
 
 void		sprite_sort(t_spr *spr, int first, int last)
 {
-	int 	i;
-	int 	j;
+	int		i;
+	int		j;
 	int		tmp;
 
 	if (first < last)

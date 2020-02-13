@@ -4,10 +4,11 @@ SO ./textures/bluestone.png
 WE ./textures/wood.png
 EA ./textures/purplestone.png
 
-S ./textures/barrel.png
+S ./textures/pillar.png
 S ./textures/pillar.png
 S ./textures/greenlight.png
-ST ./textures/tnt.png
+SI ./textures/barrel.png
+DH ./textures/tnt.png
 
 FT ./textures/greystone.png
 CT ./textures/mossy.png
@@ -22,7 +23,7 @@ C 80, 200, 80
 10010000000000000001
 10000000000000000001
 10000000111000040001
-1000001H111000200001
+1000001H111002I00001
 10000010100000003001
 10000000000000000001
 100000000000N0000001
