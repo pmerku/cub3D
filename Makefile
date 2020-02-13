@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/02/13 09:03:03 by prmerku          ###   ########.fr        #
+#    Updated: 2020/02/13 15:03:52 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ MLX = libmlx.dylib
 # 							Rules
 # ----------------------------------------------------------------------------
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
 
 all: $(NAME)
 
@@ -83,6 +83,8 @@ $(MLX):
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $<
+
+bonus: all
 
 clean:
 	@printf "Cleaning - ${YELLOW}[OBJ]${NC}\n"

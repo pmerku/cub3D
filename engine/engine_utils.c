@@ -6,11 +6,12 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 13:18:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 12:03:42 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 14:35:06 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <engine.h>
 #include <cub3d.h>
 
 int		query_map(t_win *win, double y, double x)
@@ -20,7 +21,8 @@ int		query_map(t_win *win, double y, double x)
 		|| ft_strchr(HIT_C, win->map.map[(int)y][(int)x]))
 	{
 		win->mov.hit = 1;
-		if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
+		if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x])
+			|| open_door(win, y, x))
 			return (0);
 	}
 	else if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
@@ -43,10 +45,10 @@ int		px_color(t_tex *tex, double y, double x, int id)
 	{
 		if (id == N_WALL || id == E_WALL)
 			return (*(int*)(tex->data + (tex->line_len * (int)y) +
-							(4 * tex->tex_w) - (((int)x + 1) * 4)));
+				(4 * tex->tex_w) - (((int)x + 1) * 4)));
 		else
 			return (*(int*)(tex->data + (tex->line_len * (int)y) +
-							(4 * (int)x)));
+				(4 * (int)x)));
 	}
 	return (0x0);
 }
@@ -58,4 +60,15 @@ void	sprite_hide(t_win *win, double y, double x)
 		win->map.map[(int)y][(int)x] = '0';
 		win->spr[win->spr_i - 1].hide = 1;
 	}
+}
+
+int		open_door(t_win *win, double y, double x)
+{
+	if (win->key.open)
+	{
+		if (win->map.map[(int)y][(int)x] == 'D')
+			win->mov.hit = !win->mov.hit;
+		return (1);
+	}
+	return (0);
 }

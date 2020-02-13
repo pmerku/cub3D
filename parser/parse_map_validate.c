@@ -116,6 +116,10 @@ static void	flood_fill(t_win *win, int x, int y)
 	flood_fill(win, x - 1, y);
 	flood_fill(win, x, y + 1);
 	flood_fill(win, x, y - 1);
+	flood_fill(win, x - 1, y - 1);
+	flood_fill(win, x + 1, y + 1);
+	flood_fill(win, x + 1, y - 1);
+	flood_fill(win, x - 1, y + 1);
 }
 
 void		map_validate(t_win *win)

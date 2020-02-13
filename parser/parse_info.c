@@ -95,7 +95,7 @@ void	parse_tex(char *data, t_win *win, int i)
 		data++;
 	path = ft_strdup(data);
 	malloc_check(path);
-	win->tex[i].wall = mlx_png_file_to_image(win->mlx, path,
+	win->tex[i].wall = mlx_xpm_file_to_image(win->mlx, path,
 			&win->tex[i].tex_w, &win->tex[i].tex_h);
 	if (!win->tex[i].wall)
 	{

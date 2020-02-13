@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 14:27:38 by prmerku           #+#    #+#             */
-/*   Updated: 2020/01/23 14:22:54 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 14:50:33 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,16 @@
 
 int		close_win(t_win *win)
 {
+	int 	i;
+
 	if (win->mlx && win->mlx_win)
 	{
+		i = 0;
+		while (win->tex[i].wall)
+			mlx_destroy_image(win->mlx, win->tex[i].wall);
 		mlx_destroy_image(win->mlx, win->img[0].img);
 		mlx_destroy_image(win->mlx, win->img[1].img);
-		//mlx_destroy_window(win->mlx_updated, win->mlx_win); // TODO: fix segfault
+		mlx_destroy_window(win->mlx, win->mlx_win);
 		exit(EXIT_SUCCESS);
 	}
 	return (0);
@@ -37,7 +42,8 @@ int		close_win(t_win *win)
 /*
 ** Clean exit program on correct keycode
 **
-** @param  char * error string to be printed
+** @param  t_win    *win allocated global window structure
+** @param  int   keycode pressed key id
 ** @exit   int    status code 0
 ** @return int    status code
 */
@@ -50,7 +56,6 @@ int		close_key(int keycode, t_win *win)
 		{
 			mlx_destroy_image(win->mlx, win->img[0].img);
 			mlx_destroy_image(win->mlx, win->img[1].img);
-			//mlx_destroy_window(win->mlx_updated, win->mlx_win); // TODO: fix segfault
 			exit(EXIT_SUCCESS);
 		}
 	}

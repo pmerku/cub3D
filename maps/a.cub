@@ -1,17 +1,19 @@
 R 1280 720
-NO ./textures/colorstone.png
-SO ./textures/bluestone.png
-WE ./textures/wood.png
-EA ./textures/purplestone.png
+NO ./textures/colorstone.xpm
+SO ./textures/bluestone.xpm
+WE ./textures/redbrick.xpm
+EA ./textures/purplestone.xpm
 
-S ./textures/pillar.png
-S ./textures/pillar.png
-S ./textures/greenlight.png
-SI ./textures/barrel.png
-DH ./textures/tnt.png
+S ./textures/pillar.xpm
+S ./textures/light.xpm
+S ./textures/barrel.xpm
+SI ./textures/health.xpm
 
-FT ./textures/greystone.png
-CT ./textures/mossy.png
+DH ./textures/hidden.xpm
+D ./textures/eagle.xpm
+
+FT ./textures/greystone.xpm
+CT ./textures/mossy.xpm
 
 F 200, 80, 200
 C 80, 200, 80
@@ -23,8 +25,8 @@ C 80, 200, 80
 10010000000000000001
 10000000000000000001
 10000000111000040001
-1000001H111002I00001
-10000010100000003001
+10001H11111D10200I01
+10000000000000003001
 10000000000000000001
 100000000000N0000001
 10000000000000000001

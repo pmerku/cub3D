@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 07:57:21 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 14:30:48 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	init_calc(t_win *win, t_ray *ray)
 			: (win->map.y - win->pos.y
 			+ (1. - win->mov.step_y) / 2) / ray->dir_y;
 	win->img[win->i].line_h = (int)(win->y / win->mov.perp_wd);
-	ray->draw_s = (win->img[win->i].line_h * -1) / 2 + win->y / 2;
+	ray->draw_s = -win->img[win->i].line_h / 2 + win->y / 2;
 	ray->draw_s = (ray->draw_s < 0) ? 0 : ray->draw_s;
 	ray->draw_e = win->img[win->i].line_h / 2 + win->y / 2;
 	ray->draw_e = (ray->draw_e >= win->y)

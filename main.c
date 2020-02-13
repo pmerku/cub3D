@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/12 15:01:14 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 15:35:13 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ static t_win g_win = {
 		.down = 0,
 		.right = 0,
 		.rot_l = 0,
-		.rot_r = 0
+		.rot_r = 0,
+		.open = 0,
+		.crouch = 0,
+		.shoot = 0
 	},
 	.color = {
 		.a = 0,
@@ -99,6 +102,8 @@ int			key_release(int keycode, t_win *win)
 		win->key.rot_l = 0;
 	if (keycode == KEY_RIGHT)
 		win->key.rot_r = 0;
+	if (keycode == KEY_SHIFT)
+		win->key.crouch = 0;
 	return (0);
 }
 
@@ -126,6 +131,12 @@ int			key_press(int keycode, t_win *win)
 		win->key.rot_l = 1;
 	if (keycode == KEY_RIGHT)
 		win->key.rot_r = 1;
+	if (keycode == KEY_E)
+		win->key.open = !win->key.open;
+	if (keycode == KEY_SHIFT)
+		win->key.crouch = 1;
+	if (keycode == KEY_SPACE)
+		win->key.shoot = !win->key.shoot;
 	return (0);
 }
 

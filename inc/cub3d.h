@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 12:16:53 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 15:35:02 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <math.h>
 # include <sys/types.h>
 
+
+# include <stdio.h>
 /*
 ** ---------------------------------------------------------------------------
 ** 							Macro defines
@@ -53,6 +55,9 @@
 # define KEY_DOWN	125
 # define KEY_RIGHT	124
 # define KEY_ESC	53
+# define KEY_E		14
+# define KEY_SHIFT	257
+# define KEY_SPACE	49
 
 # define MOV_SPEED	0.0475
 # define ROT_SPEED	0.0275
@@ -98,7 +103,7 @@
 ** Map query macros
 */
 
-# define HIT_C		"1H"
+# define HIT_C		"1HD"
 # define HIT_NC		"04ICH"
 # define HIT_P		"IC"
 # define FLOOD		"1234MICTHD"
@@ -120,6 +125,9 @@ typedef struct	s_key {
 	u_int		right:1;
 	u_int		rot_l:1;
 	u_int		rot_r:1;
+	u_int		shoot:1;
+	u_int 		crouch:1;
+	u_int 		open:1;
 }				t_key;
 
 /*

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:29:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 12:01:51 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/13 13:27:14 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	move_up(t_mov *mov, t_win *win);
 void	move_down(t_mov *mov, t_win *win);
 void	rotate_l(t_mov *mov, t_win *win, double dir_x, double plane_x);
 void	rotate_r(t_mov *mov, t_win *win, double dir_x, double plane_x);
+int		open_door(t_win *win, double y, double x);
 
 void	draw_back(t_win *win);
 void	draw_wall(t_win *win, int i, int y);
