@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/02/13 15:03:52 by prmerku          ###   ########.fr        #
+#    Updated: 2020/02/14 16:33:28 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ NC = \033[0m
 # 							Flags and Lib name
 # ----------------------------------------------------------------------------
 
-CFLAGS = -Wall -Wextra -Werror -Ilibft -Imlx -Iinc -Ofast
+CFLAGS = -Wall -Wextra -Werror -Ilibft -Imlx -Iinc -O3
 
 MLXFLAGS = -Lmlx/ -lmlx -framework OpenGL -framework AppKit
 

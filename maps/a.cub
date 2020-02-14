@@ -1,4 +1,4 @@
-R 1280 720
+R 1270 720
 NO ./textures/colorstone.xpm
 SO ./textures/bluestone.xpm
 WE ./textures/redbrick.xpm

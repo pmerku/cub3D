@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 13:18:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 18:01:28 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/14 15:13:49 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ int		query_map(t_win *win, double y, double x)
 		|| ft_strchr(HIT_C, win->map.map[(int)y][(int)x]))
 	{
 		win->mov.hit = 1;
-		if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x])
-			|| open_door(win, y, x))
+		if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
+			return (0);
+		if (open_door(win, y, x))
 			return (0);
 	}
 	else if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
@@ -65,10 +66,10 @@ void	sprite_hide(t_win *win, double y, double x)
 int		open_door(t_win *win, double y, double x)
 {
 	if (win->key.open)
-	{
 		if (win->map.map[(int)y][(int)x] == 'D')
+		{
 			win->mov.hit = !win->mov.hit;
-		return (1);
-	}
+			return (1);
+		}
 	return (0);
 }

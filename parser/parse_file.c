@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/14 08:17:11 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/14 17:54:45 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ static void	parse_info(char **data, t_win *win)
 		parse_tex(*data, win, DOOR);
 	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"DH"))
 		parse_tex(*data, win, DOOR_H);
-	else if ((**data != '1' && **data != 16))
-		close_error("Unknown element\n"); // TODO: if first character in map is not 1
+	else if (**data != 16 && !ft_strchr(ELEM_S, **data))
+		close_error("Unknown element\n");
 }
 
 /*
@@ -93,8 +93,9 @@ static void	parse_settings(char *data, t_win *win)
 	free(data);
 	malloc_check(elements);
 	index = 0;
-	while (elements[index] && elements[index][0] != '1')
+	while (elements[index] && !ft_strchr(ELEM_S, elements[index][0]))
 	{
+		printf("%d, %c\n", index, elements[index][0]);
 		parse_info(&elements[index], win);
 		index++;
 	}
