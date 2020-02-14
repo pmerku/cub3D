@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 12:14:16 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/14 08:06:17 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,15 @@ void	parse_sprites(char *data, t_win *win)
 {
 	int		i;
 
-	i = SPR_T1;
+	i = SPR_T2;
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S "))
 	{
 		while (win->tex[i].wall != NULL)
 			i++;
 		parse_tex(data, win, i);
 	}
+	if ((*(u_int16_t *)data) == (*(u_int16_t *)"SL"))
+		parse_tex(data, win, SPR_T1);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SM"))
 		parse_tex(data, win, SPR_M);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SI"))

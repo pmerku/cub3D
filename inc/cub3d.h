@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 15:35:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/14 08:37:51 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,24 +79,25 @@
 ** Sprite id macros
 */
 
-# define SPR_T1		8
-# define SPR_T2		9
-# define SPR_T3		10
-# define SPR_I		11
-# define SPR_C		12
-# define SPR_TR		13
-# define SPR_M		14
+# define SPR_I		8
+# define SPR_C		9
+# define SPR_TR		10
+# define SPR_T1		11
+# define SPR_T2		12
+# define SPR_T3		13
+# define SPR_T4		14
+# define SPR_M		15
 
 /*
 ** Supported texture/sprites id macros
 */
 
-# define S_NUM		8
-# define T_NUM		15
+# define S_NUM		9
+# define T_NUM		16
 
-# define CHAR_SET	"01234NSEWHDMICT"
+# define CHAR_SET	"012345NSEWHDMICT"
 # define SPAWN_SET	"NSEW"
-# define SPRITE_SET	"234MICT"
+# define SPRITE_SET	"2345MICT"
 # define EXTRA_SET	"HD"
 
 /*
@@ -104,9 +105,10 @@
 */
 
 # define HIT_C		"1HD"
-# define HIT_NC		"04ICH"
-# define HIT_P		"IC"
+# define HIT_NC		"04ICTH"
+# define HIT_P		"ICT"
 # define FLOOD		"1234MICTHD"
+# define SKIP		"234MICTHD"
 
 /*
 ** ---------------------------------------------------------------------------
