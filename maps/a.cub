@@ -13,8 +13,8 @@ SI ./textures/health.xpm
 SC ./textures/collectible.xpm
 ST ./textures/trap.xpm
 
-DH ./textures/hidden.xpm
-D ./textures/eagle.xpm
+BH ./textures/hidden.xpm
+BD ./textures/eagle.xpm
 
 FT ./textures/greystone.xpm
 CT ./textures/mossy.xpm

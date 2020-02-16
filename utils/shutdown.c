@@ -10,12 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <libft.h>
 #include <mlx.h>
 #include <cub3d.h>
 
 /*
-** Clean exit program on window close button press
+** Clean exit program
 **
 ** @param  t_win *win allocated global window structure
 ** @exit   int        status code 0
@@ -35,29 +36,6 @@ int		close_win(t_win *win)
 		mlx_destroy_image(win->mlx, win->img[1].img);
 		mlx_destroy_window(win->mlx, win->mlx_win);
 		exit(EXIT_SUCCESS);
-	}
-	return (0);
-}
-
-/*
-** Clean exit program on correct keycode
-**
-** @param  t_win    *win allocated global window structure
-** @param  int   keycode pressed key id
-** @exit   int    status code 0
-** @return int    status code
-*/
-
-int		close_key(int keycode, t_win *win)
-{
-	if (keycode == KEY_ESC)
-	{
-		if (win->mlx && win->mlx_win)
-		{
-			mlx_destroy_image(win->mlx, win->img[0].img);
-			mlx_destroy_image(win->mlx, win->img[1].img);
-			exit(EXIT_SUCCESS);
-		}
 	}
 	return (0);
 }

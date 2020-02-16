@@ -11,7 +11,19 @@
 /* ************************************************************************** */
 
 #include <cub3d.h>
+#include <math.h>
+#include <stddef.h>
 #include <engine.h>
+
+/*
+** Calling function for wall texture drawing
+**
+** @param  t_win *win allocated global window structure
+** @param  t_tex *tex allocated texture structure
+** @param  int      i ray-caster index
+** @param  int      y position y on screen
+** @return void
+*/
 
 int		draw_tex(t_win *win, t_tex *tex, int i, int y)
 {
@@ -32,6 +44,16 @@ int		draw_tex(t_win *win, t_tex *tex, int i, int y)
 	return (y);
 }
 
+/*
+** Calling function for wall texture selection and floor and ceiling protection
+** in case no floor/ceiling texture is provided
+**
+** @param  t_win *win allocated global window structure
+** @param  int      i ray-caster index
+** @param  int      y position y on screen
+** @return void
+*/
+
 void	draw_wall(t_win *win, int i, int y)
 {
 	if (win->mov.side)
@@ -40,7 +62,7 @@ void	draw_wall(t_win *win, int i, int y)
 		win->color.tex_i = (win->map.x < win->pos.x) ? N_WALL : S_WALL;
 	if (win->map.map[win->map.y][win->map.x] == 'H')
 		win->color.tex_i = DOOR_H;
-	if (win->map.map[win->map.y][win->map.x] == 'D')
+	else if (win->map.map[win->map.y][win->map.x] == 'D')
 		win->color.tex_i = DOOR;
 	if (win->tex[CEILING].wall == NULL)
 	{

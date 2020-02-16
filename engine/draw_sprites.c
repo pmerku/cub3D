@@ -11,7 +11,17 @@
 /* ************************************************************************** */
 
 #include <cub3d.h>
+#include <stdlib.h>
 #include <engine.h>
+
+/*
+** Calculations for x/y position on screen sprite drawing
+**
+** @param  t_win *win allocated global window structure
+** @param  t_spr *spr allocated sprite structure
+** @param  t_sdt *sdt allocated sprite data structure
+** @return void
+*/
 
 static void	sprite_calc(t_win *win, t_spr *spr, t_sdt *sdt)
 {
@@ -35,6 +45,16 @@ static void	sprite_calc(t_win *win, t_spr *spr, t_sdt *sdt)
 	sdt->draw_ex = (sdt->draw_ex >= win->x) ? win->x - 1 : sdt->draw_ex;
 }
 
+/*
+** Calling function for sprite texture drawing
+**
+** @param  t_win *win allocated global window structure
+** @param  t_tex *tex allocated texture structure
+** @param  t_sdt *sdt allocated sprite data structure
+** @param  int     id texture id
+** @return void
+*/
+
 static void	sprite_tex(t_win *win, t_tex *tex, t_sdt *sdt, int id)
 {
 	int		y;
@@ -57,6 +77,15 @@ static void	sprite_tex(t_win *win, t_tex *tex, t_sdt *sdt, int id)
 		}
 	}
 }
+
+/*
+** Calling function for sprites ray-casting
+**
+** @param  t_win *win allocated global window structure
+** @param  t_sdt *sdt allocated sprite data structure
+** @param  int      i ray-caster index
+** @return void
+*/
 
 void		draw_sprite(t_win *win, t_sdt *sdt, int i)
 {

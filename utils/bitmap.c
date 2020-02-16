@@ -10,11 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
 #include <libft.h>
 #include <utils.h>
 #include <cub3d.h>
 
-static u_char	*bitmap_header(int h, int w, int pad_s)
+/*
+** Create Bitmap header
+**
+** @param  u_int      h header height
+** @param  u_int      w header width
+** @param  int    pad_s padding size
+** @return u_char     * header buffer
+*/
+
+static u_char	*bitmap_header(u_int h, u_int w, int pad_s)
 {
 	static u_char	header[BMP_HSIZE];
 	u_int			file_s;
@@ -29,6 +39,14 @@ static u_char	*bitmap_header(int h, int w, int pad_s)
 	header[10] = (u_char)(BMP_HSIZE + BMP_ISIZE);
 	return (header);
 }
+
+/*
+** Create Bitmap info
+**
+** @param  u_int      h info height
+** @param  u_int      w info width
+** @return u_char     * info buffer
+*/
 
 static u_char	*bitmap_info(u_int h, u_int w)
 {
@@ -47,6 +65,15 @@ static u_char	*bitmap_info(u_int h, u_int w)
 	header[14] = (u_char)(BMP_BPP * 8);
 	return (header);
 }
+
+/*
+** Create Bitmap file and write all info to it
+**
+** @param  u_char *img allocated image buffer
+** @param  u_int     h file height
+** @param  int       w file width
+** @return void
+*/
 
 static void		save_bitmap(u_char *img, int h, int w)
 {
@@ -67,6 +94,15 @@ static void		save_bitmap(u_char *img, int h, int w)
 	close(img_f);
 }
 
+/*
+** Set pixel color
+**
+** @param  t_win  *win allocated global window structure
+** @param  u_char *img allocated image buffer
+** @param  int       i index color position
+** @return void
+*/
+
 static void		set_px(t_win *win, u_char *img, int i)
 {
 	u_char	*ptr;
@@ -80,6 +116,13 @@ static void		set_px(t_win *win, u_char *img, int i)
 	else if (i == 2)
 		*ptr = get_r(win->color.bmp_color);
 }
+
+/*
+** Calling function for bitmap option
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 void			save_frame(t_win *win)
 {

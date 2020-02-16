@@ -51,6 +51,14 @@ static void	map_spawn_pos(t_win *win, char *row, int index)
 	win->pos.y = index + 0.5;
 }
 
+/*
+** Check if extra character has texture loaded
+**
+** @param  t_win  *win allocated global window structure
+** @param  int       c position character
+** @return void
+*/
+
 static void	extra_check(t_win *win, int c)
 {
 	if ((win->tex[DOOR_H].wall == NULL && c == 'H')
@@ -96,9 +104,11 @@ static void	map_char_check(char **map, t_win *win)
 }
 
 /*
-** Validate map and check if map is a square/rectangle
+** Validate map algorithm
 **
-** @param  t_win   *win allocated global window structure
+** @param  t_win *win allocated global window structure
+** @param  int      x position x in map
+** @param  int      y position y in map
 ** @return void
 */
 
@@ -125,6 +135,14 @@ static void	flood_fill(t_win *win, int x, int y)
 	flood_fill(win, x + 1, y - 1);
 	flood_fill(win, x - 1, y + 1);
 }
+
+/*
+** Calling function for map validation and transform "empty" tile to target
+** for the flood fill algorithm
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 void		map_validate(t_win *win)
 {

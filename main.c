@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <mlx.h>
-#include <utils.h>
-#include <parser.h>
+#include <libft.h>
 #include <engine.h>
+#include <parser.h>
+#include <utils.h>
 #include <cub3d.h>
 
 /*
@@ -25,6 +25,8 @@ static t_win g_win = {
 	.x = 0,
 	.y = 0,
 	.i = 0,
+	.score = 0,
+	.health = 1,
 	.key = {
 		.up = 0,
 		.left = 0,
@@ -118,7 +120,7 @@ int			key_release(int keycode, t_win *win)
 int			key_press(int keycode, t_win *win)
 {
 	if (keycode == KEY_ESC)
-		close_key(keycode, win);
+		close_win(win);
 	if (keycode == KEY_W || keycode == KEY_UP)
 		win->key.up = 1;
 	if (keycode == KEY_S || keycode == KEY_DOWN)

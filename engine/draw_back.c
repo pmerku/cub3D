@@ -11,7 +11,18 @@
 /* ************************************************************************** */
 
 #include <cub3d.h>
+#include <stddef.h>
 #include <engine.h>
+
+/*
+** Put on screen x/y position a colored pixel
+**
+** @param  t_win *win allocated global window structure
+** @param  t_tex *tex allocated texture structure
+** @param  int      x position x in window
+** @param  int      y position y in window
+** @return void
+*/
 
 static void	draw_px(t_win *win, t_tex *tex, int x, int y)
 {
@@ -22,6 +33,16 @@ static void	draw_px(t_win *win, t_tex *tex, int x, int y)
 	pixel_put(&win->img[win->i], x, y,
 			px_color(tex, tex->tex_y, tex->tex_x, 1));
 }
+
+/*
+** Calculations for x position on screen of floor and ceiling textures
+**
+** @param  t_win *win allocated global window structure
+** @param  t_ray *ray allocated ray-caster structure
+** @param  int      x position x in window
+** @param  int      y position y in window
+** @return void
+*/
 
 static void	draw_px_back(t_win *win, t_ray *ray, int x, int y)
 {
@@ -34,6 +55,15 @@ static void	draw_px_back(t_win *win, t_ray *ray, int x, int y)
 	if (win->tex[FLOOR].wall != NULL)
 		draw_px(win, &win->tex[FLOOR], x, y);
 }
+
+/*
+** Calculations for y position on screen of floor and ceiling textures
+**
+** @param  t_win *win allocated global window structure
+** @param  t_ray *ray allocated ray-caster structure
+** @param  int      y position y in window
+** @return void
+*/
 
 static void	draw_tex_back(t_win *win, t_ray *ray, int y)
 {
@@ -58,6 +88,13 @@ static void	draw_tex_back(t_win *win, t_ray *ray, int y)
 		x++;
 	}
 }
+
+/*
+** Calling function for floor and ceiling texture drawing
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 void		draw_back(t_win *win)
 {

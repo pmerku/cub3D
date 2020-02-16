@@ -11,9 +11,49 @@
 /* ************************************************************************** */
 
 #include <mlx.h>
+#include <math.h>
+#include <libft.h>
 #include <engine.h>
 #include <utils.h>
 #include <cub3d.h>
+
+/*
+** Check if a wall is hit
+**
+** @param  t_win  *win allocated global window structure
+** @param  double    y position x of player
+** @param  double    x position y of player
+** @return int         status code
+*/
+
+int		query_map(t_win *win, double y, double x)
+{
+	if (y < 0 || y >= win->map.map_h || x < 0
+		|| x >= ft_strlen(win->map.map[(int)y])
+		|| ft_strchr(HIT_C, win->map.map[(int)y][(int)x]))
+	{
+		win->mov.hit = 1;
+		if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
+			return (0);
+		if (open_door(win, y, x))
+			return (0);
+	}
+	else if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
+	{
+		win->mov.hit = 0;
+		return (0);
+	}
+	return (1);
+}
+
+/*
+** Calculations for the ray-caster
+**
+** @param  t_win *win allocated global window structure
+** @param  t_ray *ray allocated ray-caster structure
+** @param  int      i ray-caster index
+** @return void
+*/
 
 static void	init_ray(t_win *win, t_ray *ray, int i)
 {
@@ -35,6 +75,14 @@ static void	init_ray(t_win *win, t_ray *ray, int i)
 			: (win->map.y + 1.0 - win->pos.y) * ray->delta_dy;
 }
 
+/*
+** Calculations for the perpendicular wall distance
+**
+** @param  t_win *win allocated global window structure
+** @param  t_ray *ray allocated ray-caster structure
+** @return void
+*/
+
 static void	init_calc(t_win *win, t_ray *ray)
 {
 	win->mov.perp_wd = (!win->mov.side)
@@ -49,6 +97,14 @@ static void	init_calc(t_win *win, t_ray *ray)
 	ray->draw_e = (ray->draw_e >= win->y)
 			? win->y - 1 : ray->draw_e;
 }
+
+/*
+** DDA algorithm
+**
+** @param  t_win *win allocated global window structure
+** @param  int      i ray-caster index
+** @return void
+*/
 
 static void	perform_dda(t_win *win, int i)
 {
@@ -77,6 +133,13 @@ static void	perform_dda(t_win *win, int i)
 		i++;
 	}
 }
+
+/*
+** Calling function to render every frame
+**
+** @param  t_win *win allocated global window structure
+** @return int        status code
+*/
 
 int			render_next_frame(t_win *win)
 {

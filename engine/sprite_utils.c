@@ -10,7 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include <cub3d.h>
+
+/*
+** Calculations for sprite distance from player
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 void		sprite_dist(t_win *win)
 {
@@ -25,6 +33,14 @@ void		sprite_dist(t_win *win)
 	}
 }
 
+/*
+** Copy over sprite structure values
+**
+** @param  t_spr  *dst allocated sprite structure
+** @param  t_spr  *src allocated sprite structure
+** @return void
+*/
+
 static void	sprite_dup(t_spr *dst, t_spr *src)
 {
 	dst->x = src->x;
@@ -34,6 +50,14 @@ static void	sprite_dup(t_spr *dst, t_spr *src)
 	dst->hide = src->hide;
 }
 
+/*
+** Swap sprites
+**
+** @param  t_spr  *left allocated sprite structure
+** @param  t_spr  *right allocated sprite structure
+** @return void
+*/
+
 static void	sprite_swap(t_spr *left, t_spr *right)
 {
 	t_spr	tmp;
@@ -42,6 +66,15 @@ static void	sprite_swap(t_spr *left, t_spr *right)
 	sprite_dup(left, right);
 	sprite_dup(right, &tmp);
 }
+
+/*
+** Sprite sorting algorithm
+**
+** @param  t_spr  *spr allocated sprite structure
+** @param  int   first first sprite index
+** @param  int    last last sprite index
+** @return void
+*/
 
 void		sprite_sort(t_spr *spr, int first, int last)
 {

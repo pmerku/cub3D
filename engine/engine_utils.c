@@ -11,34 +11,55 @@
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <engine.h>
+#include <stdlib.h>
+#include <utils.h>
 #include <cub3d.h>
 
-int		query_map(t_win *win, double y, double x)
+/*
+** Fork process and play sound in background
+**
+** @param  char *cmd path to sound file
+** @return int       status code
+*/
+
+int		sound(char *cmd)
 {
-	if (y < 0 || y >= win->map.map_h || x < 0
-		|| x >= ft_strlen(win->map.map[(int)y])
-		|| ft_strchr(HIT_C, win->map.map[(int)y][(int)x]))
+	if (fork() < 0)
+		exit(EXIT_FAILURE);
+	else
 	{
-		win->mov.hit = 1;
-		if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
-			return (0);
-		if (open_door(win, y, x))
-			return (0);
+		cmd = ft_strjoin_free2("afplay ", cmd);
+		system(cmd);
+		free(cmd);
+		exit(EXIT_SUCCESS);
 	}
-	else if (ft_strchr(HIT_NC, win->map.map[(int)y][(int)x]))
-	{
-		win->mov.hit = 0;
-		return (0);
-	}
-	return (1);
 }
+
+/*
+** Put pixel color on image x/y position
+**
+** @param  t_img  *img allocated image structure
+** @param  int       x pos x on image
+** @param  int       y position y on image
+** @param  int   color color value
+** @return void
+*/
 
 void	pixel_put(t_img *img, int x, int y, int color)
 {
 	*(unsigned int*)(img->addr
 		+ (y * img->line_len + x * (img->bpp / 8))) = color;
 }
+
+/*
+** Get pixel color from x/y position in texture
+**
+** @param  t_tex  *tex allocated texture structure
+** @param  double    y pos y in texture image
+** @param  double    x position x in texture image
+** @param  int      id texture id
+** @return int         pixel color value
+*/
 
 int		px_color(t_tex *tex, double y, double x, int id)
 {
@@ -54,14 +75,44 @@ int		px_color(t_tex *tex, double y, double x, int id)
 	return (0x0);
 }
 
+/*
+** Hide sprite if you can pick it up, play according sound and change score
+**
+** @param  t_win  *win allocated global window structure
+** @param  double    y pos y of player
+** @param  double    x position x of player
+** @return void
+*/
+
 void	sprite_hide(t_win *win, double y, double x)
 {
 	if (ft_strchr(HIT_P, win->map.map[(int)y][(int)x]))
 	{
+		if (win->map.map[(int)y][(int)x] == 'T')
+		{
+			if (sound("damage.wav") == 1)
+				close_error("Sound error\n");
+			win->health -= (double)1 / 3;
+		}
+		else
+		{
+			if (sound("point.wav") == 1)
+				close_error("Sound error\n");
+			win->score += (double)1 / win->spr_i;
+		}
 		win->map.map[(int)y][(int)x] = '0';
 		win->spr[win->spr_i - 1].hide = 1;
 	}
 }
+
+/*
+** Open door on correct key press
+**
+** @param  t_win  *win allocated global window structure
+** @param  double    y pos y of player
+** @param  double    x position x of player
+** @return int         status code
+*/
 
 int		open_door(t_win *win, double y, double x)
 {

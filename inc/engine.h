@@ -33,8 +33,8 @@ void	move_right(t_mov *mov, t_win *win);
 void	move_left(t_mov *mov, t_win *win);
 void	move_up(t_mov *mov, t_win *win);
 void	move_down(t_mov *mov, t_win *win);
-void	rotate_l(t_mov *mov, t_win *win, double dir_x, double plane_x);
-void	rotate_r(t_mov *mov, t_win *win, double dir_x, double plane_x);
+void	rotate_l(t_mov *mov, t_win *win, double dir, double plane);
+void	rotate_r(t_mov *mov, t_win *win, double dir, double plane);
 int		open_door(t_win *win, double y, double x);
 
 void	draw_back(t_win *win);
@@ -49,5 +49,6 @@ void	sprite_dist(t_win *win);
 int		query_map(t_win *win, double y, double x);
 int		px_color(t_tex *tex, double y, double x, int id);
 void	pixel_put(t_img *img, int x, int y, int color);
+int		sound(char *cmd);
 
 #endif

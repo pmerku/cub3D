@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <fcntl.h>
 #include <libft.h>
 #include <utils.h>
 #include <parser.h>
@@ -68,9 +70,9 @@ static void	parse_info(char **data, t_win *win)
 		parse_tex(*data, win, FLOOR);
 	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"CT"))
 		parse_tex(*data, win, CEILING);
-	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"D "))
+	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"BD"))
 		parse_tex(*data, win, DOOR);
-	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"DH"))
+	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"BH"))
 		parse_tex(*data, win, DOOR_H);
 	else if (**data != 16 && !ft_strchr(ELEM_S, **data))
 		close_error("Unknown element\n");
@@ -95,7 +97,6 @@ static void	parse_settings(char *data, t_win *win)
 	index = 0;
 	while (elements[index] && !ft_strchr(ELEM_S, elements[index][0]))
 	{
-		printf("%d, %c\n", index, elements[index][0]);
 		parse_info(&elements[index], win);
 		index++;
 	}

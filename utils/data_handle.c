@@ -10,9 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <libft.h>
 #include <utils.h>
-#include <cub3d.h>
+
+/*
+** Malloc wrapper
+**
+** @param  size_t size size to malloc
+** @return void      * malloc-ed size
+*/
 
 void		*ft_malloc(size_t size)
 {
@@ -21,10 +28,16 @@ void		*ft_malloc(size_t size)
 	mem = NULL;
 	if (size > 0)
 		mem = malloc(size);
-	if (!mem)
-		close_error("Malloc fail\n");
+	malloc_check(mem);
 	return (mem);
 }
+
+/*
+** Check if malloc failed
+**
+** @param  void *ptr pointer to memory
+** @return void
+*/
 
 void		malloc_check(void *ptr)
 {

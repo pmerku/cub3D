@@ -19,14 +19,8 @@
 ** ---------------------------------------------------------------------------
 */
 
-# include <stdlib.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <math.h>
 # include <sys/types.h>
 
-
-# include <stdio.h>
 /*
 ** ---------------------------------------------------------------------------
 ** 							Macro defines
@@ -107,9 +101,14 @@
 # define HIT_C		"1HD"
 # define HIT_NC		"04ICTH"
 # define HIT_P		"ICT"
+
+/*
+** Flood fill macros
+*/
+
 # define FLOOD		"1234MICTHD"
 # define SKIP		"234MICTHD"
-# define ELEM_S		"012345HDMICT"
+# define ELEM_S		"012345MICTHD"
 
 /*
 ** ---------------------------------------------------------------------------
@@ -310,6 +309,8 @@ typedef struct	s_win {
 	int			spr_i;
 	t_mov		mov;
 	t_key		key;
+	double		health;
+	double		score;
 }				t_win;
 
 /*

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <libft.h>
 #include <mlx.h>
 #include <utils.h>
@@ -114,13 +115,22 @@ void	parse_tex(char *data, t_win *win, int i)
 	win->color.f_color = (i == FLOOR) ? 0xAA000000 : win->color.f_color;
 }
 
+/*
+** Parse the 2D array and save the sprites separately in the
+** global window struct
+**
+** @param  char  *data passed string from 2D array
+** @param  t_win  *win allocated global window structure
+** @return void
+*/
+
 void	parse_sprites(char *data, t_win *win)
 {
 	int		i;
 
-	i = SPR_T2;
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S "))
 	{
+		i = SPR_T2;
 		while (win->tex[i].wall != NULL)
 			i++;
 		parse_tex(data, win, i);
@@ -128,7 +138,12 @@ void	parse_sprites(char *data, t_win *win)
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"SL"))
 		parse_tex(data, win, SPR_T1);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SM"))
-		parse_tex(data, win, SPR_M);
+	{
+		i = SPR_M;
+		while (win->tex[i].wall != NULL)
+			i++;
+		parse_tex(data, win, i);
+	}
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SI"))
 		parse_tex(data, win, SPR_I);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SC"))

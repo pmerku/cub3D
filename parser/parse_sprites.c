@@ -14,14 +14,23 @@
 #include <utils.h>
 #include <cub3d.h>
 
-static int	sprite_pos(t_win *win, const char *c, int *pos)
+/*
+** Save sprite position from map
+**
+** @param  t_win *win allocated global window structure
+** @param  char     c sprite character in map
+** @param  int   *pos index in sprite array
+** @return void
+*/
+
+static int	sprite_pos(t_win *win, const char c, int *pos)
 {
 	int		i;
 
 	i = 0;
 	while (i < S_NUM)
 	{
-		if (win->type[i].c == *c)
+		if (win->type[i].c == c)
 		{
 			win->spr[*pos].x = win->pos.tmp_x + .5;
 			win->spr[*pos].y = win->pos.tmp_y + .5;
@@ -34,6 +43,13 @@ static int	sprite_pos(t_win *win, const char *c, int *pos)
 	}
 	return (0);
 }
+
+/*
+** Scan map for sprite position
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 static void	save_sprite(t_win *win)
 {
@@ -52,7 +68,7 @@ static void	save_sprite(t_win *win)
 			{
 				win->pos.tmp_x = x;
 				win->pos.tmp_y = y;
-				if (!sprite_pos(win, &win->map.map[y][x], &pos))
+				if (!sprite_pos(win, win->map.map[y][x], &pos))
 					close_error("Missing texture for the sprite\n");
 			}
 			x++;
@@ -60,6 +76,14 @@ static void	save_sprite(t_win *win)
 		y++;
 	}
 }
+
+/*
+** Check if sprite texture is loaded
+**
+** @param  t_win *win allocated global window structure
+** @param  char     c character in map
+** @return void
+*/
 
 static int	sprite_on(t_win *win, char c)
 {
@@ -74,6 +98,13 @@ static int	sprite_on(t_win *win, char c)
 	}
 	return (0);
 }
+
+/*
+** Sprite values initialization
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 static void	sprite_init(t_win *win)
 {
@@ -94,6 +125,13 @@ static void	sprite_init(t_win *win)
 	win->type[7].c = 'M';
 	win->type[7].tex_i = SPR_M;
 }
+
+/*
+** Calling function for sprite setup
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
 
 void		sprite_set(t_win *win)
 {
