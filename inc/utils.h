@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:31:35 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 14:40:45 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/17 14:33:12 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,15 @@ u_int	get_g(u_int color);
 u_int	get_b(u_int color);
 
 int		close_win(t_win *win);
-int		close_key(int keycode, t_win *win);
+int		close_key(t_win *win);
 int		close_error(char *s);
 void	delete_data(char **data);
 
 void	malloc_check(void *ptr);
 void	*ft_malloc(size_t size);
+
+void	sound_effect(char *path);
+void	sound_stop(void);
+void	draw_hud(t_win *win);
 
 #endif

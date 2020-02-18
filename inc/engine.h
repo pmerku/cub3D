@@ -49,6 +49,5 @@ void	sprite_dist(t_win *win);
 int		query_map(t_win *win, double y, double x);
 int		px_color(t_tex *tex, double y, double x, int id);
 void	pixel_put(t_img *img, int x, int y, int color);
-int		sound(char *cmd);
 
 #endif

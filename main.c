@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 15:35:13 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:37:13 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static t_win g_win = {
 	.i = 0,
 	.score = 0,
 	.health = 1,
+	.spr_p = 0,
+	.sound = 1,
 	.key = {
 		.up = 0,
 		.left = 0,
@@ -36,7 +38,8 @@ static t_win g_win = {
 		.rot_r = 0,
 		.open = 0,
 		.crouch = 0,
-		.shoot = 0
+		.shoot = 0,
+		.hud = 0
 	},
 	.color = {
 		.a = 0,
@@ -120,7 +123,7 @@ int			key_release(int keycode, t_win *win)
 int			key_press(int keycode, t_win *win)
 {
 	if (keycode == KEY_ESC)
-		close_win(win);
+		close_key(win);
 	if (keycode == KEY_W || keycode == KEY_UP)
 		win->key.up = 1;
 	if (keycode == KEY_S || keycode == KEY_DOWN)
@@ -139,6 +142,8 @@ int			key_press(int keycode, t_win *win)
 		win->key.crouch = 1;
 	if (keycode == KEY_SPACE)
 		win->key.shoot = !win->key.shoot;
+	if (keycode == KEY_TAB)
+		win->key.hud = !win->key.hud;
 	return (0);
 }
 
@@ -168,10 +173,11 @@ int			main(int argc, char **argv)
 		close_error("Couldn't open window\n");
 	init_win(&g_win.img[0], &g_win);
 	init_win(&g_win.img[1], &g_win);
-	mlx_hook(g_win.mlx_win, 2, (1L << 0), key_press, &g_win);
-	mlx_hook(g_win.mlx_win, 3, (1L << 1), key_release, &g_win);
+	mlx_hook(g_win.mlx_win, 2, 1L << 0, key_press, &g_win);
+	mlx_hook(g_win.mlx_win, 3, 1L << 1, key_release, &g_win);
 	mlx_hook(g_win.mlx_win, 17, 0L, close_win, &g_win);
 	mlx_loop_hook(g_win.mlx, render_next_frame, &g_win);
+	sound_effect("./sound/bfgdivision.mp3"); //TODO: lower gain
 	mlx_loop(g_win.mlx);
 	return (0);
 }

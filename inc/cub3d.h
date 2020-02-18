@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/14 17:53:46 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:36:46 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 
 # include <sys/types.h>
 
+
+#include <stdio.h>
 /*
 ** ---------------------------------------------------------------------------
 ** 							Macro defines
@@ -52,6 +54,7 @@
 # define KEY_E		14
 # define KEY_SHIFT	257
 # define KEY_SPACE	49
+# define KEY_TAB	48
 
 # define MOV_SPEED	0.0475
 # define ROT_SPEED	0.0275
@@ -74,7 +77,7 @@
 */
 
 # define SPR_I		8
-# define SPR_C		9
+# define SPR_P		9
 # define SPR_TR		10
 # define SPR_T1		11
 # define SPR_T2		12
@@ -89,9 +92,9 @@
 # define S_NUM		9
 # define T_NUM		16
 
-# define CHAR_SET	"012345NSEWHDMICT"
+# define CHAR_SET	"012345NSEWHDMIPT"
 # define SPAWN_SET	"NSEW"
-# define SPRITE_SET	"2345MICT"
+# define SPRITE_SET	"2345MIPT"
 # define EXTRA_SET	"HD"
 
 /*
@@ -99,16 +102,15 @@
 */
 
 # define HIT_C		"1HD"
-# define HIT_NC		"04ICTH"
-# define HIT_P		"ICT"
+# define HIT_NC		"04IPTH"
+# define HIT_P		"IPT"
 
 /*
 ** Flood fill macros
 */
 
-# define FLOOD		"1234MICTHD"
-# define SKIP		"234MICTHD"
-# define ELEM_S		"012345MICTHD"
+# define FLOOD		"02345MIPTHD"
+# define ELEM_S		"012345MIPTHD"
 
 /*
 ** ---------------------------------------------------------------------------
@@ -130,6 +132,7 @@ typedef struct	s_key {
 	u_int		shoot:1;
 	u_int 		crouch:1;
 	u_int 		open:1;
+	u_int		hud:1;
 }				t_key;
 
 /*
@@ -286,6 +289,19 @@ typedef struct	s_tex {
 }				t_tex;
 
 /*
+** Hud struct
+*/
+
+typedef struct	s_hud {
+	char		*str;
+	u_int		color;
+	int 		x0;
+	int			x1;
+	int			y0;
+	int			y1;
+}				t_hud;
+
+/*
 ** Window struct / main struct
 */
 
@@ -307,10 +323,13 @@ typedef struct	s_win {
 	t_sdt		sdt;
 	t_spr		*spr;
 	int			spr_i;
+	int			spr_p;
 	t_mov		mov;
 	t_key		key;
+	t_hud		hud;
 	double		health;
 	double		score;
+	int			sound:1;
 }				t_win;
 
 /*
