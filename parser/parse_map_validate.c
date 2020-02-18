@@ -6,10 +6,11 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 17:46:57 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/17 17:54:40 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <utils.h>
 #include <libft.h>
 #include <cub3d.h>
@@ -112,28 +113,24 @@ static void	map_char_check(char **map, t_win *win)
 ** @return void
 */
 
-static void	flood_fill(t_win *win, int x, int y)
+static void	flood_fill(t_win *win, char **map, int x, int y)
 {
-	if ((ft_strchr(SKIP, win->map.map[y][x])
-		&& (y - 1 < 0 || x - 1 < 0 || y + 1 > win->map.map_h - 1
-		|| win->map.map[y][x + 1] == '\0'))
-		|| y < 0 || x < 0 || win->map.map[y][x] == '\0'
-		|| y > win->map.map_h - 1)
+	if (y < 0 || x < 0 || map[y][x] == '\0' || y > win->map.map_h - 1)
 		close_error("Invalid map\n");
-	if (win->map.map[y][x] == '1' || win->map.map[y][x] == '0')
+	if (map[y][x] == '1' || map[y][x] == '0')
 		return ;
-	if (win->map.map[y][x] != '$')
+	if (map[y][x] != '$')
 		return ;
-	if (!ft_strchr(FLOOD, win->map.map[y][x]))
-		win->map.map[y][x] = '0';
-	flood_fill(win, x + 1, y);
-	flood_fill(win, x - 1, y);
-	flood_fill(win, x, y + 1);
-	flood_fill(win, x, y - 1);
-	flood_fill(win, x - 1, y - 1);
-	flood_fill(win, x + 1, y + 1);
-	flood_fill(win, x + 1, y - 1);
-	flood_fill(win, x - 1, y + 1);
+	if (map[y][x] == '$')
+		map[y][x] = '0';
+	flood_fill(win, map, x + 1, y);
+	flood_fill(win, map, x - 1, y);
+	flood_fill(win, map, x, y + 1);
+	flood_fill(win, map, x, y - 1);
+	flood_fill(win, map, x - 1, y - 1);
+	flood_fill(win, map, x + 1, y + 1);
+	flood_fill(win, map, x + 1, y - 1);
+	flood_fill(win, map, x - 1, y + 1);
 }
 
 /*
@@ -148,19 +145,25 @@ void		map_validate(t_win *win)
 {
 	int		x;
 	int		y;
+	char	**map_dup;
 
 	map_char_check(win->map.map, win);
+	map_dup = ft_calloc(win->map.map_h + 1, sizeof(char*));
+	malloc_check(map_dup);
 	y = 0;
 	while (y < win->map.map_h)
 	{
 		x = 0;
-		while (win->map.map[y][x])
+		map_dup[y] = ft_strdup(win->map.map[y]);
+		malloc_check(map_dup[y]);
+		while (map_dup[y][x])
 		{
-			if (win->map.map[y][x] == '0')
-				win->map.map[y][x] = '$';
+			if (ft_strchr(FLOOD, map_dup[y][x]))
+				map_dup[y][x] = '$';
 			x++;
 		}
 		y++;
 	}
-	flood_fill(win, (int)win->pos.x, (int)win->pos.y);
+	flood_fill(win, map_dup, (int)win->pos.x, (int)win->pos.y);
+	delete_data(map_dup);
 }

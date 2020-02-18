@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/14 08:06:17 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:31:58 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	parse_resolution(char *data, t_win *win)
 		close_error("Invalid resolution\n");
 	}
 	win->x = (win->x > 2560) ? 2560 : win->x;
-	win->y = (win->y > 1440) ? 1440 : win->y;
+	win->y = (win->y > 1400) ? 1400 : win->y;
 	win->x = (win->x < 250) ? 250 : win->x;
 	win->y = (win->y < 250) ? 250 : win->y;
 	delete_data(s);
@@ -146,8 +146,8 @@ void	parse_sprites(char *data, t_win *win)
 	}
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SI"))
 		parse_tex(data, win, SPR_I);
-	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SC"))
-		parse_tex(data, win, SPR_C);
+	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SP"))
+		parse_tex(data, win, SPR_P);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"ST"))
 		parse_tex(data, win, SPR_TR);
 	if (win->color.spr_i >= S_NUM)

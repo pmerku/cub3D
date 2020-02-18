@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 11:53:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/14 08:36:48 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:36:38 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,13 @@ static int	sprite_on(t_win *win, char c)
 	while (i < S_NUM)
 	{
 		if (win->type[i].c == c)
+		{
+			if (c == 'P')
+				win->spr_p++;
+			if (win->tex[win->type[i].tex_i].wall == NULL)
+				close_error("Missing textures\n");
 			return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -110,14 +116,14 @@ static void	sprite_init(t_win *win)
 {
 	win->type[0].c = 'I';
 	win->type[0].tex_i = SPR_I;
-	win->type[1].c = 'C';
-	win->type[1].tex_i = SPR_C;
+	win->type[1].c = 'P';
+	win->type[1].tex_i = SPR_P;
 	win->type[2].c = 'T';
 	win->type[2].tex_i = SPR_TR;
 	win->type[3].c = '2';
-	win->type[3].tex_i = SPR_T3;
+	win->type[3].tex_i = SPR_T2;
 	win->type[4].c = '3';
-	win->type[4].tex_i = SPR_T2;
+	win->type[4].tex_i = SPR_T3;
 	win->type[5].c = '4';
 	win->type[5].tex_i = SPR_T1;
 	win->type[6].c = '5';

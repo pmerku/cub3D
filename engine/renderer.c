@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/14 15:16:04 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:45:57 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,10 @@ static void	perform_dda(t_win *win, int i)
 ** @param  t_win *win allocated global window structure
 ** @return int        status code
 */
-
+#include <stdlib.h>
 int			render_next_frame(t_win *win)
 {
-	win->mov.m_speed = MOV_SPEED;
+	win->mov.m_speed = (win->health < .3 || win->score >= 1.) ? 0 : MOV_SPEED;
 	if ((win->key.up || win->key.down) && (win->key.right || win->key.left))
 		win->mov.m_speed /= 1.8;
 	if (win->key.up)
@@ -160,9 +160,9 @@ int			render_next_frame(t_win *win)
 		rotate_r(&win->mov, win, win->pos.dir_x, win->pos.plane_x);
 	draw_back(win);
 	sprite_dist(win);
-	sprite_sort(win->spr, 0, win->spr_i - 1);
 	perform_dda(win, 0);
 	draw_sprite(win, &win->sdt, 0);
+	draw_hud(win);
 	mlx_put_image_to_window(win->mlx, win->mlx_win, win->img[win->i].img, 0, 0);
 	if (win->save)
 		save_frame(win);

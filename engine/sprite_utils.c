@@ -6,32 +6,12 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 10:42:02 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/13 12:21:56 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/17 15:14:04 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <cub3d.h>
-
-/*
-** Calculations for sprite distance from player
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-void		sprite_dist(t_win *win)
-{
-	int		i;
-
-	i = 0;
-	while (i < win->spr_i)
-	{
-		win->spr[i].dist = sqrt((double)pow(win->pos.x - win->spr[i].x, 2)
-				+ (double)pow(win->pos.y - win->spr[i].y, 2));
-		i++;
-	}
-}
 
 /*
 ** Copy over sprite structure values
@@ -100,4 +80,27 @@ void		sprite_sort(t_spr *spr, int first, int last)
 		sprite_sort(spr, first, j - 1);
 		sprite_sort(spr, j + 1, last);
 	}
+}
+
+/*
+** Calculations for sprite distance from player
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
+
+
+
+void		sprite_dist(t_win *win)
+{
+	int		i;
+
+	i = 0;
+	while (i < win->spr_i)
+	{
+		win->spr[i].dist = sqrt((double)pow(win->pos.x - win->spr[i].x, 2)
+				+ (double)pow(win->pos.y - win->spr[i].y, 2));
+		i++;
+	}
+	sprite_sort(win->spr, 0, win->spr_i - 1);
 }

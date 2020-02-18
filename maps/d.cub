@@ -1,21 +1,22 @@
 R 1270 720
-NO ./textures/tnt.png
-SO ./textures/tnt.png
-WE ./textures/tnt.png
-EA ./textures/tnt.png
+NO ./textures/greystone.xpm
+SO ./textures/mossy.xpm
+WE ./textures/greystone.xpm
+EA ./textures/mossy.xpm
 
-S ./textures/barrel.png
+SI ./textures/collectible.xpm
+BD ./textures/eagle.xpm
 
-FT ./textures/tnt.png
-CT ./textures/tnt.png
+FT ./textures/bluestone.xpm
+CT ./textures/colorstone.xpm
 
 F 200, 80, 200
 C 80, 200, 80
 
 1111111
-1000001
-1002001
+1IIIII1
+1IIIII1
 100N001
-1000001
-1000001
+1IIIII1
+1IIIII1
 1111111

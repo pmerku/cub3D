@@ -6,7 +6,7 @@
 #    By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/04 11:38:53 by prmerku           #+#    #+#              #
-#    Updated: 2020/02/14 16:33:28 by prmerku          ###   ########.fr        #
+#    Updated: 2020/02/17 14:31:38 by prmerku          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ SRC += engine/renderer engine/movement engine/rotation engine/draw_back \
 	engine/engine_utils engine/draw_walls engine/draw_sprites \
 	engine/sprite_utils
 
-SRC += utils/shutdown utils/data_handle utils/bitmap utils/bitmap_utils
+SRC += utils/shutdown utils/data_handle utils/bitmap utils/bitmap_utils \
+	utils/sound utils/hud
 
 OBJ = $(addsuffix .o, $(SRC))
 

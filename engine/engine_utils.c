@@ -6,34 +6,13 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 13:18:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/14 15:13:49 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:39:36 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <stdlib.h>
 #include <utils.h>
+#include <libft.h>
 #include <cub3d.h>
-
-/*
-** Fork process and play sound in background
-**
-** @param  char *cmd path to sound file
-** @return int       status code
-*/
-
-int		sound(char *cmd)
-{
-	if (fork() < 0)
-		exit(EXIT_FAILURE);
-	else
-	{
-		cmd = ft_strjoin_free2("afplay ", cmd);
-		system(cmd);
-		free(cmd);
-		exit(EXIT_SUCCESS);
-	}
-}
 
 /*
 ** Put pixel color on image x/y position
@@ -76,6 +55,30 @@ int		px_color(t_tex *tex, double y, double x, int id)
 }
 
 /*
+** Which sprite is picked up
+**
+** @param  t_win  *win allocated global window structure
+** @param  double    y pos y of player
+** @param  double    x position x of player
+** @param  int       i sprite index
+** @return void
+*/
+
+static void	sprite_get(t_win *win, double y, double x, int i)
+{
+	while (i < win->spr_i)
+	{
+		if ((int)win->spr[i].x == (int)x && (int)win->spr[i].y == (int)y)
+		{
+			win->map.map[(int)y][(int)x] = '0';
+			win->spr[i].hide = 1;
+			return ;
+		}
+		i++;
+	}
+}
+
+/*
 ** Hide sprite if you can pick it up, play according sound and change score
 **
 ** @param  t_win  *win allocated global window structure
@@ -86,23 +89,28 @@ int		px_color(t_tex *tex, double y, double x, int id)
 
 void	sprite_hide(t_win *win, double y, double x)
 {
-	if (ft_strchr(HIT_P, win->map.map[(int)y][(int)x]))
+	if (!ft_strchr(HIT_P, win->map.map[(int)y][(int)x]))
+		return ;
+	if (win->map.map[(int)y][(int)x] == 'T')
 	{
-		if (win->map.map[(int)y][(int)x] == 'T')
+		sound_effect("./sound/damage.wav");
+		win->health -= 1. / 3;
+	}
+	else
+	{
+		if (win->map.map[(int)y][(int)x] == 'P')
 		{
-			if (sound("damage.wav") == 1)
-				close_error("Sound error\n");
-			win->health -= (double)1 / 3;
+			sound_effect("./sound/pickup.wav");
+			win->score += 1. / win->spr_p;
 		}
 		else
 		{
-			if (sound("point.wav") == 1)
-				close_error("Sound error\n");
-			win->score += (double)1 / win->spr_i;
+			sound_effect("./sound/health.wav");
+			if (win->health != 1)
+				win->health += 1. / 3;
 		}
-		win->map.map[(int)y][(int)x] = '0';
-		win->spr[win->spr_i - 1].hide = 1;
 	}
+	sprite_get(win, y, x, 0);
 }
 
 /*
