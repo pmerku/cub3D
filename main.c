@@ -177,7 +177,7 @@ int			main(int argc, char **argv)
 	mlx_hook(g_win.mlx_win, 3, 1L << 1, key_release, &g_win);
 	mlx_hook(g_win.mlx_win, 17, 0L, close_win, &g_win);
 	mlx_loop_hook(g_win.mlx, render_next_frame, &g_win);
-	sound_effect("./sound/bfgdivision.mp3"); //TODO: lower gain
+	sound_effect("./sound/bfgdivision.mp3");
 	mlx_loop(g_win.mlx);
 	return (0);
 }

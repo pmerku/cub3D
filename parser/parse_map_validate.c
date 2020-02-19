@@ -6,11 +6,10 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/17 17:54:40 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/18 16:53:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <utils.h>
 #include <libft.h>
 #include <cub3d.h>
@@ -115,7 +114,7 @@ static void	map_char_check(char **map, t_win *win)
 
 static void	flood_fill(t_win *win, char **map, int x, int y)
 {
-	if (y < 0 || x < 0 || map[y][x] == '\0' || y > win->map.map_h - 1)
+	if (y < 0 || x < 0 || y > win->map.map_h - 1 || map[y][x] == '\0')
 		close_error("Invalid map\n");
 	if (map[y][x] == '1' || map[y][x] == '0')
 		return ;

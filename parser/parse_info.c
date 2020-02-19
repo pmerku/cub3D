@@ -138,12 +138,7 @@ void	parse_sprites(char *data, t_win *win)
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"SL"))
 		parse_tex(data, win, SPR_T1);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SM"))
-	{
-		i = SPR_M;
-		while (win->tex[i].wall != NULL)
-			i++;
-		parse_tex(data, win, i);
-	}
+		parse_tex(data, win, SPR_M);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SI"))
 		parse_tex(data, win, SPR_I);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SP"))

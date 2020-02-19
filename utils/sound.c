@@ -18,7 +18,7 @@
 void	sound_effect(char *path)
 {
 	char	*cmd;
-	int 	i;
+	int		i;
 
 	i = fork();
 	if (i < 0)
@@ -35,7 +35,7 @@ void	sound_effect(char *path)
 
 void	sound_stop(void)
 {
-	int 	i;
+	int		i;
 
 	i = fork();
 	if (i < 0)

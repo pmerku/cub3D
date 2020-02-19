@@ -35,7 +35,7 @@ u_int	get_px(t_img *img, int x, int y)
 
 u_int	get_r(u_int color)
 {
-	return ((color & 0xFF0000) >> 16U);
+	return ((color & 0xFF0000) >> 16);
 }
 
 /*
@@ -47,7 +47,7 @@ u_int	get_r(u_int color)
 
 u_int	get_g(u_int color)
 {
-	return ((color & 0xFF00) >> 8U);
+	return ((color & 0xFF00) >> 8);
 }
 
 /*

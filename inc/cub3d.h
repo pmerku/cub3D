@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/18 11:36:46 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 08:20:49 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 
 # include <sys/types.h>
 
-
-#include <stdio.h>
 /*
 ** ---------------------------------------------------------------------------
 ** 							Macro defines
@@ -110,7 +108,7 @@
 */
 
 # define FLOOD		"02345MIPTHD"
-# define ELEM_S		"012345MIPTHD"
+# define ELEM_S		" 012345MIPTHD"
 
 /*
 ** ---------------------------------------------------------------------------
@@ -130,8 +128,8 @@ typedef struct	s_key {
 	u_int		rot_l:1;
 	u_int		rot_r:1;
 	u_int		shoot:1;
-	u_int 		crouch:1;
-	u_int 		open:1;
+	u_int		crouch:1;
+	u_int		open:1;
 	u_int		hud:1;
 }				t_key;
 
@@ -295,7 +293,7 @@ typedef struct	s_tex {
 typedef struct	s_hud {
 	char		*str;
 	u_int		color;
-	int 		x0;
+	int			x0;
 	int			x1;
 	int			y0;
 	int			y1;
@@ -330,6 +328,8 @@ typedef struct	s_win {
 	double		health;
 	double		score;
 	int			sound:1;
+	double		bmp_x;
+	double		bmp_y;
 }				t_win;
 
 /*

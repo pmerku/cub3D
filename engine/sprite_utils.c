@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 10:42:02 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/17 15:14:04 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 08:22:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void		sprite_sort(t_spr *spr, int first, int last)
 ** @param  t_win *win allocated global window structure
 ** @return void
 */
-
-
 
 void		sprite_dist(t_win *win)
 {

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:53 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/18 11:45:57 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 08:22:45 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 ** @return int         status code
 */
 
-int		query_map(t_win *win, double y, double x)
+int			query_map(t_win *win, double y, double x)
 {
 	if (y < 0 || y >= win->map.map_h || x < 0
 		|| x >= ft_strlen(win->map.map[(int)y])
@@ -140,7 +140,7 @@ static void	perform_dda(t_win *win, int i)
 ** @param  t_win *win allocated global window structure
 ** @return int        status code
 */
-#include <stdlib.h>
+
 int			render_next_frame(t_win *win)
 {
 	win->mov.m_speed = (win->health < .3 || win->score >= 1.) ? 0 : MOV_SPEED;

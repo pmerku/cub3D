@@ -6,12 +6,11 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 15:19:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/18 12:36:09 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 08:19:09 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <libft.h>
 #include <utils.h>
 #include <engine.h>
 #include <cub3d.h>
@@ -19,9 +18,9 @@
 static void	draw_block(t_win *win, int y, u_int color)
 {
 	int		x0;
-	int 	x1;
-	int 	y0;
-	int 	y1;
+	int		x1;
+	int		y0;
+	int		y1;
 
 	x0 = win->hud.x0 - 1;
 	y0 = win->hud.y0 - 1;
@@ -51,7 +50,7 @@ static void	draw_score(t_win *win)
 		draw_block(win, win->hud.y0 - 1, (int)(0x00FFFF00 * win->score));
 }
 
-void	draw_hud(t_win *win)
+void		draw_hud(t_win *win)
 {
 	if (!win->mov.m_speed && win->sound)
 	{
@@ -77,4 +76,3 @@ void	draw_hud(t_win *win)
 		draw_block(win, win->hud.y0 - 1, (int)(0x0000FF00 * win->health));
 	draw_score(win);
 }
-

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 13:18:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/18 11:39:36 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 08:21:45 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 ** @return void
 */
 
-void	pixel_put(t_img *img, int x, int y, int color)
+void		pixel_put(t_img *img, int x, int y, int color)
 {
 	*(unsigned int*)(img->addr
 		+ (y * img->line_len + x * (img->bpp / 8))) = color;
@@ -40,7 +40,7 @@ void	pixel_put(t_img *img, int x, int y, int color)
 ** @return int         pixel color value
 */
 
-int		px_color(t_tex *tex, double y, double x, int id)
+int			px_color(t_tex *tex, double y, double x, int id)
 {
 	if (x >= 0 && x < tex->tex_w && y >= 0 && y < tex->tex_h)
 	{
@@ -87,7 +87,7 @@ static void	sprite_get(t_win *win, double y, double x, int i)
 ** @return void
 */
 
-void	sprite_hide(t_win *win, double y, double x)
+void		sprite_hide(t_win *win, double y, double x)
 {
 	if (!ft_strchr(HIT_P, win->map.map[(int)y][(int)x]))
 		return ;
@@ -122,7 +122,7 @@ void	sprite_hide(t_win *win, double y, double x)
 ** @return int         status code
 */
 
-int		open_door(t_win *win, double y, double x)
+int			open_door(t_win *win, double y, double x)
 {
 	if (win->key.open)
 		if (win->map.map[(int)y][(int)x] == 'D')

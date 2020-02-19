@@ -12,7 +12,6 @@
 
 #include <libft.h>
 #include <utils.h>
-#include <stdlib.h>
 #include <cub3d.h>
 
 /*
