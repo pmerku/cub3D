@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/19 09:45:33 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 09:45:42 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	extra_check(t_win *win, int c)
 ** @param  t_win  *win allocated global window structure
 ** @return void
 */
-#include <stdio.h>
+
 static void	map_char_check(char **map, t_win *win)
 {
 	int 	y;
@@ -96,10 +96,7 @@ static void	map_char_check(char **map, t_win *win)
 					close_error("Too many spawn points\n");
 			}
 			if (!ft_strchr(CHAR_SET, map[y][x]))
-			{
-				printf("%d\n", map[y][x]);
 				close_error("Unsupported character in map\n");
-			}
 			x++;
 		}
 		y++;
