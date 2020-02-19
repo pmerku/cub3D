@@ -3,7 +3,7 @@ Codam project 05 - make a 3D raycaster
 
 
 ## TODO:
-- Anit aliasing
+- Anti aliasing
 - Enemies
 - Weapons
 - Proper hud
