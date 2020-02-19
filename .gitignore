@@ -29,3 +29,7 @@ cmake-build-debug
 *.o
 *.out
 *.a
+*.dylib
+cub3D
+*.swiftmodule
+*.swiftdoc
