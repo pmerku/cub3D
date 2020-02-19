@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/18 16:53:16 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 09:45:33 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,32 +74,35 @@ static void	extra_check(t_win *win, int c)
 ** @param  t_win  *win allocated global window structure
 ** @return void
 */
-
+#include <stdio.h>
 static void	map_char_check(char **map, t_win *win)
 {
-	size_t	row;
-	size_t	col;
+	int 	y;
+	int 	x;
 
-	row = 0;
-	while (map[row])
+	y = 0;
+	while (map[y])
 	{
-		col = 0;
-		while (map[row][col])
+		x = 0;
+		while (map[y][x])
 		{
-			if (ft_strchr(EXTRA_SET, map[row][col]))
-				extra_check(win, map[row][col]);
-			if (ft_strchr(SPAWN_SET, map[row][col]))
+			if (ft_strchr(EXTRA_SET, map[y][x]))
+				extra_check(win, map[y][x]);
+			if (ft_strchr(SPAWN_SET, map[y][x]))
 			{
 				if (win->pos.x == 0 && win->pos.y == 0)
-					map_spawn_pos(win, map[row], row);
+					map_spawn_pos(win, map[y], y);
 				else
 					close_error("Too many spawn points\n");
 			}
-			if (!ft_strchr(CHAR_SET, map[row][col]))
+			if (!ft_strchr(CHAR_SET, map[y][x]))
+			{
+				printf("%d\n", map[y][x]);
 				close_error("Unsupported character in map\n");
-			col++;
+			}
+			x++;
 		}
-		row++;
+		y++;
 	}
 }
 

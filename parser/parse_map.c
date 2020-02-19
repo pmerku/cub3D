@@ -56,7 +56,7 @@ void			map_copy(char **data, t_win *win, int pos)
 		win->map.map[pos] = ft_malloc(line_size(data[pos]) + 1);
 		while (data[pos][j])
 		{
-			if (data[pos][j] != ' ')
+			if (data[pos][j] != ' ' && data[pos][j] != 16)
 			{
 				win->map.map[pos][i] = data[pos][j];
 				i++;
