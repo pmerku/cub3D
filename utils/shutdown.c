@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 14:27:38 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/17 14:37:00 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 14:58:25 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int			close_key(t_win *win)
 			mlx_destroy_image(win->mlx, win->img[0].img);
 		if (win->img[1].img)
 			mlx_destroy_image(win->mlx, win->img[1].img);
-		mlx_destroy_window(win->mlx, win->mlx_win);
-		sound_stop();
+		if (!win->save)
+			mlx_destroy_window(win->mlx, win->mlx_win);
 		exit(EXIT_SUCCESS);
 	}
 	return (0);
@@ -58,23 +58,21 @@ int			close_win(t_win *win)
 {
 	int		i;
 
-	if (win->mlx && win->mlx_win)
+	if (!win->mlx)
+		return (0);
+	i = 0;
+	while (i < T_NUM)
 	{
-		i = 0;
-		while (i < T_NUM)
-		{
-			if (win->tex[i].wall)
-				mlx_destroy_image(win->mlx, win->tex[i].wall);
-			i++;
-		}
-		if (win->img[0].img)
-			mlx_destroy_image(win->mlx, win->img[0].img);
-		if (win->img[1].img)
-			mlx_destroy_image(win->mlx, win->img[1].img);
-		sound_stop();
-		exit(EXIT_SUCCESS);
+		if (win->tex[i].wall)
+			mlx_destroy_image(win->mlx, win->tex[i].wall);
+		i++;
 	}
-	return (0);
+	if (win->img[0].img)
+		mlx_destroy_image(win->mlx, win->img[0].img);
+	if (win->img[1].img)
+		mlx_destroy_image(win->mlx, win->img[1].img);
+	sound_stop();
+	exit(EXIT_SUCCESS);
 }
 
 /*

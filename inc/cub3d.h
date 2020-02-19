@@ -308,7 +308,7 @@ typedef struct	s_win {
 	void		*mlx_win;
 	int			x;
 	int			y;
-	int			save:1;
+	int			save;
 	t_img		img[2];
 	u_int		i:1;
 	t_pos		pos;

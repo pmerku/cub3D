@@ -129,7 +129,6 @@ void			save_frame(t_win *win)
 	u_char	*img;
 
 	win->bmp_y = 0;
-	win->save = 0;
 	img = ft_calloc(win->y * win->x, BMP_BPP);
 	malloc_check(img);
 	while (win->bmp_y < win->y)
@@ -147,4 +146,5 @@ void			save_frame(t_win *win)
 		win->bmp_y++;
 	}
 	save_bitmap((u_char *)img, win->y, win->x);
+	close_win(win);
 }

@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/18 11:37:13 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 14:52:18 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static t_win g_win = {
 	.x = 0,
 	.y = 0,
 	.i = 0,
+	.save = 0,
 	.score = 0,
 	.health = 1,
 	.spr_p = 0,
@@ -148,6 +149,28 @@ int			key_press(int keycode, t_win *win)
 }
 
 /*
+** Initialization of the window and images
+**
+** @param  t_win *win allocated global window structure
+** @return void
+*/
+
+static void	game_init(t_win *win)
+{
+	init_win(&win->img[0], win);
+	init_win(&win->img[1], win);
+	if (!win->save)
+	{
+		win->mlx_win = mlx_new_window(win->mlx, win->x, win->y, "cub3D");
+		if (!win->mlx_win)
+			close_error("Couldn't open window\n");
+		mlx_hook(win->mlx_win, 2, 1L << 0, key_press, win);
+		mlx_hook(win->mlx_win, 3, 1L << 1, key_release, win);
+		mlx_hook(win->mlx_win, 17, 0L, close_win, win);
+	}
+}
+
+/*
 ** Main
 **
 ** @param  int  argc   number of params
@@ -168,16 +191,9 @@ int			main(int argc, char **argv)
 	if (!g_win.mlx)
 		close_error("Couldn't initialize window\n");
 	parse_file(argv[1], &g_win);
-	g_win.mlx_win = mlx_new_window(g_win.mlx, g_win.x, g_win.y, "cub3D");
-	if (!g_win.mlx_win)
-		close_error("Couldn't open window\n");
-	init_win(&g_win.img[0], &g_win);
-	init_win(&g_win.img[1], &g_win);
-	mlx_hook(g_win.mlx_win, 2, 1L << 0, key_press, &g_win);
-	mlx_hook(g_win.mlx_win, 3, 1L << 1, key_release, &g_win);
-	mlx_hook(g_win.mlx_win, 17, 0L, close_win, &g_win);
-	mlx_loop_hook(g_win.mlx, render_next_frame, &g_win);
+	game_init(&g_win);
 	sound_effect("./sound/bfgdivision.mp3");
+	mlx_loop_hook(g_win.mlx, render_next_frame, &g_win);
 	mlx_loop(g_win.mlx);
 	return (0);
 }
