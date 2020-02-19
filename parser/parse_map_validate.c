@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:23:08 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/19 09:45:42 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/19 09:52:16 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ static void	extra_check(t_win *win, int c)
 
 static void	map_char_check(char **map, t_win *win)
 {
-	int 	y;
-	int 	x;
+	int		y;
+	int		x;
 
 	y = 0;
 	while (map[y])
