@@ -20,3 +20,4 @@ Codam project 05 - make a 3D raycaster
 - Victory screen
 - Distance related shadows
 - Proper secret doors
+- Multithreading
