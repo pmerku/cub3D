@@ -28,6 +28,4 @@ cmake-build-debug
 .vscode
 *.o
 *.out
-cub3D
-*.dylib
 *.a
