@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:06:32 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/17 10:43:30 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 10:28:47 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static int	mandatory_elements(t_win *win)
 	res += (win->tex[S_WALL].wall == NULL);
 	res += (win->tex[E_WALL].wall == NULL);
 	res += (win->tex[W_WALL].wall == NULL);
-	res += (win->color.f_color == 0xFF000000);
-	res += (win->color.c_color == 0xFF000000);
+	res += (win->color.f_color == 0xFF000000 && win->tex[FLOOR].wall == NULL);
+	res += (win->color.c_color == 0xFF000000 && win->tex[CEILING].wall == NULL);
 	return (res == 0);
 }
 
@@ -55,7 +55,7 @@ static void	parse_info(char **data, t_win *win)
 		parse_resolution(*data, win);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"F ")
 		|| (*(u_int16_t *)*data) == (*(u_int16_t *)"C "))
-		parse_argb(*data, win);
+		parse_argb(*data, &win->color);
 	else if (data[0][0] == 'S' && data[0][1] != 'O')
 		parse_sprites(*data, win);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"NO"))

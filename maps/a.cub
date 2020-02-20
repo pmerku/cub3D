@@ -5,8 +5,8 @@ WE ./textures/redbrick.xpm
 EA ./textures/purplestone.xpm
 
 S ./textures/barrel.xpm
-S ./textures/pillar.xpm
-S ./textures/skeleton.xpm
+S2 ./textures/pillar.xpm
+S3 ./textures/skeleton.xpm
 
 SL ./textures/light.xpm
 SI ./textures/health.xpm

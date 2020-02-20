@@ -45,7 +45,7 @@ SRC += engine/renderer engine/movement engine/rotation engine/draw_back \
 	engine/sprite_utils
 
 SRC += utils/shutdown utils/data_handle utils/bitmap utils/bitmap_utils \
-	utils/sound utils/hud
+	utils/hud
 
 OBJ = $(addsuffix .o, $(SRC))
 

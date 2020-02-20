@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:31:35 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/17 14:33:12 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 09:43:31 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	delete_data(char **data);
 void	malloc_check(void *ptr);
 void	*ft_malloc(size_t size);
 
-void	sound_effect(char *path);
-void	sound_stop(void);
 void	draw_hud(t_win *win);
 
 #endif

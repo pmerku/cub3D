@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 10:15:05 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/19 14:52:18 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 09:36:43 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ int			main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		if (argc == 3 && (ft_strncmp(argv[2], "--save", 6) == 0))
+		if (argc == 3 && ft_strncmp(argv[2], "--save", 7) == 0)
 			g_win.save = 1;
 		else
 			close_error("Missing parameters\n");
@@ -192,7 +192,6 @@ int			main(int argc, char **argv)
 		close_error("Couldn't initialize window\n");
 	parse_file(argv[1], &g_win);
 	game_init(&g_win);
-	sound_effect("./sound/bfgdivision.mp3");
 	mlx_loop_hook(g_win.mlx, render_next_frame, &g_win);
 	mlx_loop(g_win.mlx);
 	return (0);

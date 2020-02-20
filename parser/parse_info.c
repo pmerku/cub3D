@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/18 11:31:58 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 10:30:14 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	parse_resolution(char *data, t_win *win)
 {
 	char	**s;
 
+	if (win->x >= 250 && win->x <= 1600 && win->y >= 250 && win->y <= 1600)
+		close_error("Duplicate resolution\n");
 	s = ft_split(data, ' ');
 	malloc_check(s);
 	win->x = ft_atoi(s[1]);
@@ -37,8 +39,8 @@ void	parse_resolution(char *data, t_win *win)
 		delete_data(s);
 		close_error("Invalid resolution\n");
 	}
-	win->x = (win->x > 2560) ? 2560 : win->x;
-	win->y = (win->y > 1400) ? 1400 : win->y;
+	win->x = (win->x > 1600) ? 1600 : win->x;
+	win->y = (win->y > 900) ? 900 : win->y;
 	win->x = (win->x < 250) ? 250 : win->x;
 	win->y = (win->y < 250) ? 250 : win->y;
 	delete_data(s);
@@ -52,7 +54,7 @@ void	parse_resolution(char *data, t_win *win)
 ** @return void
 */
 
-void	parse_argb(char *data, t_win *win)
+void	parse_argb(char *data, t_color *c)
 {
 	char	**s;
 
@@ -60,21 +62,25 @@ void	parse_argb(char *data, t_win *win)
 		(*(char *)ft_strchr(data, ',')) = ' ';
 	s = ft_split(data, ' ');
 	malloc_check(s);
-	win->color.r = ft_atoi(s[1]);
-	win->color.g = ft_atoi(s[2]);
-	win->color.b = ft_atoi(s[3]);
-	if (win->color.r > 255 || win->color.g > 255 || win->color.b > 255)
-	{
-		delete_data(s);
+	c->r = ft_atoi(s[1]);
+	c->g = ft_atoi(s[2]);
+	c->b = ft_atoi(s[3]);
+	if (c->r > 255 || c->g > 255 || c->b > 255)
 		close_error("Incorrect ARGB numbers\n");
-	}
 	if (*data == 'F')
-		win->color.f_color = win->color.a << 24 | win->color.r << 16 |
-				win->color.g << 8 | win->color.b;
-	else if (*data == 'C')
-		win->color.c_color = win->color.a << 24 | win->color.r << 16 |
-				win->color.g << 8 | win->color.b;
+	{
+		if (c->c_on & F_COLOR)
+			close_error("Duplicate color\n");
+		c->f_color = c->a << 24 | c->r << 16 | c->g << 8 | c->b;
+	}
+	if (*data == 'C')
+	{
+		if (c->c_on & C_COLOR)
+			close_error("Duplicate color\n");
+		c->c_color = c->a << 24 | c->r << 16 | c->g << 8 | c->b;
+	}
 	delete_data(s);
+	c->c_on |= (*data == 'F') ? F_COLOR : C_COLOR;
 }
 
 /*
@@ -91,6 +97,8 @@ void	parse_tex(char *data, t_win *win, int i)
 {
 	char	*path;
 
+	if (win->tex[i].wall)
+		close_error("Duplicate texture\n");
 	data += 2;
 	while (*data && (*data == ' '))
 		data++;
@@ -99,20 +107,12 @@ void	parse_tex(char *data, t_win *win, int i)
 	win->tex[i].wall = mlx_xpm_file_to_image(win->mlx, path,
 			&win->tex[i].tex_w, &win->tex[i].tex_h);
 	if (!win->tex[i].wall)
-	{
-		free(path);
 		close_error("Invalid texture\n");
-	}
 	win->tex[i].data = mlx_get_data_addr(win->tex[i].wall,
 			&win->tex[i].bpp, &win->tex[i].line_len, &win->tex[i].endian);
 	if (!win->tex[i].data)
-	{
-		free(path);
 		close_error("Couldn't get texture data\n");
-	}
 	free(path);
-	win->color.c_color = (i == CEILING) ? 0xAA000000 : win->color.c_color;
-	win->color.f_color = (i == FLOOR) ? 0xAA000000 : win->color.f_color;
 }
 
 /*
@@ -126,15 +126,12 @@ void	parse_tex(char *data, t_win *win, int i)
 
 void	parse_sprites(char *data, t_win *win)
 {
-	int		i;
-
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S "))
-	{
-		i = SPR_T2;
-		while (win->tex[i].wall != NULL)
-			i++;
-		parse_tex(data, win, i);
-	}
+		parse_tex(data, win, SPR_T2);
+	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S2"))
+		parse_tex(data, win, SPR_T3);
+	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S3"))
+		parse_tex(data, win, SPR_T4);
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"SL"))
 		parse_tex(data, win, SPR_T1);
 	else if ((*(u_int16_t *)data) == (*(u_int16_t *)"SM"))

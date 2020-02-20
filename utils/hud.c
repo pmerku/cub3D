@@ -6,12 +6,11 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 15:19:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/19 08:19:09 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 09:42:45 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <utils.h>
 #include <engine.h>
 #include <cub3d.h>
 
@@ -54,13 +53,11 @@ void		draw_hud(t_win *win)
 {
 	if (!win->mov.m_speed && win->sound)
 	{
-		sound_effect("./sound/death.mp3");
 		win->sound = 0;
 		write(1, "Game Over!\n", 11);
 	}
 	if (win->score >= 1 && win->sound)
 	{
-		sound_effect("./sound/victory.mp3");
 		win->sound = 0;
 		write(1, "You Won!\n", 9);
 	}

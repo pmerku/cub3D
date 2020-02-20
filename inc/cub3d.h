@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/04 14:38:49 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/19 08:20:49 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 10:36:46 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@
 ** 							Macro defines
 ** ---------------------------------------------------------------------------
 */
+
+/*
+** Elements macros
+*/
+
+# define F_COLOR	1U
+# define C_COLOR	2U
 
 /*
 ** BITMAP macros
@@ -225,6 +232,7 @@ typedef struct	s_color {
 	u_int		b;
 	u_int		f_color;
 	u_int		c_color;
+	u_int		c_on;
 	u_int		bmp_color;
 	int			tex_i;
 	int			spr_i;

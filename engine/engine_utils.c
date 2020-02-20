@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 13:18:46 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/19 10:25:02 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 09:28:04 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,20 +92,13 @@ void		sprite_hide(t_win *win, double y, double x)
 	if (!ft_strchr(HIT_P, win->map.map[(int)y][(int)x]))
 		return ;
 	if (win->map.map[(int)y][(int)x] == 'T')
-	{
-		sound_effect("./sound/damage.wav");
 		win->health -= 1. / 3;
-	}
 	else
 	{
 		if (win->map.map[(int)y][(int)x] == 'P')
-		{
-			sound_effect("./sound/pickup.wav");
 			win->score += 1. / win->spr_p;
-		}
 		else
 		{
-			sound_effect("./sound/health.wav");
 			if (win->health != 1)
 				win->health += 1. / 3;
 		}

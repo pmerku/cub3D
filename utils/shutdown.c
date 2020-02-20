@@ -6,11 +6,10 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 14:27:38 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/19 14:58:25 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 09:43:46 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <utils.h>
 #include <stdlib.h>
 #include <libft.h>
 #include <mlx.h>
@@ -71,7 +70,6 @@ int			close_win(t_win *win)
 		mlx_destroy_image(win->mlx, win->img[0].img);
 	if (win->img[1].img)
 		mlx_destroy_image(win->mlx, win->img[1].img);
-	sound_stop();
 	exit(EXIT_SUCCESS);
 }
 

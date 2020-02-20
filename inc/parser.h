@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:28:51 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/07 11:38:25 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 10:30:14 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 void	parse_file(char *path, t_win *win);
 void	parse_resolution(char *data, t_win *win);
-void	parse_argb(char *data, t_win *win);
+void	parse_argb(char *data, t_color *c);
 
 void	parse_tex(char *data, t_win *win, int i);
 void	sprite_set(t_win *win);
