@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/20 10:30:14 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:37:42 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@
 void	parse_resolution(char *data, t_win *win)
 {
 	char	**s;
+	int 	h;
+	int 	w;
 
-	if (win->x >= 250 && win->x <= 1600 && win->y >= 250 && win->y <= 1600)
+	mlx_get_screen_size(win->mlx, &w, &h);
+	if (win->x >= 250 && win->x <= w && win->y >= 250 && win->y <= h)
 		close_error("Duplicate resolution\n");
 	s = ft_split(data, ' ');
 	malloc_check(s);
@@ -39,8 +42,8 @@ void	parse_resolution(char *data, t_win *win)
 		delete_data(s);
 		close_error("Invalid resolution\n");
 	}
-	win->x = (win->x > 1600) ? 1600 : win->x;
-	win->y = (win->y > 900) ? 900 : win->y;
+	win->x = (win->x > w) ? w : win->x;
+	win->y = (win->y > h) ? h : win->y;
 	win->x = (win->x < 250) ? 250 : win->x;
 	win->y = (win->y < 250) ? 250 : win->y;
 	delete_data(s);

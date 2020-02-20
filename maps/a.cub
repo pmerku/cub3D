@@ -1,4 +1,4 @@
-R 800 800
+R 9999 9999
 NO ./textures/colorstone.xpm
 SO ./textures/bluestone.xpm
 WE ./textures/redbrick.xpm
