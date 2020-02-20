@@ -21,3 +21,4 @@ Codam project 05 - make a 3D raycaster
 - Distance related shadows
 - Proper secret doors
 - Multithreading
+- Sound
