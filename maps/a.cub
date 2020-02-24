@@ -1,4 +1,4 @@
-R 9999 9999
+R  640 480
 NO ./textures/colorstone.xpm
 SO ./textures/bluestone.xpm
 WE ./textures/redbrick.xpm
@@ -13,7 +13,7 @@ SI ./textures/health.xpm
 SP ./textures/collectible.xpm
 ST ./textures/trap.xpm
 
-BH ./textures/hidden.xpm
+BH ./textures/eagle.xpm
 BD ./textures/eagle.xpm
 
 FT ./textures/greystone.xpm
@@ -37,3 +37,27 @@ C 80, 200, 80
 1000P0000P0000000001
 1000000P000000000001
 11111111111111111111
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

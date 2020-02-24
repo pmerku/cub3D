@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:27:59 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/17 17:33:52 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/21 12:16:02 by prmerku       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void			map_copy(char **data, t_win *win, int pos)
 		win->map.map[pos] = ft_malloc(line_size(data[pos]) + 1);
 		while (data[pos][j])
 		{
-			if (data[pos][j] != ' ' && data[pos][j] != 16)
+			if (data[pos][j] != ' ')
 			{
 				win->map.map[pos][i] = data[pos][j];
 				i++;

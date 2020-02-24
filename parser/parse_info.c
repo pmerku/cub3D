@@ -27,21 +27,18 @@
 void	parse_resolution(char *data, t_win *win)
 {
 	char	**s;
-	int 	h;
-	int 	w;
+	int		h;
+	int		w;
 
 	mlx_get_screen_size(win->mlx, &w, &h);
 	if (win->x >= 250 && win->x <= w && win->y >= 250 && win->y <= h)
 		close_error("Duplicate resolution\n");
 	s = ft_split(data, ' ');
 	malloc_check(s);
-	win->x = ft_atoi(s[1]);
-	win->y = ft_atoi(s[2]);
+	win->x = (s[1] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[1]);
+	win->y = (s[2] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[2]);
 	if (win->x == 0 || win->y == 0)
-	{
-		delete_data(s);
 		close_error("Invalid resolution\n");
-	}
 	win->x = (win->x > w) ? w : win->x;
 	win->y = (win->y > h) ? h : win->y;
 	win->x = (win->x < 250) ? 250 : win->x;
@@ -65,9 +62,9 @@ void	parse_argb(char *data, t_color *c)
 		(*(char *)ft_strchr(data, ',')) = ' ';
 	s = ft_split(data, ' ');
 	malloc_check(s);
-	c->r = ft_atoi(s[1]);
-	c->g = ft_atoi(s[2]);
-	c->b = ft_atoi(s[3]);
+	c->r = (s[1] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[1]);
+	c->g = (s[2] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[2]);
+	c->b = (s[3] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[3]);
 	if (c->r > 255 || c->g > 255 || c->b > 255)
 		close_error("Incorrect ARGB numbers\n");
 	if (*data == 'F')

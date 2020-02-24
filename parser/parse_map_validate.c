@@ -59,11 +59,13 @@ static void	map_spawn_pos(t_win *win, char *row, int index)
 ** @return void
 */
 
-static void	extra_check(t_win *win, int c)
+static void	extra_check(char **map, int *x, int *y)
 {
-	if ((win->tex[DOOR_H].wall == NULL && c == 'H')
-		|| (win->tex[DOOR].wall == NULL && c == 'D'))
-		close_error("Missing textures\n");
+	while (map[*y][*x] == 16 && map[*y])
+		(*y)++;
+	if (map[*y] != NULL)
+		close_error("Invalid element after map\n");
+	(*y)--;
 }
 
 /*
@@ -75,19 +77,16 @@ static void	extra_check(t_win *win, int c)
 ** @return void
 */
 
-static void	map_char_check(char **map, t_win *win)
+static void	map_char_check(char **map, t_win *win, int y, int x)
 {
-	int		y;
-	int		x;
-
-	y = 0;
 	while (map[y])
 	{
 		x = 0;
 		while (map[y][x])
 		{
-			if (ft_strchr(EXTRA_SET, map[y][x]))
-				extra_check(win, map[y][x]);
+			if ((win->tex[DOOR_H].wall == NULL && map[y][x] == 'H')
+				|| (win->tex[DOOR].wall == NULL && map[y][x] == 'D'))
+				close_error("Missing textures\n");
 			if (ft_strchr(SPAWN_SET, map[y][x]))
 			{
 				if (win->pos.x == 0 && win->pos.y == 0)
@@ -95,8 +94,10 @@ static void	map_char_check(char **map, t_win *win)
 				else
 					close_error("Too many spawn points\n");
 			}
-			if (!ft_strchr(CHAR_SET, map[y][x]))
+			if (!ft_strchr(CHAR_SET, map[y][x]) && map[y][x] != 16)
 				close_error("Unsupported character in map\n");
+			else if (map[y][x] == 16)
+				extra_check(map, &x, &y);
 			x++;
 		}
 		y++;
@@ -146,7 +147,7 @@ void		map_validate(t_win *win)
 	int		y;
 	char	**map_dup;
 
-	map_char_check(win->map.map, win);
+	map_char_check(win->map.map, win, 0, 0);
 	map_dup = ft_calloc(win->map.map_h + 1, sizeof(char*));
 	malloc_check(map_dup);
 	y = 0;
