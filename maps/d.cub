@@ -1,16 +1,16 @@
-R 1270 720
+R 8000 8000
 NO ./textures/greystone.xpm
 SO ./textures/mossy.xpm
 WE ./textures/greystone.xpm
-EA ./textures/mossy.xpm
+EA ./textures/bluestone.xpm
 
 SI ./textures/collectible.xpm
 BD ./textures/eagle.xpm
 
 FT ./textures/colorstone.xpm
 
-F 200, 80, 200
-C 80, 200, 80
+F 1, 2, 3
+C 0, 0, 1
 
 1111111
 1IIIII1
@@ -19,4 +19,3 @@ C 80, 200, 80
 1IIIII1
 1IIIII1
 1111111
-

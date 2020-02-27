@@ -38,7 +38,7 @@ NAME = cub3D
 SRC = main
 
 SRC += parser/parse_file parser/parse_info parser/parse_sprites \
-	parser/parse_map parser/parse_map_validate
+	parser/parse_map parser/parse_map_validate parser/parse_color
 
 SRC += engine/renderer engine/movement engine/rotation engine/draw_back \
 	engine/engine_utils engine/draw_walls engine/draw_sprites \

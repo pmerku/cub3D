@@ -24,14 +24,14 @@
 ** @return void
 */
 
-void	parse_resolution(char *data, t_win *win)
+void		parse_resolution(char *data, t_win *win)
 {
 	char	**s;
 	int		h;
 	int		w;
 
 	mlx_get_screen_size(win->mlx, &w, &h);
-	if (win->x >= 250 && win->x <= w && win->y >= 250 && win->y <= h)
+	if (win->x >= 20 && win->x <= w && win->y >= 20 && win->y <= h)
 		close_error("Duplicate resolution\n");
 	s = ft_split(data, ' ');
 	malloc_check(s);
@@ -39,48 +39,11 @@ void	parse_resolution(char *data, t_win *win)
 	win->y = (s[2] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[2]);
 	if (win->x == 0 || win->y == 0)
 		close_error("Invalid resolution\n");
-	win->x = (win->x > w) ? w : win->x;
-	win->y = (win->y > h) ? h : win->y;
-	win->x = (win->x < 250) ? 250 : win->x;
-	win->y = (win->y < 250) ? 250 : win->y;
+	win->x = (win->x > w && (!win->save || win->x > 16384)) ? w : win->x;
+	win->y = (win->y > h && (!win->save || win->y > 16384)) ? h - 45 : win->y;
+	win->x = (win->x < 20) ? 20 : win->x;
+	win->y = (win->y < 20) ? 20 : win->y;
 	delete_data(s);
-}
-
-/*
-** Parse the 2D array and save the colors separately in the global window struct
-**
-** @param  char  *data passed string from 2D array
-** @param  t_win  *win allocated global window structure
-** @return void
-*/
-
-void	parse_argb(char *data, t_color *c)
-{
-	char	**s;
-
-	while (ft_strchr(data, ','))
-		(*(char *)ft_strchr(data, ',')) = ' ';
-	s = ft_split(data, ' ');
-	malloc_check(s);
-	c->r = (s[1] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[1]);
-	c->g = (s[2] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[2]);
-	c->b = (s[3] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[3]);
-	if (c->r > 255 || c->g > 255 || c->b > 255)
-		close_error("Incorrect ARGB numbers\n");
-	if (*data == 'F')
-	{
-		if (c->c_on & F_COLOR)
-			close_error("Duplicate color\n");
-		c->f_color = c->a << 24 | c->r << 16 | c->g << 8 | c->b;
-	}
-	if (*data == 'C')
-	{
-		if (c->c_on & C_COLOR)
-			close_error("Duplicate color\n");
-		c->c_color = c->a << 24 | c->r << 16 | c->g << 8 | c->b;
-	}
-	delete_data(s);
-	c->c_on |= (*data == 'F') ? F_COLOR : C_COLOR;
 }
 
 /*
@@ -93,13 +56,13 @@ void	parse_argb(char *data, t_color *c)
 ** @return void
 */
 
-void	parse_tex(char *data, t_win *win, int i)
+void		parse_tex(char *data, t_win *win, int i)
 {
 	char	*path;
 
 	if (win->tex[i].wall)
 		close_error("Duplicate texture\n");
-	data += 2;
+	data += 3;
 	while (*data && (*data == ' '))
 		data++;
 	path = ft_strdup(data);
@@ -124,10 +87,10 @@ void	parse_tex(char *data, t_win *win, int i)
 ** @return void
 */
 
-void	parse_sprites(char *data, t_win *win)
+void		parse_sprites(char *data, t_win *win)
 {
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S "))
-		parse_tex(data, win, SPR_T2);
+		parse_tex(data - 1, win, SPR_T2);
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S2"))
 		parse_tex(data, win, SPR_T3);
 	if ((*(u_int16_t *)data) == (*(u_int16_t *)"S3"))

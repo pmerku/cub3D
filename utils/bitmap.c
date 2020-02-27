@@ -11,140 +11,68 @@
 /* ************************************************************************** */
 
 #include <fcntl.h>
-#include <libft.h>
+#include <unistd.h>
 #include <utils.h>
 #include <cub3d.h>
 
-/*
-** Create Bitmap header
-**
-** @param  u_int      h header height
-** @param  u_int      w header width
-** @param  int    pad_s padding size
-** @return u_char     * header buffer
-*/
-
-static u_char	*bitmap_header(u_int h, u_int w, int pad_s)
+static int		image_size(int w, int h)
 {
-	static u_char	header[BMP_HSIZE];
-	u_int			file_s;
+	int		per_line;
 
-	file_s = BMP_HSIZE + BMP_ISIZE + (BMP_BPP * w + pad_s) * h;
-	header[0] = (u_char)('B');
-	header[1] = (u_char)('M');
-	header[2] = (u_char)(file_s);
-	header[3] = (u_char)(file_s >> 8);
-	header[4] = (u_char)(file_s >> 16);
-	header[5] = (u_char)(file_s >> 24);
-	header[10] = (u_char)(BMP_HSIZE + BMP_ISIZE);
-	return (header);
+	per_line = w * 3;
+	if (per_line % 4 != 0)
+		per_line += 4 - (per_line % 4);
+	return (per_line * h);
 }
 
-/*
-** Create Bitmap info
-**
-** @param  u_int      h info height
-** @param  u_int      w info width
-** @return u_char     * info buffer
-*/
-
-static u_char	*bitmap_info(u_int h, u_int w)
+static void		write_header(int fd, int w, int h)
 {
-	static u_char	header[BMP_ISIZE];
+	int		total_size;
 
-	header[0] = (u_char)(BMP_ISIZE);
-	header[4] = (u_char)(w);
-	header[5] = (u_char)(w >> 8);
-	header[6] = (u_char)(w >> 16);
-	header[7] = (u_char)(w >> 24);
-	header[8] = (u_char)(h);
-	header[9] = (u_char)(h >> 8);
-	header[10] = (u_char)(h >> 16);
-	header[11] = (u_char)(h >> 24);
-	header[12] = (u_char)(1);
-	header[14] = (u_char)(BMP_BPP * 8);
-	return (header);
+	write(fd, "BM", 2);
+	total_size = 54 + image_size(w, h);
+	write(fd, &total_size, 4);
+	write(fd, "\0\0\0\0\x36\0\0\0\x28\0\0\0", 12);
+	write(fd, &w, 4);
+	write(fd, &h, 4);
+	write(fd, "\x01\0\x18\0\0\0\0\0\0\0\0\0\0\0\0\0\
+	\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 28);
 }
 
-/*
-** Create Bitmap file and write all info to it
-**
-** @param  u_char *img allocated image buffer
-** @param  u_int     h file height
-** @param  int       w file width
-** @return void
-*/
-
-static void		save_bitmap(u_char *img, int h, int w)
+static void		write_rgb(int fd, t_win *win)
 {
-	u_char	pad[3];
-	int		pad_s;
-	int		img_f;
+	int		x;
+	int		y;
+	int		pad;
+	int		rgb;
 
-	img_f = open(BMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0755);
-	pad_s = (4 - (w * BMP_BPP) % 4) % 4;
-	write(img_f, bitmap_header(h, w, pad_s), BMP_HSIZE);
-	write(img_f, bitmap_info(h, w), BMP_ISIZE);
-	while (h >= 0)
+	x = 0;
+	y = win->y - 1;
+	pad = (4 - (win->x * 3) % 4) % 4;
+	while (y >= 0)
 	{
-		write(img_f, img + (BMP_BPP * w * h), BMP_BPP * w);
-		write(img_f, pad, pad_s);
-		h--;
+		while (x < win->x)
+		{
+			rgb = get_px(&win->img[0], x, y);
+			write(fd, &rgb, 3);
+			x++;
+		}
+		x = 0;
+		write(fd, &x, pad);
+		y--;
 	}
-	close(img_f);
 }
-
-/*
-** Set pixel color
-**
-** @param  t_win  *win allocated global window structure
-** @param  u_char *img allocated image buffer
-** @param  int       i index color position
-** @return void
-*/
-
-static void		set_px(t_win *win, u_char *img, int i)
-{
-	u_char	*ptr;
-
-	ptr = img + (int)(BMP_BPP * win->x * (int)win->bmp_y)
-			+ ((int)win->bmp_x * BMP_BPP) + i;
-	if (i == 0)
-		*ptr = get_b(win->color.bmp_color);
-	else if (i == 1)
-		*ptr = get_g(win->color.bmp_color);
-	else if (i == 2)
-		*ptr = get_r(win->color.bmp_color);
-}
-
-/*
-** Calling function for bitmap option
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
 
 void			save_frame(t_win *win)
 {
-	u_char	*img;
+	int	fd;
 
-	win->bmp_y = 0;
-	img = ft_calloc(win->y * win->x, BMP_BPP);
-	malloc_check(img);
-	while (win->bmp_y < win->y)
-	{
-		win->bmp_x = 0;
-		while (win->bmp_x < win->x)
-		{
-			win->color.bmp_color = get_px(&win->img[win->i],
-					(int)win->bmp_x, (int)win->bmp_y);
-			set_px(win, img, 0);
-			set_px(win, img, 1);
-			set_px(win, img, 2);
-			win->bmp_x++;
-		}
-		win->bmp_y++;
-	}
-	save_bitmap((u_char *)img, win->y, win->x);
+	win->save = 0;
+	fd = open(BMP_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0755);
+	if (fd < 0)
+		close_error("Can't create bitmap file\n");
+	write_header(fd, win->x, win->y);
+	write_rgb(fd, win);
+	close(fd);
 	close_win(win);
 }

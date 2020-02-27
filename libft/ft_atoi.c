@@ -33,7 +33,9 @@ int		ft_atoi(const char *str)
 		prefix = (*str == '-') ? -1 : 1;
 		str++;
 	}
-	while (*str >= '0' && *str <= '9')
+	if (!ft_isdigit(*str))
+		return (-1);
+	while (ft_isdigit(*str))
 	{
 		num = num * 10 + *str - '0';
 		str++;

@@ -58,9 +58,9 @@ static void	parse_info(char **data, t_win *win)
 		parse_argb(*data, &win->color);
 	else if (data[0][0] == 'S' && data[0][1] != 'O')
 		parse_sprites(*data, win);
-	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"NO"))
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t*)"NO"))
 		parse_tex(*data, win, N_WALL);
-	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"SO"))
+	else if ((*(u_int16_t *)*data) == (*(u_int16_t*)"SO"))
 		parse_tex(*data, win, S_WALL);
 	else if ((*(u_int16_t*)*data) == (*(u_int16_t*)"WE"))
 		parse_tex(*data, win, W_WALL);

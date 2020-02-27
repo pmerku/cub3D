@@ -1,4 +1,4 @@
-R  640 480
+R 9000 9000
 NO ./textures/colorstone.xpm
 SO ./textures/bluestone.xpm
 WE ./textures/redbrick.xpm
@@ -19,8 +19,8 @@ BD ./textures/eagle.xpm
 FT ./textures/greystone.xpm
 CT ./textures/mossy.xpm
 
-F 200, 80, 200
 C 80, 200, 80
+F 200 80 200
 
 11111111111111111111
 10000000000000000001
