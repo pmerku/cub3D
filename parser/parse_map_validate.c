@@ -61,7 +61,7 @@ static void	map_spawn_pos(t_win *win, char *row, int index)
 
 static void	extra_check(char **map, int *x, int *y)
 {
-	while (map[*y][*x] == 16 && map[*y])
+	while (map[*y] && map[*y][*x] == 16)
 		(*y)++;
 	if (map[*y] != NULL)
 		close_error("Invalid element after map\n");
@@ -82,7 +82,7 @@ static void	map_char_check(char **map, t_win *win, int y, int x)
 	while (map[y])
 	{
 		x = 0;
-		while (map[y][x])
+		while (map[y][x] && map[y])
 		{
 			if ((win->tex[DOOR_H].wall == NULL && map[y][x] == 'H')
 				|| (win->tex[DOOR].wall == NULL && map[y][x] == 'D'))
@@ -96,7 +96,7 @@ static void	map_char_check(char **map, t_win *win, int y, int x)
 			}
 			if (!ft_strchr(CHAR_SET, map[y][x]) && map[y][x] != 16)
 				close_error("Unsupported character in map\n");
-			else if (map[y][x] == 16)
+			else if (map[y][x] == 16 && map[y])
 				extra_check(map, &x, &y);
 			x++;
 		}

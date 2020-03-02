@@ -33,3 +33,4 @@ cmake-build-debug
 cub3D
 *.swiftmodule
 *.swiftdoc
+mlx/man/

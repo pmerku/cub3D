@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/20 11:37:42 by prmerku          ###   ########.fr       */
+/*   Updated: 2020/02/28 14:25:32 by prmerku       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 #include <libft.h>
 #include <mlx.h>
 #include <utils.h>
+
+static void	split_check(char *s)
+{
+	int		i;
+
+	if (!s)
+		close_error("Incorrect values\n");
+	i = ft_strlen(s);
+	while (i >= 0)
+	{
+		if (!ft_isdigit(s[i]) && s[i] != ' ' && s[i] != '\0')
+			close_error("Incorrect values\n");
+		i--;
+	}
+}
 
 /*
 ** Parse the 2D array and save the resolution separately in the
@@ -35,14 +50,20 @@ void		parse_resolution(char *data, t_win *win)
 		close_error("Duplicate resolution\n");
 	s = ft_split(data, ' ');
 	malloc_check(s);
+	split_check(s[1]);
+	split_check(s[2]);
+	if (s[3] != NULL)
+		close_error("Incorrect values\n");
 	win->x = (s[1] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[1]);
 	win->y = (s[2] == NULL) ? close_error("Incorrect values\n") : ft_atoi(s[2]);
 	if (win->x == 0 || win->y == 0)
 		close_error("Invalid resolution\n");
+	if (win->x > 16384 || win->y > 16384)
+		close_error("Value is over the limit\n");
 	win->x = (win->x > w && (!win->save || win->x > 16384)) ? w : win->x;
 	win->y = (win->y > h && (!win->save || win->y > 16384)) ? h - 45 : win->y;
-	win->x = (win->x < 20) ? 20 : win->x;
-	win->y = (win->y < 20) ? 20 : win->y;
+	win->x = (win->x < 20) ? close_error("Incorrect values\n") : win->x;
+	win->y = (win->y < 20) ? close_error("Incorrect values\n") : win->y;
 	delete_data(s);
 }
 

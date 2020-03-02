@@ -85,6 +85,7 @@ static void		save_bitmap(u_char *img, int h, int w)
 	pad_s = (4 - (w * BMP_BPP) % 4) % 4;
 	write(img_f, bitmap_header(h, w, pad_s), BMP_HSIZE);
 	write(img_f, bitmap_info(h, w), BMP_ISIZE);
+	h -= 1;
 	while (h >= 0)
 	{
 		write(img_f, img + (BMP_BPP * w * h), BMP_BPP * w);
@@ -108,7 +109,7 @@ static void		set_px(t_win *win, u_char *img, int i)
 	u_char	*ptr;
 
 	ptr = img + (int)(BMP_BPP * win->x * (int)win->bmp_y)
-		  + ((int)win->bmp_x * BMP_BPP) + i;
+			+ ((int)win->bmp_x * BMP_BPP) + i;
 	if (i == 0)
 		*ptr = get_b(win->color.bmp_color);
 	else if (i == 1)
@@ -137,7 +138,7 @@ void			save_frame(t_win *win)
 		while (win->bmp_x < win->x)
 		{
 			win->color.bmp_color = get_px(&win->img[win->i],
-										  (int)win->bmp_x, (int)win->bmp_y);
+					(int)win->bmp_x, (int)win->bmp_y);
 			set_px(win, img, 0);
 			set_px(win, img, 1);
 			set_px(win, img, 2);
@@ -145,6 +146,6 @@ void			save_frame(t_win *win)
 		}
 		win->bmp_y++;
 	}
-	save_bitmap((u_char *)img, win->y - 1, win->x);
+	save_bitmap((u_char *)img, win->y, win->x);
 	close_win(win);
 }

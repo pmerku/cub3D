@@ -1,4 +1,4 @@
-R 1270 720
+R 1000 800
 NO ./textures/greystone.xpm
 SO ./textures/mossy.xpm
 WE ./textures/greystone.xpm
@@ -10,7 +10,7 @@ BD ./textures/eagle.xpm
 FT ./textures/colorstone.xpm
 
 F 1, 2, 3
-C 0, 0, 1
+C 0, 0, 11
 
 1111111
 1IIIII1
