@@ -97,24 +97,23 @@
 # define S_NUM		9
 # define T_NUM		16
 
-# define CHAR_SET	"012345NSEWHDMIPT"
+# define CHAR_SET	" 012345NSEWHDMIPT"
 # define SPAWN_SET	"NSEW"
 # define SPRITE_SET	"2345MIPT"
-# define EXTRA_SET	"HD"
 
 /*
 ** Map query macros
 */
 
 # define HIT_C		"1HD"
-# define HIT_NC		"04IPTH"
+# define HIT_NC		"04IPTHNSEW"
 # define HIT_P		"IPT"
 
 /*
 ** Flood fill macros
 */
 
-# define FLOOD		"02345MIPTHD"
+# define FLOOD		"02345MIPTHDNSEW"
 # define ELEM_S		" 012345MIPTHD"
 
 /*

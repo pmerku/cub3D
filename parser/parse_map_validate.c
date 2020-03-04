@@ -17,35 +17,31 @@
 /*
 ** Parse the string and set spawn point for the player with correct rotation
 **
-** @param  t_win *win allocated global window structure
-** @param  char  *row passed string to loop over
+** @param  t_win      *win allocated global window structure
+** @param  const char *row passed string to loop over
 ** @return void
 */
 
-static void	map_spawn_pos(t_win *win, char *row, int index)
+static void	map_spawn_pos(t_win *win, const char *row, int index)
 {
 	int		col;
 
 	col = 0;
-	while (*row)
+	while (row[col])
 	{
-		if (*row == 'N' || *row == 'S')
+		if (row[col] == 'N' || row[col] == 'S')
 		{
-			win->pos.dir_x = (*row == 'N') ? -1 : 1;
-			win->pos.plane_y = (*row == 'N') ? 0.66 : -0.66;
-			*row = '0';
+			win->pos.dir_x = (row[col] == 'N') ? -1 : 1;
+			win->pos.plane_y = (row[col] == 'N') ? 0.66 : -0.66;
 			break ;
 		}
-		else if (*row == 'E' || *row == 'W')
+		else if (row[col] == 'E' || row[col] == 'W')
 		{
-			win->pos.dir_y = (*row == 'W') ? -1 : 1;
-			win->pos.plane_x = (*row == 'W') ? -0.66 : 0.66;
-			*row = '0';
+			win->pos.dir_y = (row[col] == 'W') ? -1 : 1;
+			win->pos.plane_x = (row[col] == 'W') ? -0.66 : 0.66;
 			break ;
 		}
-		if (*row != ' ')
-			col++;
-		row++;
+		col++;
 	}
 	win->pos.x = col + 0.5;
 	win->pos.y = index + 0.5;
@@ -84,24 +80,26 @@ static void	map_char_check(char **map, t_win *win, int y, int x)
 		x = 0;
 		while (map[y][x] && map[y])
 		{
-			if ((win->tex[DOOR_H].wall == NULL && map[y][x] == 'H')
+			if (!ft_strchr(CHAR_SET, map[y][x]) && map[y][x] != 16)
+				close_error("Unsupported character in map\n");
+			else if ((win->tex[DOOR_H].wall == NULL && map[y][x] == 'H')
 				|| (win->tex[DOOR].wall == NULL && map[y][x] == 'D'))
 				close_error("Missing textures\n");
-			if (ft_strchr(SPAWN_SET, map[y][x]))
+			else if (ft_strchr(SPAWN_SET, map[y][x]))
 			{
 				if (win->pos.x == 0 && win->pos.y == 0)
 					map_spawn_pos(win, map[y], y);
 				else
 					close_error("Too many spawn points\n");
 			}
-			if (!ft_strchr(CHAR_SET, map[y][x]) && map[y][x] != 16)
-				close_error("Unsupported character in map\n");
 			else if (map[y][x] == 16 && map[y])
 				extra_check(map, &x, &y);
 			x++;
 		}
 		y++;
 	}
+	if (win->pos.x == 0 && win->pos.y == 0)
+		close_error("Invalid spawn\n");
 }
 
 /*
@@ -115,7 +113,8 @@ static void	map_char_check(char **map, t_win *win, int y, int x)
 
 static void	flood_fill(t_win *win, char **map, int x, int y)
 {
-	if (y < 0 || x < 0 || y > win->map.map_h - 1 || map[y][x] == '\0')
+	if (y < 0 || x < 0 || y > win->map.map_h - 1 || map[y][x] == '\0'
+		|| map[y][x] == ' ')
 		close_error("Invalid map\n");
 	if (map[y][x] == '1' || map[y][x] == '0')
 		return ;

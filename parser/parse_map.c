@@ -15,27 +15,6 @@
 #include <cub3d.h>
 
 /*
-** Loop over string and return the length of the string without spaces
-**
-** @param  const char *s passed string
-** @return size_t        length of the string
-*/
-
-static size_t	line_size(const char *s)
-{
-	size_t	size;
-
-	size = 0;
-	while (*s)
-	{
-		if (*s != ' ')
-			size++;
-		s++;
-	}
-	return (size);
-}
-
-/*
 ** Parse the 2D array and save the map separately in the global window struct
 **
 ** @param  char  **data allocated 2D array to parse
@@ -46,24 +25,9 @@ static size_t	line_size(const char *s)
 
 void			map_copy(char **data, t_win *win, int pos)
 {
-	int		i;
-	int		j;
-
 	while (data[pos])
 	{
-		i = 0;
-		j = 0;
-		win->map.map[pos] = ft_malloc(line_size(data[pos]) + 1);
-		while (data[pos][j])
-		{
-			if (data[pos][j] != ' ')
-			{
-				win->map.map[pos][i] = data[pos][j];
-				i++;
-			}
-			j++;
-		}
-		win->map.map[pos][i] = '\0';
+		win->map.map[pos] = ft_strdup(data[pos]);
 		pos++;
 	}
 	win->map.map[pos] = NULL;
