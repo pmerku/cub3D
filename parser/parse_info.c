@@ -6,7 +6,7 @@
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:31:56 by prmerku           #+#    #+#             */
-/*   Updated: 2020/02/28 14:25:32 by prmerku       ########   odam.nl         */
+/*   Updated: 2020/03/06 09:48:26 by prmerku       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		parse_resolution(char *data, t_win *win)
 	int		w;
 
 	mlx_get_screen_size(win->mlx, &w, &h);
-	if (win->x >= 20 && win->x <= w && win->y >= 20 && win->y <= h)
+	if (win->x >= 1 && win->x <= w && win->y >= 1 && win->y <= h)
 		close_error("Duplicate resolution\n");
 	s = ft_split(data, ' ');
 	malloc_check(s);
@@ -62,8 +62,8 @@ void		parse_resolution(char *data, t_win *win)
 		close_error("Value is over the limit\n");
 	win->x = (win->x > w && (!win->save || win->x > 16384)) ? w : win->x;
 	win->y = (win->y > h && (!win->save || win->y > 16384)) ? h - 45 : win->y;
-	win->x = (win->x < 20) ? close_error("Incorrect values\n") : win->x;
-	win->y = (win->y < 20) ? close_error("Incorrect values\n") : win->y;
+	win->x = (win->x < 1) ? close_error("Incorrect values\n") : win->x;
+	win->y = (win->y < 1) ? close_error("Incorrect values\n") : win->y;
 	delete_data(s);
 }
 

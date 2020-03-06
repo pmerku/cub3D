@@ -96,7 +96,7 @@ void		sprite_dist(t_win *win)
 	i = 0;
 	while (i < win->spr_i)
 	{
-		win->spr[i].dist = sqrt((double)pow(win->pos.x - win->spr[i].x, 2)
+		win->spr[i].dist = ((double)pow(win->pos.x - win->spr[i].x, 2)
 				+ (double)pow(win->pos.y - win->spr[i].y, 2));
 		i++;
 	}
