@@ -47,19 +47,36 @@
 ** Movement macros
 */
 
-# define KEY_W		13
-# define KEY_A		0
-# define KEY_S		1
-# define KEY_D		2
-# define KEY_UP		126
-# define KEY_LEFT	123
-# define KEY_DOWN	125
-# define KEY_RIGHT	124
-# define KEY_ESC	53
-# define KEY_E		14
-# define KEY_SHIFT	257
-# define KEY_SPACE	49
-# define KEY_TAB	48
+#ifdef MAC_AND_CHEESE_CUBE
+#  define KEY_ESC				53
+#  define KEY_DOWN				125
+#  define KEY_UP				126
+#  define KEY_LEFT				123
+#  define KEY_RIGHT				124
+#  define KEY_W					13
+#  define KEY_A					0
+#  define KEY_S					1
+#  define KEY_D					2
+#  define KEY_E		14
+#  define KEY_SHIFT	257
+#  define KEY_SPACE	49
+#  define KEY_TAB	48
+# else
+#  include <X11/keysym.h>
+#  define KEY_ESC				XK_Escape
+#  define KEY_DOWN				XK_Down
+#  define KEY_UP				XK_Up
+#  define KEY_LEFT				XK_Left
+#  define KEY_RIGHT				XK_Right
+#  define KEY_W					XK_w
+#  define KEY_A					XK_a
+#  define KEY_S					XK_s
+#  define KEY_D					XK_d
+#  define KEY_E		XK_e
+#  define KEY_SHIFT	XK_Shift_L
+#  define KEY_SPACE	XK_space
+#  define KEY_TAB	XK_Tab
+# endif
 
 # define MOV_SPEED	0.0475
 # define ROT_SPEED	0.0275

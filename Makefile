@@ -14,91 +14,74 @@
 # 							Colors
 # ----------------------------------------------------------------------------
 
-GREEN = \033[0;32m
-RED = \033[0;31m
-MAGENTA = \033[0;35m
-CYAN = \033[0;36m
-YELLOW = \033[1;33m
-NC = \033[0m
-
-# ----------------------------------------------------------------------------
-# 							Flags and Lib name
-# ----------------------------------------------------------------------------
-
-CFLAGS = -Wall -Wextra -Werror -Ilibft -Imlx -Iinc -O3
-
-MLXFLAGS = -Lmlx/ -lmlx -framework OpenGL -framework AppKit
-
-NAME = cub3D
+OS      :=  $(shell uname -s)
+CC      =   clang
+WFLAGS  =   -Wall -Wextra -Werror
+EFLAGS  =
+GDBFLAG =
+SDIR    =   .
+ODIR    =   .
+IDIR    =   -Iinc -Ilibft
+LIBFT   =   -Llibft -lft
+DEFINE  =   -D LINUX_CUBE
+NAME    =   cub3D
 
 # ----------------------------------------------------------------------------
 # 							Objects and Includes
 # ----------------------------------------------------------------------------
 
-SRC = main
+FNAME   =   main.c parser/parse_file.c parser/parse_info.c parser/parse_sprites.c \
+	parser/parse_map.c parser/parse_map_validate.c parser/parse_color.c \
+	engine/renderer.c engine/movement.c engine/rotation.c engine/draw_back.c \
+	engine/engine_utils.c engine/draw_walls.c engine/draw_sprites.c \
+	engine/sprite_utils.c \
+	utils/shutdown.c utils/data_handle.c utils/bitmap.c utils/bitmap_utils.c \
+	utils/hud.c
 
-SRC += parser/parse_file parser/parse_info parser/parse_sprites \
-	parser/parse_map parser/parse_map_validate parser/parse_color
-
-SRC += engine/renderer engine/movement engine/rotation engine/draw_back \
-	engine/engine_utils engine/draw_walls engine/draw_sprites \
-	engine/sprite_utils
-
-SRC += utils/shutdown utils/data_handle utils/bitmap utils/bitmap_utils \
-	utils/hud
-
-OBJ = $(addsuffix .o, $(SRC))
-
-LIBFT = libft/libft.a
-
-MLX = libmlx.dylib
-
-# ----------------------------------------------------------------------------
-# 							Rules
-# ----------------------------------------------------------------------------
-
-.PHONY: all bonus clean fclean re
-
-all: $(NAME)
-
-f: $(OBJ)
-	@printf "Compiling - ${YELLOW}[Fast build]${NC}\n"
-	@$(CC) $(CFLAGS) $(MLXFLAGS) -o $(NAME) $^ $(MLX) $(LIBFT)
-	@printf "${MAGENTA}  Finished${NC}\n"
-
-$(NAME): $(MLX) $(LIBFT) $(OBJ)
-	@printf "Compiling - ${YELLOW}[Main build]${NC}\n"
-	@$(CC) $(CFLAGS) $(MLXFLAGS) -o $@ $^
-	@printf "${MAGENTA}  Finished${NC}\n"
-
-$(LIBFT):
-	@printf "Compiling - ${YELLOW}[Libft]${NC}\n"
-	@$(MAKE) -C libft > /dev/null
-	@printf "${MAGENTA}  Finished${NC}\n"
-
-$(MLX):
-	@printf "Compiling - ${YELLOW}[Mlx]${NC}\n"
-	@$(MAKE) -C mlx > /dev/null
-	@cp -r mlx/libmlx.dylib libmlx.dylib
-	@printf "${MAGENTA}  Finished${NC}\n"
-
-%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $<
-
-bonus: all
-
-clean:
-	@printf "Cleaning - ${YELLOW}[OBJ]${NC}\n"
-	@$(MAKE) -C libft clean > /dev/null
-	@$(MAKE) -C mlx clean > /dev/null
-	@$(RM) $(OBJ)
-	@printf "${MAGENTA}  Finished${NC}\n"
-
-fclean: clean
-	@printf "Cleaning - ${YELLOW}[NAME]${NC}\n"
-	@$(MAKE) -C libft fclean > /dev/null
-	@$(RM) mlx/libmlx.dylib libmlx.dylib > /dev/null
-	@$(RM) $(NAME)
-	@printf "${MAGENTA}  Finished${NC}\n"
-
-re: fclean all
+SRC     =   $(FNAME:%.c=$(SDIR)/%.c)
+OBJ     =   $(SRC:$(SDIR)/%.c=$(ODIR)/%.o)
+ifeq ($(OS),Darwin)
+    MLX     =   -Lmlx -lmlx -framework OpenGL -framework AppKit
+    DEFINE  =   -D MAC_AND_CHEESE_CUBE
+    IDIR    +=  -Imlx
+    CMLX    =   mlx
+else
+    MLX     =   -Lmlx_linux -lmlx -lXext -lX11 -lz -lm
+    IDIR    +=  -Imlx_linux
+    CMLX    =   mlx_linux
+endif
+ifdef WITH_DEBUG
+    FLAGS = $(GDBFLAG) $(WFLAGS) $(EFLAGS)
+    DBG = WITH_DEBUG=1
+else
+    FLAGS = $(WFLAGS)
+endif
+all         : libft mlx $(NAME)
+$(NAME)     : $(OBJ)
+	$(CC) $(FLAGS) $(OBJ) $(IDIR) $(LIBFT) $(MLX) -o $(NAME) $(DEFINE)
+bonus		:
+	@$(MAKE) WITH_BONUS=1 all
+debug       :
+	@$(MAKE) WITH_BONUS=1 WITH_DEBUG=1 all
+rebug       : fclean debug
+clean       :
+	/bin/rm -f $(OBJ)
+	$(MAKE) -C libft clean
+	$(MAKE) -C $(CMLX) clean
+fclean      : clean
+	/bin/rm -f $(NAME)
+	/bin/rm -f mlx/libmlx.dylib libmlx.dylib
+	$(MAKE) -C libft fclean
+re          :
+	$(MAKE) fclean
+	$(MAKE) all
+libft       :
+	$(MAKE) -C libft $(DBG)
+mlx         :
+	$(MAKE) -C $(CMLX) $(DBG)
+ifeq ($(OS),Darwin)
+	cp mlx/libmlx.dylib .
+endif
+$(ODIR)/%.o : $(SDIR)/%.c
+	$(CC) -c $(FLAGS) $< $(IDIR) -o $@ $(DEFINE)
+.PHONY      : all bonus clean fclean re debug rebug libft mlx

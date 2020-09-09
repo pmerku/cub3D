@@ -121,7 +121,7 @@ static int	ft_read(const int fd, char *fd_store[fd], int x)
 
 int			get_next_line(int fd, char **line)
 {
-	static char	*fd_store[INT_MAX];
+	static char	*fd_store[2];
 	char		*ptr_nl;
 	char		*tmp;
 	int			res;
