@@ -10,57 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <libft.h>
-#include <utils.h>
+#include <ft_memory.h>
+#include "utils.h"
 
-/*
-** Malloc wrapper
-**
-** @param  size_t size size to malloc
-** @return void      * malloc-ed size
-*/
-
-void		*ft_malloc(size_t size)
-{
-	void	*mem;
-
-	mem = NULL;
-	if (size > 0)
-		mem = malloc(size);
-	malloc_check(mem);
-	return (mem);
-}
-
-/*
-** Check if malloc failed
-**
-** @param  void *ptr pointer to memory
-** @return void
-*/
-
-void		malloc_check(void *ptr)
-{
+/**
+ * Test for allocation failure
+ * @param ptr pointer to memory to test
+ */
+void		malloc_check(void *ptr) {
 	if (!ptr)
 		close_error("Malloc fail\n");
 }
 
-/*
-** Delete 2D array and its indexes
-**
-** @param  char ** allocated 2D array
-** @return void
-*/
-
-void		delete_data(char **data)
-{
-	int		i;
-
-	i = 0;
-	while (data[i] != NULL)
-	{
-		free(data[i]);
-		i++;
-	}
-	free(data);
+/**
+ * Free 2D array
+ * @param data array to free
+ */
+void		delete_data(char **data) {
+	for (int i = 0; data[i] != NULL; i++)
+		ft_free(data[i]);
+	ft_free(data);
 }

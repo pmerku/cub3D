@@ -11,18 +11,14 @@
 /* ************************************************************************** */
 
 #include <math.h>
-#include <cub3d.h>
+#include "cub3d.h"
 
-/*
-** Copy over sprite structure values
-**
-** @param  t_spr  *dst allocated sprite structure
-** @param  t_spr  *src allocated sprite structure
-** @return void
-*/
-
-static void	sprite_dup(t_spr *dst, t_spr *src)
-{
+/**
+ * Copy over sprites structure values
+ * @param dst sprite structure
+ * @param src sprite structure
+ */
+static void	sprite_dup(t_spr *dst, t_spr *src) {
 	dst->x = src->x;
 	dst->y = src->y;
 	dst->tex_id = src->tex_id;
@@ -30,16 +26,12 @@ static void	sprite_dup(t_spr *dst, t_spr *src)
 	dst->hide = src->hide;
 }
 
-/*
-** Swap sprites
-**
-** @param  t_spr  *left allocated sprite structure
-** @param  t_spr  *right allocated sprite structure
-** @return void
-*/
-
-static void	sprite_swap(t_spr *left, t_spr *right)
-{
+/**
+ * Swap sprites data
+ * @param left sprite structure
+ * @param right sprite structure
+ */
+static void	sprite_swap(t_spr *left, t_spr *right) {
 	t_spr	tmp;
 
 	sprite_dup(&tmp, left);
@@ -47,28 +39,18 @@ static void	sprite_swap(t_spr *left, t_spr *right)
 	sprite_dup(right, &tmp);
 }
 
-/*
-** Sprite sorting algorithm
-**
-** @param  t_spr  *spr allocated sprite structure
-** @param  int   first first sprite index
-** @param  int    last last sprite index
-** @return void
-*/
-
-void		sprite_sort(t_spr *spr, int first, int last)
-{
-	int		i;
-	int		j;
-	int		tmp;
-
-	if (first < last)
-	{
-		tmp = first;
-		i = first;
-		j = last;
-		while (i < j)
-		{
+/**
+ * Sort sprites
+ * @param spr sprites structure
+ * @param first sprite index
+ * @param last sprite index
+ */
+void		sprite_sort(t_spr *spr, int first, int last) {
+	if (first < last) {
+		int tmp = first;
+		int i = first;
+		int j = last;
+		while (i < j) {
 			while (spr[i].dist >= spr[tmp].dist && i < last)
 				i++;
 			while (spr[j].dist < spr[tmp].dist)
@@ -82,23 +64,12 @@ void		sprite_sort(t_spr *spr, int first, int last)
 	}
 }
 
-/*
-** Calculations for sprite distance from player
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-void		sprite_dist(t_win *win)
-{
-	int		i;
-
-	i = 0;
-	while (i < win->spr_i)
-	{
-		win->spr[i].dist = ((double)pow(win->pos.x - win->spr[i].x, 2)
-				+ (double)pow(win->pos.y - win->spr[i].y, 2));
-		i++;
-	}
+/**
+ * Calculate sprite distance from player
+ * @param win global game structure
+ */
+void		sprite_dist(t_win *win) {
+	for (int i = 0; i < win->spr_i; i++)
+		win->spr[i].dist = ((double)pow(win->pos.x - win->spr[i].x, 2) + (double)pow(win->pos.y - win->spr[i].y, 2));
 	sprite_sort(win->spr, 0, win->spr_i - 1);
 }

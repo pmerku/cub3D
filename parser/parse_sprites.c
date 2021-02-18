@@ -10,110 +10,74 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <utils.h>
-#include <cub3d.h>
+#include <ft_string.h>
+#include <ft_memory.h>
+#include "utils.h"
+#include "cub3d.h"
 
-/*
-** Save sprite position from map
-**
-** @param  t_win *win allocated global window structure
-** @param  char     c sprite character in map
-** @param  int   *pos index in sprite array
-** @return void
-*/
-
-static int	sprite_pos(t_win *win, const char c, int *pos)
-{
-	int		i;
-
-	i = 0;
-	while (i < S_NUM)
-	{
-		if (win->type[i].c == c)
-		{
+/**
+ * Save sprite position
+ * @param win global game structure
+ * @param c sprite character
+ * @param pos sprite id
+ * @return status code (if not zero, sprite texture is missing)
+ */
+static int	sprite_pos(t_win *win, const char c, int *pos) {
+	for (int i = 0; i < S_NUM; i++) {
+		if (win->type[i].c == c) {
 			win->spr[*pos].x = win->pos.tmp_x + .5;
 			win->spr[*pos].y = win->pos.tmp_y + .5;
 			win->spr[*pos].tex_id = win->type[i].tex_i;
 			win->spr[*pos].hide = 0;
 			(*pos)++;
-			return (1);
+			return 1;
 		}
-		i++;
 	}
-	return (0);
+	return 0;
 }
 
-/*
-** Scan map for sprite position
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-static void	save_sprite(t_win *win)
-{
-	int		y;
-	int		x;
-	int		pos;
-
-	pos = 0;
-	y = 0;
-	while (y < win->map.map_h)
-	{
-		x = 0;
-		while (win->map.map[y][x])
-		{
-			if (ft_strchr(SPRITE_SET, win->map.map[y][x]))
-			{
+/**
+ * Scan map for the sprite position
+ * @param win
+ */
+static void	save_sprite(t_win *win) {
+	int	pos = 0;
+	for (int y = 0; y < win->map.map_h; y++) {
+		for (int x = 0; win->map.map[y][x]; x++) {
+			if (ft_strchr(SPRITE_SET, win->map.map[y][x])) {
 				win->pos.tmp_x = x;
 				win->pos.tmp_y = y;
 				if (!sprite_pos(win, win->map.map[y][x], &pos))
 					close_error("Missing texture for the sprite\n");
 			}
-			x++;
 		}
-		y++;
 	}
 }
 
-/*
-** Check if sprite texture is loaded
-**
-** @param  t_win *win allocated global window structure
-** @param  char     c character in map
-** @return void
-*/
-
-static int	sprite_on(t_win *win, char c)
-{
-	int		i;
-
-	i = 0;
-	while (i < S_NUM)
-	{
-		if (win->type[i].c == c)
-		{
+/**
+ * Check if sprite texture is loaded
+ * @param win
+ * @param c
+ * @return status code
+ */
+static int	sprite_on(t_win *win, char c) {
+	for (int i = 0; i < S_NUM; i++) {
+		if (win->type[i].c == c) {
 			if (c == 'P')
 				win->spr_p++;
 			if (win->tex[win->type[i].tex_i].wall == NULL)
 				close_error("Missing textures\n");
-			return (1);
+			return 1;
 		}
-		i++;
 	}
-	return (0);
+	return 0;
 }
 
-/*
-** Sprite values initialization
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-static void	sprite_init(t_win *win)
-{
+/**
+ * Set sprite ids
+ * @param win global game structure
+ */
+static void	sprite_init(t_win *win) {
 	win->type[0].c = 'I';
 	win->type[0].tex_i = SPR_I;
 	win->type[1].c = 'P';
@@ -132,34 +96,20 @@ static void	sprite_init(t_win *win)
 	win->type[7].tex_i = SPR_M;
 }
 
-/*
-** Calling function for sprite setup
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-void		sprite_set(t_win *win)
-{
-	int		x;
-	int		y;
-
+/**
+ * Load sprites data
+ * @param win global game structure
+ */
+void		sprite_set(t_win *win) {
 	sprite_init(win);
-	y = 0;
-	while (y < win->map.map_h)
-	{
-		x = 0;
-		while (win->map.map[y][x])
-		{
-			if (ft_strchr(SPRITE_SET, win->map.map[y][x]))
-			{
+	for (int y = 0; y < win->map.map_h; y++) {
+		for (int x = 0; win->map.map[y][x]; x++) {
+			if (ft_strchr(SPRITE_SET, win->map.map[y][x])) {
 				if (!sprite_on(win, win->map.map[y][x]))
 					close_error("Missing sprite texture\n");
 				win->spr_i++;
 			}
-			x++;
 		}
-		y++;
 	}
 	win->spr = ft_calloc(win->spr_i, sizeof(t_spr));
 	malloc_check(win->spr);

@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <libft.h>
+#include <ft_unistd.h>
+#include <ft_string.h>
 #include <mlx.h>
-#include <cub3d.h>
+#include "cub3d.h"
 
 /*
 ** Clean exit program on ESC key press
@@ -82,7 +83,7 @@ int			close_win(t_win *win)
 
 int			close_error(char *s)
 {
-	write(1, "Error\n", 6);
-	write(1, s, ft_strlen(s));
+	ft_write(1, "Error\n", 6);
+	ft_write(1, s, ft_strlen(s));
 	exit(EXIT_FAILURE);
 }

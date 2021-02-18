@@ -11,16 +11,15 @@
 /* ************************************************************************** */
 
 #include <mlx.h>
-#include <libft.h>
-#include <engine.h>
-#include <parser.h>
-#include <utils.h>
-#include <cub3d.h>
+#include <ft_string.h>
+#include "engine.h"
+#include "parser.h"
+#include "utils.h"
+#include "cub3d.h"
 
-/*
-** Initialized game struct
-*/
-
+/**
+ * Initializer list for the global game structure
+ */
 static t_win g_win = {
 	.x = 0,
 	.y = 0,
@@ -72,28 +71,27 @@ static t_win g_win = {
 ** @return void
 */
 
+/**
+ * Initialization of a buffer image
+ * @param img pointer to the image
+ * @param win global game structure
+ */
 static void	init_win(t_img *img, t_win *win)
 {
 	img->img = mlx_new_image(win->mlx, win->x, win->y);
-	img->img = mlx_new_image(win->mlx, win->x, win->y);
 	if (!img->img)
 		close_error("Couldn't create image\n");
-	img->addr = mlx_get_data_addr(img->img, &img->bpp,
-			&img->line_len, &img->endian);
-	img->addr = mlx_get_data_addr(img->img, &img->bpp,
-			&img->line_len, &img->endian);
+	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->line_len, &img->endian);
 	if (!img->addr)
 		close_error("Couldn't get image data\n");
 }
 
-/*
-** Set key variable to 0 if released
-**
-** @param  int   keycode accordingly keycode for the key pressed
-** @param  t_win *win    allocated global window structure
-** @return int           status code
-*/
-
+/**
+ * Sets the pressed key variable to false
+ * @param keycode value of the pressed key
+ * @param win global game structure
+ * @return status code
+ */
 int			key_release(int keycode, t_win *win)
 {
 	if (keycode == KEY_W || keycode == KEY_UP)
@@ -110,19 +108,16 @@ int			key_release(int keycode, t_win *win)
 		win->key.rot_r = 0;
 	if (keycode == KEY_SHIFT)
 		win->key.crouch = 0;
-	return (0);
+	return 0;
 }
 
-/*
-** Set key variable to 1 if pressed
-**
-** @param  int   keycode accordingly keycode for the key pressed
-** @param  t_win *win    allocated global window structure
-** @return int           status code
-*/
-
-int			key_press(int keycode, t_win *win)
-{
+/**
+ * Sets the pressed key variable to true
+ * @param keycode value of the pressed key
+ * @param win global game structure
+ * @return status code
+ */
+int			key_press(int keycode, t_win *win) {
 	if (keycode == KEY_ESC)
 		close_key(win);
 	if (keycode == KEY_W || keycode == KEY_UP)
@@ -145,22 +140,17 @@ int			key_press(int keycode, t_win *win)
 		win->key.shoot = !win->key.shoot;
 	if (keycode == KEY_TAB)
 		win->key.hud = !win->key.hud;
-	return (0);
+	return 0;
 }
 
-/*
-** Initialization of the window and images
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-static void	game_init(t_win *win)
-{
+/**
+ * Initialization of the game window and two buffer images
+ * @param win global game structure
+ */
+static void	game_init(t_win *win) {
 	init_win(&win->img[0], win);
 	init_win(&win->img[1], win);
-	if (!win->save)
-	{
+	if (!win->save) {
 		win->mlx_win = mlx_new_window(win->mlx, win->x, win->y, "cub3D");
 		if (!win->mlx_win)
 			close_error("Couldn't open window\n");
@@ -170,18 +160,8 @@ static void	game_init(t_win *win)
 	}
 }
 
-/*
-** Main
-**
-** @param  int  argc   number of params
-** @param  char **argv 2D array string of params
-** @return int         status code
-*/
-
-int			main(int argc, char **argv)
-{
-	if (argc != 2)
-	{
+int			main(int argc, char **argv) {
+	if (argc != 2) {
 		if (argc == 3 && ft_strncmp(argv[2], "--save", 7) == 0)
 			g_win.save = 1;
 		else
@@ -194,5 +174,5 @@ int			main(int argc, char **argv)
 	game_init(&g_win);
 	mlx_loop_hook(g_win.mlx, render_next_frame, &g_win);
 	mlx_loop(g_win.mlx);
-	return (0);
+	return 0;
 }

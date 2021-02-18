@@ -11,25 +11,24 @@
 /* ************************************************************************** */
 
 #include <fcntl.h>
-#include <libft.h>
-#include <utils.h>
-#include <cub3d.h>
+#include <ft_string.h>
+#include <ft_unistd.h>
+#include <ft_memory.h>
+#include <unistd.h>
+#include "utils.h"
+#include "cub3d.h"
 
-/*
-** Create Bitmap header
-**
-** @param  u_int      h header height
-** @param  u_int      w header width
-** @param  int    pad_s padding size
-** @return u_char     * header buffer
-*/
-
-static u_char	*bitmap_header(u_int h, u_int w, int pad_s)
-{
+/**
+ * Set bitmap header
+ * @param h header height
+ * @param w header width
+ * @param pad_s header padding
+ * @return header buffer
+ */
+static u_char	*bitmap_header(u_int h, u_int w, int pad_s) {
 	static u_char	header[BMP_HSIZE];
-	u_int			file_s;
 
-	file_s = BMP_HSIZE + BMP_ISIZE + (BMP_BPP * w + pad_s) * h;
+	u_int file_s = BMP_HSIZE + BMP_ISIZE + (BMP_BPP * w + pad_s) * h;
 	header[0] = (u_char)('B');
 	header[1] = (u_char)('M');
 	header[2] = (u_char)(file_s);
@@ -37,19 +36,16 @@ static u_char	*bitmap_header(u_int h, u_int w, int pad_s)
 	header[4] = (u_char)(file_s >> 16);
 	header[5] = (u_char)(file_s >> 24);
 	header[10] = (u_char)(BMP_HSIZE + BMP_ISIZE);
-	return (header);
+	return header;
 }
 
-/*
-** Create Bitmap info
-**
-** @param  u_int      h info height
-** @param  u_int      w info width
-** @return u_char     * info buffer
-*/
-
-static u_char	*bitmap_info(u_int h, u_int w)
-{
+/**
+ * Set bitman info
+ * @param h info height
+ * @param w info width
+ * @return info buffer
+ */
+static u_char	*bitmap_info(u_int h, u_int w) {
 	static u_char	header[BMP_ISIZE];
 
 	header[0] = (u_char)(BMP_ISIZE);
@@ -63,53 +59,39 @@ static u_char	*bitmap_info(u_int h, u_int w)
 	header[11] = (u_char)(h >> 24);
 	header[12] = (u_char)(1);
 	header[14] = (u_char)(BMP_BPP * 8);
-	return (header);
+	return header;
 }
 
-/*
-** Create Bitmap file and write all info to it
-**
-** @param  u_char *img allocated image buffer
-** @param  u_int     h file height
-** @param  int       w file width
-** @return void
-*/
-
-static void		save_bitmap(u_char *img, int h, int w)
-{
+/**
+ * Create bitmap header
+ * @param img bitmap image
+ * @param h image height
+ * @param w image width
+ */
+static void		save_bitmap(u_char *img, int h, int w) {
 	u_char	pad[3];
-	int		pad_s;
-	int		img_f;
 
-	img_f = open(BMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0755);
-	pad_s = (4 - (w * BMP_BPP) % 4) % 4;
-	write(img_f, bitmap_header(h, w, pad_s), BMP_HSIZE);
-	write(img_f, bitmap_info(h, w), BMP_ISIZE);
+	int img_f = open(BMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0755);
+	int pad_s = (4 - (w * BMP_BPP) % 4) % 4;
+	ft_write(img_f, bitmap_header(h, w, pad_s), BMP_HSIZE);
+	ft_write(img_f, bitmap_info(h, w), BMP_ISIZE);
 	h -= 1;
-	while (h >= 0)
-	{
-		write(img_f, img + (BMP_BPP * w * h), BMP_BPP * w);
-		write(img_f, pad, pad_s);
+	while (h >= 0) {
+		ft_write(img_f, img + (BMP_BPP * w * h), BMP_BPP * w);
+		ft_write(img_f, pad, pad_s);
 		h--;
 	}
 	close(img_f);
 }
 
-/*
-** Set pixel color
-**
-** @param  t_win  *win allocated global window structure
-** @param  u_char *img allocated image buffer
-** @param  int       i index color position
-** @return void
-*/
-
-static void		set_px(t_win *win, u_char *img, int i)
-{
-	u_char	*ptr;
-
-	ptr = img + (int)(BMP_BPP * win->x * (int)win->bmp_y)
-			+ ((int)win->bmp_x * BMP_BPP) + i;
+/**
+ * Set pixel color
+ * @param win global game structure
+ * @param img bitmap image
+ * @param i color id
+ */
+static void		set_px(t_win *win, u_char *img, int i) {
+	u_char *ptr = img + (int)(BMP_BPP * win->x * (int)win->bmp_y) + ((int)win->bmp_x * BMP_BPP) + i;
 	if (i == 0)
 		*ptr = get_b(win->color.bmp_color);
 	else if (i == 1)
@@ -118,27 +100,18 @@ static void		set_px(t_win *win, u_char *img, int i)
 		*ptr = get_r(win->color.bmp_color);
 }
 
-/*
-** Calling function for bitmap option
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-void			save_frame(t_win *win)
-{
-	u_char	*img;
-
+/**
+ * Save frame as bitmap
+ * @param win global game structure
+ */
+void			save_frame(t_win *win) {
 	win->bmp_y = 0;
-	img = ft_calloc(win->y * win->x, BMP_BPP);
+	u_char *img = ft_calloc(win->y * win->x, BMP_BPP);
 	malloc_check(img);
-	while (win->bmp_y < win->y)
-	{
+	while (win->bmp_y < win->y) {
 		win->bmp_x = 0;
-		while (win->bmp_x < win->x)
-		{
-			win->color.bmp_color = get_px(&win->img[win->i],
-					(int)win->bmp_x, (int)win->bmp_y);
+		while (win->bmp_x < win->x) {
+			win->color.bmp_color = get_px(&win->img[win->i], (int)win->bmp_x, (int)win->bmp_y);
 			set_px(win, img, 0);
 			set_px(win, img, 1);
 			set_px(win, img, 2);

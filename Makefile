@@ -21,8 +21,8 @@ EFLAGS  =
 GDBFLAG =
 SDIR    =   .
 ODIR    =   .
-IDIR    =   -Iinc -Ilibft
-LIBFT   =   -Llibft -lft
+IDIR    =   -Iinclude -Ilibft/include
+LIBFT   =   -Llibft/build -lft
 DEFINE  =   -D LINUX_CUBE
 NAME    =   cub3D
 
@@ -66,17 +66,15 @@ debug       :
 rebug       : fclean debug
 clean       :
 	/bin/rm -f $(OBJ)
-	$(MAKE) -C libft clean
 	$(MAKE) -C $(CMLX) clean
 fclean      : clean
 	/bin/rm -f $(NAME)
 	/bin/rm -f mlx/libmlx.dylib libmlx.dylib
-	$(MAKE) -C libft fclean
 re          :
 	$(MAKE) fclean
 	$(MAKE) all
 libft       :
-	$(MAKE) -C libft $(DBG)
+	cd libft; cmake . && make
 mlx         :
 	$(MAKE) -C $(CMLX) $(DBG)
 ifeq ($(OS),Darwin)

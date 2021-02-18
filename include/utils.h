@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prmerku <prmerku@student.codam.nl>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/07 18:49:50 by prmerku           #+#    #+#             */
-/*   Updated: 2019/12/07 18:49:50 by prmerku          ###   ########.fr       */
+/*   Created: 2020/01/21 11:31:35 by prmerku           #+#    #+#             */
+/*   Updated: 2020/02/20 09:43:31 by prmerku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#ifndef UTILS_H
+# define UTILS_H
 
-char	*ft_strrchr(const char *s, int c)
-{
-	char	*ptr;
-	char	pos;
+# include <cub3d.h>
 
-	ptr = NULL;
-	if (c == '\0')
-		return (ft_strchr(s, '\0'));
-	while (*s)
-	{
-		pos = *s;
-		if (c == pos)
-			ptr = (char*)s;
-		s++;
-	}
-	return (ptr);
-}
+void	save_frame(t_win *win);
+u_int	get_px(t_img *img, int x, int y);
+u_int	get_r(u_int color);
+u_int	get_g(u_int color);
+u_int	get_b(u_int color);
+
+int		close_win(t_win *win);
+int		close_key(t_win *win);
+int		close_error(char *s);
+void	delete_data(char **data);
+
+void	malloc_check(void *ptr);
+
+void	draw_hud(t_win *win);
+
+#endif

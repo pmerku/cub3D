@@ -10,25 +10,63 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <ft_memory.h>
 #include <fcntl.h>
-#include <libft.h>
-#include <utils.h>
-#include <parser.h>
-#include <cub3d.h>
+#include <ft_string.h>
+#include <ft_libft.h>
+#include <unistd.h>
+#include "utils.h"
+#include "parser.h"
+#include "cub3d.h"
 
-/*
-** Check if all mandatory elements in '.cub' file are present
-**
-** @param  t_win *win allocated global window structure
-** @return int        status code 0 if all elements are present
-*/
+/**
+ * Helper function
+ * @param s1 first string to join
+ * @param s2 second string to join
+ * @return joined string
+ */
+char	*ft_strjoin_free1(char const *s1, char const *s2) {
+	if (!s1 || !s2)
+		return NULL;
+	size_t len1 = ft_strlen(s1);
+	size_t len2 = ft_strlen(s2);
+	char *str = ft_malloc(sizeof(char) * (len1 + len2 + 1));
+	if (!str)
+		return NULL;
+	ft_memcpy(str, s1, len1 + 1);
+	ft_memcpy(str + len1, s2, len2 + 1);
+	ft_free((void*)s1);
+	return str;
+}
 
-static int	mandatory_elements(t_win *win)
-{
-	int		res;
+/**
+ * Helper function
+ * @param s1 first string to join
+ * @param s2 second string to join
+ * @return joined string
+ */
+char	*ft_strjoin_free12(char const *s1, char const *s2) {
+	if (!s1 || !s2)
+		return NULL;
+	size_t len1 = ft_strlen(s1);
+	size_t len2 = ft_strlen(s2);
+	char *str = ft_malloc(sizeof(char) * (len1 + len2 + 1));
+	if (!str)
+		return NULL;
+	ft_memcpy(str, s1, len1 + 1);
+	ft_memcpy(str + len1, s2, len2 + 1);
+	ft_free((void*)s1);
+	ft_free((void*)s2);
+	return str;
+}
 
-	res = 0;
+/**
+ * Test if all the mandatory data is present
+ * @param win global game structure
+ * @return result of the tests (if not 0, then an element is missing)
+ */
+static int	mandatory_elements(t_win *win) {
+	int res = 0;
 	res += (win->x == 0);
 	res += (win->y == 0);
 	res += (win->tex[N_WALL].wall == NULL);
@@ -37,20 +75,15 @@ static int	mandatory_elements(t_win *win)
 	res += (win->tex[W_WALL].wall == NULL);
 	res += (win->color.f_color == 0xFF000000 && win->tex[FLOOR].wall == NULL);
 	res += (win->color.c_color == 0xFF000000 && win->tex[CEILING].wall == NULL);
-	return (res == 0);
+	return res == 0;
 }
 
-/*
-** Parse the 2D array and depending on position parse with correct function
-**
-** @param  char  **data allocated 2D array to parse
-** @param  t_win   *win allocated global window structure
-** @param  int    index reference to index position
-** @return void
-*/
-
-static void	parse_info(char **data, t_win *win)
-{
+/**
+ * Finate state machine for each element of the configuration file
+ * @param data the current line in the file
+ * @param win global game structure
+ */
+static void	parse_info(char **data, t_win *win) {
 	if ((*(u_int16_t *)*data) == (*(u_int16_t *)"R "))
 		parse_resolution(*data, win);
 	else if ((*(u_int16_t *)*data) == (*(u_int16_t *)"F ")
@@ -78,56 +111,38 @@ static void	parse_info(char **data, t_win *win)
 		close_error("Unknown element\n");
 }
 
-/*
-** Parse array by splitting it into a 2D array and parse each line
-**
-** @param  char  *data saved array
-** @param  t_win  *win allocated global window structure
-** @return void
-*/
-
-static void	parse_settings(char *data, t_win *win)
-{
-	int		index;
-	char	**elements;
-
-	elements = ft_split(data, '\n');
-	free(data);
+/**
+ * Parse a single line of the file
+ * @param data file data array
+ * @param win global game structure
+ */
+static void	parse_settings(char *data, t_win *win) {
+	char	**elements = ft_split(data, '\n');
+	ft_free(data);
 	malloc_check(elements);
-	index = 0;
-	while (elements[index] && !ft_strchr(ELEM_S, elements[index][0]))
-	{
+	int index = 0;
+	for (; elements[index] && !ft_strchr(ELEM_S, elements[index][0]); index++)
 		parse_info(&elements[index], win);
-		index++;
-	}
 	parse_map(&elements[index], win);
 	delete_data(elements);
 }
 
-/*
-** Read the file and save it in an array
-**
-** @param  int     fd file descriptor index
-** @param  t_win *win allocated global window structure
-** @return void
-*/
+/**
+ * Save the file as an array
+ * @param fd file file descriptor
+ * @param win global game structure
+ */
+static void	parse_elements(int fd, t_win *win) {
+	char *tmp = NULL;
+	int res = 1;
+	char *data = ft_strdup("");
 
-static void	parse_elements(int fd, t_win *win)
-{
-	char	*data;
-	char	*tmp;
-	int		res;
-
-	res = 1;
-	data = ft_strdup("");
 	malloc_check(data);
-	while (res > 0)
-	{
+	while (res > 0) {
 		res = get_next_line(fd, &tmp);
 		if (res < 0)
 			close_error("Failed to read file\n");
-		if (ft_strlen(tmp) == 0)
-		{
+		if (ft_strlen(tmp) == 0) {
 			tmp = ft_strjoin_free1(tmp, "\n");
 			malloc_check(tmp);
 			*tmp = 16;
@@ -140,16 +155,12 @@ static void	parse_elements(int fd, t_win *win)
 	parse_settings(data, win);
 }
 
-/*
-** Parse file name, parse the elements of the file and validate the map
-**
-** @param  char  *path path to file name
-** @param  t_win  *win allocated global window structure
-** @return void
-*/
-
-void		parse_file(char *path, t_win *win)
-{
+/**
+ * Parse file name, parse elements of the file, and validate the map
+ * @param path path to file
+ * @param win global game structure
+ */
+void		parse_file(char *path, t_win *win) {
 	char	*ptr;
 	int		fd;
 

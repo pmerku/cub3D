@@ -13,65 +13,50 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-/*
-** ---------------------------------------------------------------------------
-** 							Header includes
-** ---------------------------------------------------------------------------
-*/
-
 # include <sys/types.h>
 
-/*
-** ---------------------------------------------------------------------------
-** 							Macro defines
-** ---------------------------------------------------------------------------
-*/
-
-/*
-** Elements macros
-*/
-
+/**
+ * Elements macros
+ */
 # define F_COLOR	1U
 # define C_COLOR	2U
 
-/*
-** BITMAP macros
-*/
-
+/**
+ * bitmap macros
+ */
 # define BMP_FILE	"frame.bmp"
 # define BMP_BPP	3
 # define BMP_HSIZE	14
 # define BMP_ISIZE	40
 
-/*
-** Movement macros
-*/
-
+/**
+ * Movement macros (Uses hardcoded values for OSX system, otherwise defaults to X11 defines
+ */
 #ifdef MAC_AND_CHEESE_CUBE
-#  define KEY_ESC				53
-#  define KEY_DOWN				125
-#  define KEY_UP				126
-#  define KEY_LEFT				123
-#  define KEY_RIGHT				124
-#  define KEY_W					13
-#  define KEY_A					0
-#  define KEY_S					1
-#  define KEY_D					2
+#  define KEY_ESC	53
+#  define KEY_DOWN	125
+#  define KEY_UP	126
+#  define KEY_LEFT	123
+#  define KEY_RIGHT	124
+#  define KEY_W		13
+#  define KEY_A		0
+#  define KEY_S		1
+#  define KEY_D		2
 #  define KEY_E		14
 #  define KEY_SHIFT	257
 #  define KEY_SPACE	49
 #  define KEY_TAB	48
 # else
 #  include <X11/keysym.h>
-#  define KEY_ESC				XK_Escape
-#  define KEY_DOWN				XK_Down
-#  define KEY_UP				XK_Up
-#  define KEY_LEFT				XK_Left
-#  define KEY_RIGHT				XK_Right
-#  define KEY_W					XK_w
-#  define KEY_A					XK_a
-#  define KEY_S					XK_s
-#  define KEY_D					XK_d
+#  define KEY_ESC	XK_Escape
+#  define KEY_DOWN	XK_Down
+#  define KEY_UP	XK_Up
+#  define KEY_LEFT	XK_Left
+#  define KEY_RIGHT	XK_Right
+#  define KEY_W		XK_w
+#  define KEY_A		XK_a
+#  define KEY_S		XK_s
+#  define KEY_D		XK_d
 #  define KEY_E		XK_e
 #  define KEY_SHIFT	XK_Shift_L
 #  define KEY_SPACE	XK_space
@@ -81,10 +66,9 @@
 # define MOV_SPEED	0.0475
 # define ROT_SPEED	0.0275
 
-/*
-** Texture id macros
-*/
-
+/**
+ * Texture ids
+ */
 # define N_WALL		0
 # define S_WALL		1
 # define W_WALL		2
@@ -94,10 +78,9 @@
 # define DOOR		6
 # define DOOR_H		7
 
-/*
-** Sprite id macros
-*/
-
+/**
+ * Sprite ids
+ */
 # define SPR_I		8
 # define SPR_P		9
 # define SPR_TR		10
@@ -107,10 +90,9 @@
 # define SPR_T4		14
 # define SPR_M		15
 
-/*
-** Supported texture/sprites id macros
-*/
-
+/**
+ * Char sets
+ */
 # define S_NUM		9
 # define T_NUM		16
 
@@ -118,31 +100,16 @@
 # define SPAWN_SET	"NSEW"
 # define SPRITE_SET	"2345MIPT"
 
-/*
-** Map query macros
-*/
-
 # define HIT_C		"1HD"
 # define HIT_NC		"04IPTHNSEW"
 # define HIT_P		"IPT"
 
-/*
-** Flood fill macros
-*/
-
 # define FLOOD		"02345MIPTHDNSEW"
 # define ELEM_S		" 012345MIPTHD"
 
-/*
-** ---------------------------------------------------------------------------
-** 							Cub3D Structs
-** ---------------------------------------------------------------------------
-*/
-
-/*
-** Keys struct
-*/
-
+/**
+ * Pressed keys values structure
+ */
 typedef struct	s_key {
 	u_int		up:1;
 	u_int		left:1;
@@ -156,10 +123,9 @@ typedef struct	s_key {
 	u_int		hud:1;
 }				t_key;
 
-/*
-** Movement struct
-*/
-
+/**
+ * Movement structure
+ */
 typedef struct	s_mov {
 	double		perp_wd;
 	int			step_x;
@@ -174,10 +140,9 @@ typedef struct	s_mov {
 	int			cell_y;
 }				t_mov;
 
-/*
-** Player position struct
-*/
-
+/**
+ * Player structure
+ */
 typedef struct	s_pos {
 	double		x;
 	double		y;
@@ -191,10 +156,9 @@ typedef struct	s_pos {
 	double		tmp_y;
 }				t_pos;
 
-/*
-** Ray-caster struct
-*/
-
+/**
+ * Ray-caster structure
+ */
 typedef struct	s_ray {
 	double		dir_x;
 	double		dir_y;
@@ -213,10 +177,9 @@ typedef struct	s_ray {
 	double		wall_x;
 }				t_ray;
 
-/*
-** Image struct
-*/
-
+/**
+ * Image structure
+ */
 typedef struct	s_img {
 	void		*img;
 	char		*addr;
@@ -226,10 +189,9 @@ typedef struct	s_img {
 	int			line_h;
 }				t_img;
 
-/*
-** Map struct
-*/
-
+/**
+ * Map structure
+ */
 typedef struct	s_map {
 	char		**map;
 	int			x;
@@ -237,10 +199,9 @@ typedef struct	s_map {
 	int			map_h;
 }				t_map;
 
-/*
-** Color struct
-*/
-
+/**
+ * Color values structure
+ */
 typedef struct	s_color {
 	u_int		a;
 	u_int		r;
@@ -254,19 +215,17 @@ typedef struct	s_color {
 	int			spr_i;
 }				t_color;
 
-/*
-** Sprite type struct
-*/
-
+/**
+ * Sprites type structure
+ */
 typedef struct	s_typ {
 	char		c;
 	int			tex_i;
 }				t_typ;
 
-/*
-** Sprite-caster struct
-*/
-
+/**
+ * Sprites renderer structure
+ */
 typedef struct	s_sdt {
 	double		spr_x;
 	double		spr_y;
@@ -282,10 +241,9 @@ typedef struct	s_sdt {
 	int			d;
 }				t_sdt;
 
-/*
-** Sprite struct
-*/
-
+/**
+ * Sprites structure
+ */
 typedef struct	s_spr {
 	double		x;
 	double		y;
@@ -294,10 +252,9 @@ typedef struct	s_spr {
 	int			hide:1;
 }				t_spr;
 
-/*
-** Textures struct
-*/
-
+/**
+ * Textures structure
+ */
 typedef struct	s_tex {
 	void		*wall;
 	char		*data;
@@ -310,10 +267,9 @@ typedef struct	s_tex {
 	u_int		tex_y;
 }				t_tex;
 
-/*
-** Hud struct
-*/
-
+/**
+ * HUD structure
+ */
 typedef struct	s_hud {
 	char		*str;
 	u_int		color;
@@ -323,10 +279,9 @@ typedef struct	s_hud {
 	int			y1;
 }				t_hud;
 
-/*
-** Window struct / main struct
-*/
-
+/**
+ * Global game structure
+ */
 typedef struct	s_win {
 	void		*mlx;
 	void		*mlx_win;
@@ -355,11 +310,5 @@ typedef struct	s_win {
 	double		bmp_x;
 	double		bmp_y;
 }				t_win;
-
-/*
-** ---------------------------------------------------------------------------
-** 							Cub3D functions
-** ---------------------------------------------------------------------------
-*/
 
 #endif

@@ -10,53 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <utils.h>
-#include <libft.h>
-#include <cub3d.h>
+#include <ft_string.h>
+#include <ft_memory.h>
+#include "utils.h"
+#include "cub3d.h"
 
-/*
-** Parse the string and set spawn point for the player with correct rotation
-**
-** @param  t_win      *win allocated global window structure
-** @param  const char *row passed string to loop over
-** @return void
-*/
-
-static void	map_spawn_pos(t_win *win, const char *row, int index)
-{
-	int		col;
-
-	col = 0;
-	while (row[col])
-	{
-		if (row[col] == 'N' || row[col] == 'S')
-		{
+/**
+ * Set spawn coordinates and rotation for player
+ * @param win global game structure
+ * @param row current row in map
+ * @param index index of current row in map
+ */
+static void	map_spawn_pos(t_win *win, const char *row, int index) {
+	int col = 0;
+	for (; row[col]; col++) {
+		if (row[col] == 'N' || row[col] == 'S') {
 			win->pos.dir_x = (row[col] == 'N') ? -1 : 1;
 			win->pos.plane_y = (row[col] == 'N') ? 0.66 : -0.66;
-			break ;
+			break;
 		}
-		else if (row[col] == 'E' || row[col] == 'W')
-		{
+		else if (row[col] == 'E' || row[col] == 'W') {
 			win->pos.dir_y = (row[col] == 'W') ? -1 : 1;
 			win->pos.plane_x = (row[col] == 'W') ? -0.66 : 0.66;
-			break ;
+			break;
 		}
-		col++;
 	}
 	win->pos.x = col + 0.5;
 	win->pos.y = index + 0.5;
 }
 
-/*
-** Check if extra character has texture loaded
-**
-** @param  t_win  *win allocated global window structure
-** @param  int       c position character
-** @return void
-*/
-
-static void	extra_check(char **map, int *x, int *y)
-{
+/**
+ * Check if special characters have their texture file loaded
+ * @param map pointer to the map
+ * @param x coordinate x in map
+ * @param y coordinate y in map
+ */
+static void	extra_check(char **map, int *x, int *y) {
 	while (map[*y] && map[*y][*x] == 16)
 		(*y)++;
 	if (map[*y] != NULL)
@@ -64,29 +53,19 @@ static void	extra_check(char **map, int *x, int *y)
 	(*y)--;
 }
 
-/*
-** Parse the 2D array and check for unsupported characters.
-** If a supported character is found skip it or set spawn point for player.
-**
-** @param  char  **map allocated 2D array to parse
-** @param  t_win  *win allocated global window structure
-** @return void
-*/
-
-static void	map_char_check(char **map, t_win *win, int y, int x)
-{
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x] && map[y])
-		{
+/**
+ * Test if all characters are part of the map char set
+ * @param map pointer to the map
+ * @param win global game structure
+ */
+static void	map_char_check(char **map, t_win *win) {
+	for (int y = 0; map[y]; y++) {
+		for (int x = 0; map[y][x] && map[y]; x++) {
 			if (!ft_strchr(CHAR_SET, map[y][x]) && map[y][x] != 16)
 				close_error("Unsupported character in map\n");
-			else if ((win->tex[DOOR_H].wall == NULL && map[y][x] == 'H')
-				|| (win->tex[DOOR].wall == NULL && map[y][x] == 'D'))
+			else if ((win->tex[DOOR_H].wall == NULL && map[y][x] == 'H') || (win->tex[DOOR].wall == NULL && map[y][x] == 'D'))
 				close_error("Missing textures\n");
-			else if (ft_strchr(SPAWN_SET, map[y][x]))
-			{
+			else if (ft_strchr(SPAWN_SET, map[y][x])) {
 				if (win->pos.x == 0 && win->pos.y == 0)
 					map_spawn_pos(win, map[y], y);
 				else
@@ -94,25 +73,20 @@ static void	map_char_check(char **map, t_win *win, int y, int x)
 			}
 			else if (map[y][x] == 16 && map[y])
 				extra_check(map, &x, &y);
-			x++;
 		}
-		y++;
 	}
 	if (win->pos.x == 0 && win->pos.y == 0)
 		close_error("Invalid spawn\n");
 }
 
-/*
-** Validate map algorithm
-**
-** @param  t_win *win allocated global window structure
-** @param  int      x position x in map
-** @param  int      y position y in map
-** @return void
-*/
-
-static void	flood_fill(t_win *win, char **map, int x, int y)
-{
+/**
+ * Algorithm to validate if the map is enclosed
+ * @param win global game structure
+ * @param map pointer to the map
+ * @param x starting position x
+ * @param y starting position y
+ */
+static void	flood_fill(t_win *win, char **map, int x, int y) {
 	if (y < 0 || x < 0 || y > win->map.map_h - 1 || map[y][x] == '\0'
 		|| map[y][x] == ' ')
 		close_error("Invalid map\n");
@@ -132,36 +106,21 @@ static void	flood_fill(t_win *win, char **map, int x, int y)
 	flood_fill(win, map, x - 1, y + 1);
 }
 
-/*
-** Calling function for map validation and transform "empty" tile to target
-** for the flood fill algorithm
-**
-** @param  t_win *win allocated global window structure
-** @return void
-*/
-
-void		map_validate(t_win *win)
-{
-	int		x;
-	int		y;
-	char	**map_dup;
-
-	map_char_check(win->map.map, win, 0, 0);
-	map_dup = ft_calloc(win->map.map_h + 1, sizeof(char*));
+/**
+ * Check if map characters are valid and mark "empty" tiles
+ * @param win global game structure
+ */
+void		map_validate(t_win *win) {
+	map_char_check(win->map.map, win);
+	char **map_dup = ft_calloc(win->map.map_h + 1, sizeof(char*));
 	malloc_check(map_dup);
-	y = 0;
-	while (y < win->map.map_h)
-	{
-		x = 0;
+	for (int y = 0; y < win->map.map_h; y++) {
 		map_dup[y] = ft_strdup(win->map.map[y]);
 		malloc_check(map_dup[y]);
-		while (map_dup[y][x])
-		{
+		for (int x = 0; map_dup[y][x]; x++) {
 			if (ft_strchr(FLOOD, map_dup[y][x]))
 				map_dup[y][x] = '$';
-			x++;
 		}
-		y++;
 	}
 	flood_fill(win, map_dup, (int)win->pos.x, (int)win->pos.y);
 	delete_data(map_dup);

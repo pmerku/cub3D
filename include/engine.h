@@ -13,19 +13,7 @@
 #ifndef ENGINE_H
 # define ENGINE_H
 
-/*
-** ---------------------------------------------------------------------------
-** 							Header includes
-** ---------------------------------------------------------------------------
-*/
-
 # include <cub3d.h>
-
-/*
-** ---------------------------------------------------------------------------
-** 							Engine functions
-** ---------------------------------------------------------------------------
-*/
 
 int		render_next_frame(t_win *win);
 
@@ -40,7 +28,7 @@ int		open_door(t_win *win, double y, double x);
 void	draw_back(t_win *win);
 void	draw_wall(t_win *win, int i, int y);
 int		draw_tex(t_win *win, t_tex *tex, int i, int y);
-void	draw_sprite(t_win *win, t_sdt *sdt, int i);
+void	draw_sprite(t_win *win, t_sdt *sdt);
 void	sprite_hide(t_win *win, double y, double x);
 
 void	sprite_sort(t_spr *spr, int first, int last);
